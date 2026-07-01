@@ -15,5 +15,3 @@ models/
 __pycache__/
 *.pyc
 
-# Proprietary Content
-FounderFrameworks.txt

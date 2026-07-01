@@ -30,9 +30,6 @@ jobs:
         pip install pyinstaller
         pip install -r requirements.txt
 
-    - name: Decrypt Book
-      run: |
-        openssl enc -aes-256-cbc -d -pbkdf2 -pass pass:${{ secrets.BOOK_DECRYPTION_KEY }} -in FounderFrameworks.txt.enc -out FounderFrameworks.txt
 
     - name: Build with PyInstaller
       run: |
