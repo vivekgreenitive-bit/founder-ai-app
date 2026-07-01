@@ -1,0 +1,4500 @@
+FOUNDER
+FRAMEWORKS
+
+A Playbook for Building and Scaling Your Business
+
+by Vivek Ananth
+
+
+
+
+Table of Content
+
+Introduction..............................................................................................5
+Planning
+ECG KISS: Overall Business....................................................................7
+SLR CAMERAS: Yearly Planning..........................................................19
+MC BEERS: Quarterly Planning...........................................................33
+PC PEERS: Monthly Planning. .............................................................45
+PS ERP: Weekly Planning......................................................................57
+DC ERPRS: Daily Planning. .................................................................67
+Operation
+OKS REC SME: System........................................................................77
+PFA SAAS SME: Process. ......................................................................89
+RSS FEED SME: SOP. .......................................................................103
+Execution
+RPM REAP ER: Execution..................................................................117
+RUN DCMS ER: Revenue..................................................................129
+ERM FABS ER: Evaluation. ................................................................143
+ADMINS ER: Crisis............................................................................157
+
+Introduction
+
+This book is designed to help founders with planning, defining the system,
+process, SOP, and execution. The frameworks are explained clearly, and a
+business scenario is used as an example.
+The scenario is visualized through three types of players:
+•
+•
+•
+
+Dreamer (superhuman thinker)
+Guardian (military officer thinker)
+Doer (athlete thinker)
+
+The framework is then applied to the scenario, followed by an exercise
+page to help you practice and implement the learning.
+Let me introduce myself. I am Vivek, Founder of Greenitive Technologies,
+and we’ve built two products:
+•
+•
+
+Linkroster Pro – a business execution platform
+TransformJet – an AI transformation platform for businesses.
+
+Here, I also take the opportunity to thank some key people:
+•
+•
+•
+•
+
+Mohit Sureka (Founder, Global Startup Club)
+Sivarajah Ramanathan (Mission Director, Startup TN)
+Nandakumar (Founder, Advi Auto Care)
+Gopinath (IAS Trainer)
+
+6 | Introduction
+
+•
+•
+
+Bishal Sarkar (Public Speaking Coach)
+Aramudha Devasena (Late Revenue Divisional Officer)
+
+Finally, I want to thank my mother Santhi, wife Packiya, daughter
+Dhanyaa Shri, son Mithra Varun, family, friends and supporters!
+
+ECG KISS: Overall Business
+
+E - End Goal
+C - Current Pain Points
+G - GAP
+K - Knowledge
+I - Implementation
+S - Simulate
+S - Solution
+
+8 | Founder Frameworks
+
+ECG KISS: Overall business
+E – End Goal
+The end goal is your business’s north star. It provides direction, clarity, and
+purpose. Defining it clearly helps avoid distractions and ensures your time
+and resources are aligned with what truly matters.
+C – Current Pain Points
+Understanding your current pain points reveals your present reality. This
+step grounds you in facts and highlights the core issues impacting growth
+and performance.
+G – GAP
+The gap is the measurable distance between where you are and where you
+aim to be. Identifying this gap allows you to build strategies, make informed
+decisions, and structure plans that bridge this difference effectively.
+K – Knowledge
+Domain knowledge is essential to understand how your business operates
+from end to end. To quickly gain high-level insights, apply techniques
+like skimming—extracting key information rapidly—to get started with
+confidence.
+I – Implementation
+Break down your goals into detailed implementation steps. This helps you
+think deeply, prioritize actions, and understand what needs to be done to
+move forward strategically.
+S – Simulate
+Use flow diagrams or visual workflows to simulate how your implementations
+will lead to the end goal. This gives you a practical preview, identifies gaps
+early, and ensures better planning—saving time and resources.
+
+ECG KISS: Overall Business | 9
+
+S – Solution
+With a clear picture of your business landscape, finalize the most suitable
+solution. At this stage, you’re ready with a focused, actionable plan to
+execute your process efficiently.
+Why ECG KISS Works in Overall Business Planning
+Creating a comprehensive business plan goes beyond setting goals—
+it demands deep domain knowledge, real-world experience, and a clear
+understanding of your current business operations. Every decision and
+action must align with your long-term vision to truly move the business
+forward.
+But business doesn’t exist in a vacuum.
+You must continuously navigate dynamic external forces—market shifts,
+customer behaviors, emerging technologies, economic fluctuations, and
+political developments. These ever-changing variables directly influence
+your strategies and outcomes.
+That’s where the ECG KISS Framework comes in.
+Just as a doctor uses an ECG to assess heart health and determine the
+next steps, this framework helps you evaluate the health of your business,
+identify gaps, and implement structured, actionable solutions.
+ECG KISS provides clarity, builds structure, and empowers you to move
+with focus and precision.
+It transforms planning from an abstract exercise into a powerful diagnostic
+and strategic tool—keeping your business agile, aligned, and future-ready.
+
+10 | Founder Frameworks
+
+Framework Applied
+Business Scenario: Global Expansion Strategy for a UK Biscuit
+Company
+A leading biscuit manufacturer based in the UK is preparing to expand
+its footprint to three key international markets: the USA, Canada, and
+Singapore. The first phase involves sending teams to each region to analyze
+market dynamics, customer behavior, and competitive positioning.
+The company’s broader expansion strategy includes:
+•
+•
+•
+
+Identifying trusted sources for raw materials and machinery
+Establishing robust supply chain and logistics frameworks
+Ensuring compliance with local regulations and food safety
+standards
+
+To visualize the approach, here’s how different strategic mindsets might
+tackle this:
+Thinkers Perspectives
+Dreamer (Superhuman Thinker)
+“We’ll dispatch our teams to all three countries simultaneously. In each
+region, we’ll hire local experts to quickly gather insights on customer
+preferences, raw material availability, competitors, and logistics. We’ll
+also engage legal advisors to navigate regulatory landscapes swiftly. Speed
+will be our advantage in seizing early market share.”
+Guardian (Military Officer Thinker)
+“We’ll follow a phased rollout. First, our team will spend three months in
+the USA to gather detailed market intelligence. Based on the learnings,
+we’ll move to Canada and then Singapore. This approach helps us
+optimize resource usage, reduce risk, and prepare for local complexities.
+Each phase strengthens the next.”
+
+ECG KISS: Overall Business | 11
+
+Doer (Athlete Thinker)
+“We’ll start with virtual research—talk to domain experts, analyze
+competitors, and understand logistics digitally. Then, we’ll deploy our
+team to the USA for ground-level exploration. Once validated, we’ll
+replicate the model in Canada and Singapore with adjustments. Action,
+feedback, and refinement are key.”
+ECG KISS Framework Applied: Global Expansion
+E – End Goal
+Expand operations into the USA, Canada, and Singapore, with fully
+functional supply chain systems, local compliance, and sustainable
+business processes.
+C – Current Pain Points
+•
+•
+•
+•
+•
+
+Limited to UK operations
+No presence in international markets
+Lack of global logistics expertise
+Recent resignations from the core team
+No dedicated expansion framework
+
+G – GAP
+•
+•
+•
+•
+
+Domestic-only strategy so far
+Slow recruitment for key roles
+Untrained staff for international logistics
+No tested roadmap for global expansion
+
+K – Knowledge
+•
+•
+•
+•
+
+Study international economics and consumer trends
+Understand local political and regulatory environments
+Upskill internal teams on global operations
+Learn from industry best practices and legal norms
+
+12 | Founder Frameworks
+
+I – Implementation Plan
+•
+•
+•
+•
+•
+•
+•
+
+Appoint teams for field research in each country
+Engage local legal and compliance experts
+Partner with travel and logistics vendors
+Conduct pre-deployment team training
+Research supply chain options and raw material sources
+Document country-specific regulatory requirements
+Develop a real-time project tracking dashboard
+
+S – Simulate
+Simulate the expansion with phased planning and visualization:
+Core Expansion Team Selected and Trained
+|
+Verified Travel & Accommodation Partners Onboarded
+|
+Country-specific Compliance Research Completed
+|---> Documented the research
+|---> USA
+|---> Canada
+|---> Singapore
+Supply Chain Strategy Finalized
+|---> Established Local Distribution Channels
+|---> Analyzed Customs, Duties, and Tax Implications
+|---> Mapped Cross-border Logistics Requirements
+Raw Material Procurement Mapped
+|---> Identified Cost-effective Transport Routes
+|---> Negotiated Supplier Terms and Conditions
+Machinery Deployment Strategy
+|---> Equipment Shipped in Modular Form
+|---> Local Assembly Coordinated
+
+ECG KISS: Overall Business | 13
+
+S – Solution
+•
+•
+•
+•
+•
+•
+
+Finalize all logistics and travel arrangements
+Onboard legal experts within 7 days
+Build foundational supply chains in the first 30 days
+Hire skilled logistics and R&D professionals
+Create a detailed budget covering compliance, training, and
+transport
+Track KPIs through a central dashboard for continuous feedback
+
+14 | Founder Frameworks
+
+Exercise:
+Your Business Scenario:
+
+Dreamer (Superhuman Thinker)
+
+Guardian (Military Officer Thinker)
+
+ECG KISS: Overall Business | 15
+
+Doer (Athlete Thinker)
+
+Apply the Framework
+
+E – End Goal
+
+16 | Founder Frameworks
+
+C – Current Pain Points
+
+G – GAP
+
+K – Knowledge
+
+ECG KISS: Overall Business | 17
+
+I – Implementation
+
+S – Simulate
+
+S – Solution
+
+SLR CAMERAS: Yearly Planning
+
+S – Success Peak
+L – List of Milestones
+R – Resources Required
+C – Categorization
+A – Assigning Milestones
+M – Mitigation Plan
+E – Evaluation and Estimation
+R – Review
+A – Actually Visualize
+S – Simulate & Schedule
+
+20 | Founder Frameworks
+
+SLR CAMERAS: Yearly Planning
+S – Success Peak
+The highest height of success in business you want to achieve. This is
+where you freely visualize your big vision—it sets direction and helps with
+planning.
+L – List of Milestones
+Now, list the major milestones that will help you reach your vision. This
+gives you a clear roadmap for the year.
+R – Resources Required
+Identify all the resources you’ll need to achieve these milestones—this
+may include people, experts, money, office space, raw materials, tools, or
+partnerships.
+C – Categorization
+Categorize the milestones based on your business domains such as
+procurement, supply chain, logistics, sales, marketing, and distribution.
+A – Assigning Milestones
+Distribute your milestones across Quarter 1, Quarter 2, Quarter 3, and
+Quarter 4.
+This helps in prioritizing goals and planning resource capacity efficiently.
+M – Mitigation Plan
+As this is a yearly plan, include mitigation strategies in case things don’t go
+as expected.
+Be ready to adapt based on evolving business conditions.
+E – Evaluation and Estimation
+Estimate the time and effort required for each milestone.
+
+SLR CAMERAS: Yearly Planning | 21
+
+Evaluate past performance from these perspectives:
+•
+•
+•
+
+As a founder: How well did you lead?
+As a team: How did your team perform?
+As a business: What was the customer and financial outcome?
+
+Assign scores or percentages to each for clarity.
+R – Review
+List all key learnings and improvements from the previous year.
+This reflection will give you insights to build a stronger future plan.
+A – Actually Visualize
+Visualize your entire yearly journey—from planning to execution.
+Build a big-picture view of your business and see how each milestone
+connects.
+S – Simulate & Schedule
+Simulate your one-year plan using a flow diagram.
+This makes your plan more tangible and helps save resources.
+Finally, schedule it into your quarterly calendar, including room for
+adjustments.
+Why SLR CAMERAS Works for Yearly Planning
+Across the world, strategic planning is often anchored around the yearly
+cycle. Whether it’s businesses aligning to a financial year or governments
+setting annual budgets, the rhythm of annual planning shapes major
+decisions. Even employee appraisals and organizational reviews are typically
+done on a yearly basis.
+The SLR CAMERAS framework is designed to bring structure, clarity, and
+direction to this crucial annual planning process.
+
+22 | Founder Frameworks
+
+It guides you from defining your vision, listing milestones, identifying
+resources, and categorizing goals, to building a mitigation plan that
+prepares you for challenges.
+You’ll also learn to evaluate and estimate effectively, review progress on
+schedule, and make data-informed predictions for the year ahead.
+By visualizing the full scope of your plan, you gain a big-picture
+understanding of your business. And with simulation, you can proactively
+save time and resources by identifying gaps before execution.
+When applied consistently, SLR CAMERAS transforms your yearly
+planning into a powerful, outcome-driven strategy—moving you closer to
+your vision with confidence and control.
+
+SLR CAMERAS: Yearly Planning | 23
+
+Framework Applied
+Business Scenario: Strategic Expansion for a Construction Company
+A leading construction firm, currently focused on residential projects,
+aims to increase its residential revenue by 30% over the next year.
+Simultaneously, the company plans to venture into commercial
+construction, with a bold goal of becoming one of the top 50 players
+in that segment. A major obstacle is the shortage of skilled labor
+for commercial projects, prompting the need to hire experienced
+professionals and implement a focused strategy.
+Thinkers Perspectives
+Dreamer (Superhuman Thinker):
+Aggressively invest in marketing to aim for a 50% revenue increase in
+residential projects. To accelerate commercial expansion, acquire an
+established commercial construction firm for immediate brand presence.
+Hire senior executives from industry leaders to fast-track positioning
+among the top 50.
+Guardian (Military Officer Thinker):
+Evaluate the financial impact and risks of entering the commercial
+market. Ensure residential operations are not affected. Identify internal
+gaps, optimize costs, and bring in commercial experts. Assess current
+staff to upskill those with relevant experience.
+Doer (Athlete Thinker):
+Generate referrals from satisfied residential clients. Rapidly implement
+a structured plan for 30% growth. Leverage technology (CRM,
+automation tools, digital marketing) and perform competitor research.
+Build a dedicated team to execute commercial strategy step-by-step.
+
+24 | Founder Frameworks
+
+SLR CAMERAS Framework Applied
+S – Success Peak
+•
+•
+•
+•
+
+Achieve 30% revenue growth in residential construction
+Enter the commercial sector and rank among the top 50 players
+Build a skilled commercial workforce
+Gain industry recognition and awards
+
+L – List of Milestones
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+
+Achieve 10% residential revenue growth in Q1
+Achieve remaining 20% in Q2 and Q3
+Train existing employees for commercial readiness
+Hire a consultant to set up commercial processes
+Launch a commercial sales process
+Establish strategic partnerships
+Acquire a commercial firm within 3 months
+Reach top 100 list in 6 months
+Climb to top 50 within 4 months after that
+Publish and promote success stories post-achievement
+Consistently build credibility and win awards
+
+R – Resources Required
+•
+•
+•
+•
+•
+
+Commercial construction experts
+Budget allocation for expansion and acquisition
+Vendors for training and hiring
+Sales and marketing professionals
+Content and PR teams for publishing success
+
+SLR CAMERAS: Yearly Planning | 25
+
+C – Categorization
+Sales:
+•
+
+Commercial sales process launch
+
+Marketing:
+•
+•
+
+Promotion and storytelling post reaching top 100
+Targeted campaigns to attract commercial clients
+
+Production:
+•
+•
+•
+
+Achieving 10% + 20% residential growth
+Tracking progress toward award recognition
+Rankings movement in top 100 → top 50
+
+Training:
+•
+•
+
+Training programs for internal teams
+Hiring consultants for process design
+
+Strategy:
+•
+•
+
+Commercial business acquisition
+Building partner network
+
+A – Assigning Milestones (Quarterly)
+Q1:
+•
+•
+•
+•
+•
+
+10% residential revenue growth
+Hire consultant for commercial setup
+Begin employee training
+Launch sales process
+Complete commercial business acquisition
+
+26 | Founder Frameworks
+
+Q2:
+•
+•
+•
+•
+
+10% additional residential growth
+Form partnerships for commercial deals
+Reach top 100 ranking
+Continue internal training and process optimization
+
+Q3:
+•
+•
+•
+•
+
+Final 10% residential growth
+Reach top 50 rank in commercial sector
+Publish milestones achieved
+Market success stories
+
+Q4:
+•
+•
+•
+
+Expand commercial deals
+Build consistent visibility in the industry
+Secure awards and recognition
+
+M – Mitigation Plan
+•
+•
+•
+•
+
+Set aside contingency funds
+Scale hiring based on progress
+Engage external consultants for expertise
+Boost sales and marketing during low-performance phases
+
+E – Evaluation & Estimation
+Evaluation (Performance):
+•
+•
+•
+
+Founder: 89%
+Team: 85%
+Customer: 80%
+
+Time Estimations:
+•
+•
+
+Q1: 3 months
+Q2: 5 months
+
+SLR CAMERAS: Yearly Planning | 27
+
+•
+•
+
+Q3: 2 months
+Q4: 3 months
+
+R – Review (Key Learnings)
+The lack of commercial expertise highlighted the need for better
+preparedness before expanding to a new segment. Improvement includes
+creating a readiness checklist for entering new markets.
+A – Actually Visualize
+Q1 milestones were achieved with momentum. Q2 showed accelerated
+execution. Q3 focused on showcasing achievements and Q4 secured
+public recognition. The company successfully earned a spot among the
+top 50 commercial players.
+S – Simulate & Schedule
+Residential Revenue Growth – 30% Target
+|---> Achieve 10% growth in Q1
+|---> Document the learning
+|---> Apply for remaining execution
+|---> Achieve remaining 20% across Q2 and Q3
+Commercial Market Expansion – Top 50 Goal
+|---> Hire consultants and train employees
+|---> Set up commercial sales process
+|---> Form strategic partnerships
+|---> Acquire existing commercial firm within 3 months
+|---> Reach top 100 list within 6 months
+|---> Climb to top 50 in the next 4 months
+|---> Publish milestones post top 100 entry
+|---> Launch marketing to reach targeted clients
+|---> Drive consistent progress to secure industry awards
+Now schedule in your calendar
+
+28 | Founder Frameworks
+
+Exercise
+Your Business Scenario
+
+Dreamer (Superhuman Thinker):
+
+Guardian (Military Officer Thinker):
+
+Doer (Athlete Thinker):
+
+SLR CAMERAS: Yearly Planning | 29
+
+S – Success Peak
+
+L – List of Milestones
+
+R – Resources Required
+
+C – Categorization
+
+30 | Founder Frameworks
+
+A – Assigning Milestones
+Quarter 1:
+
+Quarter 2:
+
+Quarter 3:
+
+Quarter 4:
+
+M – Mitigation Plan
+
+SLR CAMERAS: Yearly Planning | 31
+
+E – Evaluation and Estimation
+
+R – Review
+
+A – Actually Visualize
+
+S – Simulate & Schedule
+
+MC BEERS: Quarterly Planning
+
+M– Milestones
+C – Categorize
+B – Breakdown into Multiple Tasks
+E – Estimate Efforts
+E – Evaluate
+R – Review
+S – Simulate & Schedule
+
+34 | Founder Frameworks
+
+MC BEERS: Quarterly Planning
+M – Milestones
+List all the milestones you need to achieve in this quarter. Always keep in
+mind how these milestones contribute to your yearly goals and long-term
+vision. Select three long-term milestones, and then define other quarterly
+milestones that support them. Additionally, include any high-priority
+milestones that are unique or critical to this specific quarter, even if they
+aren’t directly tied to the long-term goals.
+C – Categorize
+Add categories to each milestone such as Sales, Marketing, Production, or
+Distribution, Cost Saving etc based on your industry. This helps organize
+your plan for better focus and tracking.
+B – Breakdown into Multiple Tasks
+Break down each milestone into smaller, actionable tasks. This enables an
+effective execution plan with priorities clearly marked as High, Medium,
+or Low. Ensure your task breakdown aligns with the three long-term
+milestones, the supporting quarterly milestones, and any critical, quarterspecific milestones. This approach helps maintain clarity, focus, and
+balanced progress across both strategic and immediate objectives.
+E – Estimate Efforts
+Once tasks are defined and prioritized, assign estimated time and effort
+needed for implementation. This step is crucial for proper resource
+allocation and scheduling.
+E – Evaluate
+Evaluate your performance in the previous quarter:
+•
+•
+•
+•
+
+How did you perform as a founder?
+How did your team contribute?
+How did customers respond?
+How did your finances perform?
+
+MC BEERS: Quarterly Planning | 35
+
+Use a percentage or rating scale to quantify progress and identify gaps.
+R – Review
+Review all key learnings, insights, and improvements from the previous
+quarter. This reflection helps refine your future plans and avoid repeated
+mistakes.
+S – Simulate & Schedule
+Simulate your plan using a flow diagram. This helps visualize the path
+ahead, clarify assumptions, and optimize use of time and resources. Then
+schedule tasks and milestones across the 3 months of the quarter, adjusting
+timelines as needed.
+Why MC BEERS Works for Quarterly Planning
+In both business and life, real progress becomes visible when efforts
+are focused consistently over a three-month period. That’s why most
+organizations review sales targets, evaluate performance, and implement
+strategic changes on a quarterly basis.
+Even in personal life, meaningful transformation takes time. For instance,
+building muscle through a high-protein diet or reducing weight through
+regular exercise and nutrition typically takes a minimum of three months
+of consistent effort.
+Quarterly planning provides the ideal rhythm—it allows you to take
+focused action, track measurable progress, make timely adjustments, and
+build lasting momentum without becoming overwhelmed by long-term
+objectives.
+MC BEERS empowers you to:
+•
+•
+•
+•
+
+Translate big goals into manageable milestones
+Stay focused with clear task breakdowns
+Adapt with data-driven evaluations
+Maintain momentum through continuous improvement
+
+36 | Founder Frameworks
+
+This rhythm of quarterly planning isn’t just a business tactic — it’s a
+mindset. When applied consistently, MC BEERS keeps your team aligned,
+your time optimized, and your business moving forward with clarity and
+confidence.
+It helps you stay connected to your long-term vision—while making
+tangible, measurable progress every single quarter.
+
+MC BEERS: Quarterly Planning | 37
+
+Framework Applied
+Business Scenario: Global Logistics Optimization for an International
+Courier Company
+A Singapore-based international courier company has set an ambitious
+goal: to improve annual profitability by 25% within the year. As a key
+part of this strategy, the company plans to acquire one small logistics
+firm in five different countries during the current quarter.
+Strategic Objectives
+•
+•
+•
+•
+
+Reduce overall operational costs by 30% by shifting from large
+logistics vendors to small-scale partners in tier 2 and tier 3 cities.
+Shut down two underperforming offices in Singapore to curb
+losses and reallocate resources.
+Introduce a 1.5% price increase on customer services to
+strengthen margins.
+Address warehouse maintenance and waste management to
+improve operational hygiene and efficiency.
+
+Thinkers Perspectives
+Dreamer (Superhuman Thinker)
+“Let’s think big. Instead of acquiring just one company per country,
+we should acquire three in each of the five countries to ensure broad
+coverage.
+Rather than scaling down, increase throughput to absorb fixed costs.
+Immediately transition logistics to these new vendors and find every
+cost-saving and profit-maximizing opportunity across geographies.”
+Guardian (Military Officer Thinker)
+“Let’s stabilize before we scale.
+First, shut down the two non-performing offices.
+
+38 | Founder Frameworks
+
+Limit expansion to three countries initially.
+Maintain existing vendors while analyzing risks, setting contingency
+plans, and gathering local market data before rolling out operational
+changes.”
+Doer (Athlete Thinker)
+“Let’s move fast but with purpose.
+Start with one country for acquisition and vendor transition.
+Redistribute tasks from the closing Singapore offices to other centers.
+If the pilot is successful, scale the strategy to the other countries.”
+MC BEERS Framework Applied
+M – Milestones
+•
+•
+•
+•
+•
+•
+
+Acquire one small logistics company in each of 5 countries
+Transition from large logistics vendors to small partners in tier
+2/3 cities
+Shut down 2 underperforming offices in Singapore
+Achieve 30% reduction in operational costs
+Increase service pricing by 1.5% to improve profitability
+Address warehouse maintenance and waste disposal as a highpriority task
+
+C – Categorize
+Category
+
+Key Items
+
+Acquisitions &
+Transitioning
+
+Logistics company acquisitions, vendor
+transitions
+
+Cost Management
+
+Office closures, operational efficiency,
+warehouse maintenance
+
+Pricing Strategy
+
+1.5% price hike rollout
+
+MC BEERS: Quarterly Planning | 39
+
+B – Breakdown of Key Tasks
+1. Logistics Company Acquisition
+•
+•
+•
+•
+
+Identify potential companies in each country
+Budget planning and deal structuring
+Understand country-specific acquisition laws
+Finalize and close deals
+
+2. Vendor Transition to Tier 2/3 Cities
+•
+•
+•
+
+Assess operational impact and risks
+Design phased rollout plan
+Monitor vendor performance during the transition
+
+3. Office Shutdown in Singapore
+•
+•
+•
+
+Plan phased closure
+Reallocate resources and responsibilities
+Execute closure without disruption
+
+4. Warehouse Maintenance
+•
+•
+•
+
+Assign team to assess maintenance needs
+Onboard cleaning vendors
+Coordinate with authorities for waste disposal
+
+5. Service Price Increase
+•
+•
+•
+
+Pilot test with select customers
+Analyze customer feedback
+Gradually expand pricing changes to all markets
+
+40 | Founder Frameworks
+
+E – Estimate Efforts
+Task
+
+Estimated Duration
+
+Company acquisitions in 5 countries
+
+60 days
+
+Vendor transition (tier 2/3 cities)
+
+30 days
+
+Warehouse cleaning & waste disposal 15 days
+Office closure & resource reallocation 60 days
+Operational cost reduction initiatives
+
+70 days
+
+Customer pricing rollout
+
+15 days
+
+E – Evaluate (Last Quarter Performance)
+Area
+
+Score
+
+Founder
+
+80%
+
+Team
+
+60%
+
+Customer
+
+75%
+
+Revenue
+
+85%
+
+R – Review (Learnings from Last Quarter)
+•
+•
+•
+
+High costs with large vendors impacted profit margins
+Warehouse waste issues created compliance risks
+Improvement areas include cost control, waste management,
+and resource efficiency
+
+S – Simulate & Schedule (Flow Diagram)
+Acquiring & Transitioning
+|---> Acquire company in one country
+|---> Expand to other four countries
+|---> Transition logistics to small vendors
+|---> Start small
+|---> Scale fully
+
+MC BEERS: Quarterly Planning | 41
+
+Operational Reduction
+|---> Reduce costs by 30%
+|---> Shutdown 2 offices in Singapore
+Warehouse Maintenance
+|---> Dispose waste & improve facility hygiene
+Pricing Strategy
+|---> Pilot 1.5% hike with select customers
+|---> Expand pricing across regions
+Execution Schedule (Jan to Mar)
+Month
+
+Milestone / Task
+
+Jan
+
+Identify target firms, assign cleaning teams, cost
+diagnostics
+
+Feb
+
+Budgeting, local authority coordination, vendor test
+transitions
+
+Mar
+
+Finalize deals, close offices, complete pricing rollout
+
+42 | Founder Frameworks
+
+Exercise
+Your Business Scenario
+
+Dreamer (Superhuman Thinker):
+
+Guardian (Military Officer Thinker):
+
+MC BEERS: Quarterly Planning | 43
+
+Doer (Athlete Thinker):
+
+Apply Framework
+M– Milestones
+
+C – Categorize
+
+B – Breakdown into Multiple Tasks
+
+44 | Founder Frameworks
+
+E – Estimate Efforts
+
+E – Evaluate
+
+R – Review
+
+S – Simulate & Schedule
+
+PC PEERS: Monthly Planning
+
+P – Planning
+C – Categorizing
+P – Prioritizing
+E – Estimating
+E – Evaluate
+R – Review
+S – Simulate & Schedule
+
+46 | Founder Frameworks
+
+PC PEERS: Monthly Planning
+P – Planning
+Identify one key goal for this year and one key goal for the current quarter.
+Then list all the tasks that need to be completed this month to contribute
+toward those goals.
+C – Categorizing
+Categorize the tasks based on your industry, such as Production, Marketing,
+Development, or Sales. Feel free to create your owner category based on
+your industry.
+P – Prioritizing
+Prioritize each task on a scale of High, Medium, and Low. Also, identify
+which tasks have the highest impact in moving your business forward.
+E – Estimating
+Estimate the time required for each task.This allows you to schedule them
+across available days and evaluate whether your resources are underutilized
+or overutilized.
+E – Evaluate
+Assess performance from different perspectives:
+•
+•
+•
+
+How your customers performed,
+How your team performed,
+How you performed as a founder.
+
+Assign a percentage or rating scale for each.
+R – Review
+Review the previous month to capture learnings and identify areas for
+improvement. Apply percentages to understand how much of the plan was
+completed and what adjustments are needed.
+
+PC PEERS: Monthly Planning | 47
+
+S – Simulate & Schedule
+Simulate the tasks identified using this framework to save time and
+resources. Then schedule each task by assigning it to the appropriate week
+of the month for focused execution.
+Why PC PEERS Works for Monthly Planning
+In both business and life, each month brings unique changes, events, and
+demands. Seasons shift, customer behavior evolves, and operational focus
+areas change—whether it’s planting in agriculture, peak sales in retail, or
+budgeting cycles in finance.
+Monthly planning allows you to stay agile and responsive without losing
+sight of your broader goals. For example, businesses process customer
+payments, pay salaries, and manage targets on a monthly basis. Each month
+becomes a checkpoint to reflect, realign, and take decisive action.
+That’s where PC PEERS helps. It enables you to:
+•
+•
+•
+•
+•
+
+Identify the most relevant yearly and quarterly goals that need
+attention this month
+Categorize and prioritize tasks based on urgency and impact
+Estimate time and resources accurately
+Evaluate and review past performance for continuous improvement
+Simulate and schedule the month with clarity
+
+By applying PC PEERS consistently, you can bridge long-term strategies
+with short-term actions—moving from vision to execution with precision.
+This monthly rhythm ensures that you are not just reacting to what’s
+happening, but proactively shaping your outcomes with clarity and
+confidence.
+
+48 | Founder Frameworks
+
+Framework Applied
+Business Scenario: Strategic Franchise Growth for a Shoe Brand
+A fast-growing shoe franchising company is planning to open 7 new
+franchise outlets in the same metro city this quarter. This initiative is part
+of their quarterly target to open 20 new franchises, with an ambitious
+year-end goal of 55 total franchises.
+Strategic Initiatives:
+•
+•
+
+Digital Marketing Push: Hire a specialized agency to run social
+media campaigns aimed at attracting potential franchise buyers.
+Franchise Exhibition Participation: Attend and present at
+industry exhibitions to directly connect with aspiring franchise
+owners and retail investors.
+
+Thinkers Perspectives
+Dreamer (Superhuman Thinker)
+“Let’s aim for 12 franchises per month and scale to 100 franchises this
+year.
+We’ll build an in-house digital marketing team for creative control and
+long-term efficiency.
+Beyond exhibitions, we’ll sponsor major business conferences to position
+our brand as a premium franchise investment.”
+Guardian (Military Officer Thinker)
+“Let’s first evaluate if we have:
+•
+•
+•
+
+Enough inventory and warehouse support to supply new outlets.
+Existing marketing resources that can be optimized before hiring
+externally.
+A clear ROI plan for the exhibition, including budgeting and
+measurable KPIs.”
+
+PC PEERS: Monthly Planning | 49
+
+Doer (Athlete Thinker)
+“Execution starts now:
+•
+•
+•
+
+Week 1: Finalize 2 franchises
+Week 2: Add 3 more
+Week 3: Close the final 2
+
+Leverage existing tools and networks to promote. Only hire externally
+if needed. Reconnect with venue owners and past exhibition leads for
+quick conversions.”
+PC PEERS: Monthly
+P - Planning
+Yearly Goal
+→ Strengthen relationships with existing franchise owners for organic
+referrals and brand loyalty.
+Quarterly Goal
+→ Upskill the team on various franchise promotion methods (online,
+events, PR, etc.)
+Monthly Tasks
+•
+•
+•
+
+Acquire 7 new franchises in the metro city
+Hire a digital marketing agency
+Participate in a targeted franchise exhibition
+
+50 | Founder Frameworks
+
+C - Categorizing
+Category
+
+Tasks
+
+Marketing
+
+- Nurture franchise owner relationships
+- Hire digital agency
+- Exhibition participation
+
+Expansion
+
+- Acquire 7 new franchises
+
+Skill Building
+
+- Train team on modern franchise promotion
+channels
+
+P - Prioritizing
+Priority
+
+Tasks
+
+High
+
+- Acquire 7 new franchises
+- Participate in franchise exhibition
+
+Medium
+
+- Hire digital marketing agency
+- Strengthen franchise relationships
+
+Low
+
+- Train internal team on new promotion strategies
+
+E - Estimating
+Tasks
+
+Time Estimate
+
+Acquire 7 franchises
+
+3 weeks
+
+Exhibition participation
+
+2 weeks (prep + attend)
+
+Hire digital marketing agency
+
+3 weeks
+
+Franchise owner engagement
+
+3 days per week
+
+Team skill building on promotion
+
+2 weeks
+
+E - Evaluate (Previous Month)
+Entity
+
+Performance
+
+Founder
+
+90%
+
+Team
+
+80%
+
+Customer Response
+
+85%
+
+PC PEERS: Monthly Planning | 51
+
+R - Review
+Learnings:
+•
+•
+
+Relationship-building with franchisees boosts referrals.
+More options for marketing are needed to diversify lead
+generation.
+
+Completion % (Last Month):
+•
+•
+•
+
+5 franchises added – 80%
+Exhibition planning – 70%
+Digital agency onboarding – 10%
+
+S - Simulate & Schedule
+Simulation Flow
+Acquire 7 New Franchises
+|---> Week 1: Close 2
+|---> Week 2: Close 3
+|---> Week 3: Close 2
+Participate in Exhibition
+|---> Plan logistics and budget
+|---> Coordinate with venue owners
+|---> Execute and follow-up leads
+Franchise Promotion & Engagement
+|---> Nurture existing franchisee relationships (weekly)
+|---> Hire digital marketing agency (Week 3–4)
+|---> Train internal team
+|---> Explore more tools & lead channels
+
+52 | Founder Frameworks
+
+Monthly Calendar View
+Week
+
+Key Actions
+
+Week 1
+
+- Acquire 2 franchises
+- Plan exhibition
+
+Week 2
+
+- Acquire 3 franchises
+- Continue exhibition prep
+
+Week 3
+
+- Acquire 2 franchises
+- Finalize marketing agency
+
+Week 4
+
+- Attend exhibition
+- Begin training team on franchise promotion tools
+
+Every Week - Franchise relationship nurturing (calls, visits, updates)
+
+PC PEERS: Monthly Planning | 53
+
+Exercise
+Your Business Scenario
+
+Dreamer (Superhuman Thinker):
+
+Guardian (Military Officer Thinker):
+
+Doer (Athlete Thinker):
+
+54 | Founder Frameworks
+
+Apply Framework
+P – Planning
+
+C – Categorizing
+
+P – Prioritizing
+
+PC PEERS: Monthly Planning | 55
+
+E – Estimating
+
+E – Evaluate
+
+R – Review
+
+S – Simulate & Schedule
+
+PS ERP: Weekly Planning
+
+P – Planning
+S – Scheduling
+E – Estimating
+R – Review
+P – Percentage / Progress
+
+58 | Founder Frameworks
+
+PS ERP: Weekly Planning
+P – Planning
+Choose one task that contributes to your annual objective. One more
+task that contributes to your quarterly objective. Finally, identify three
+additional tasks that will have a significant impact.
+S – Scheduling
+Determine which task you will complete on each specific day.
+E – Estimating
+Calculate the time required for each task. If needed, break down the task
+into smaller parts and assign time to each for better accuracy.
+R – Review
+Review the previous week’s work for lessons learned and improvements.
+This helps you adjust the current week’s plan if necessary.
+P – Percentage / Progress
+Assign a percentage of completion to each task to measure progress
+effectively.
+Why PS ERP Works for Weekly Planning
+Weekly planning is like progressing through a book—each chapter builds
+upon the previous one. Skip a chapter, and the entire storyline starts to lose
+coherence. Likewise, in business or personal growth, every week contributes
+to the bigger picture.
+With 52 weeks in a year and 4 weeks in a month, each week presents an
+opportunity to take focused, measurable action. The PS ERP framework
+brings structure to this weekly rhythm, ensuring that your planning isn’t
+just reactive but purposeful.
+When you plan each week with clarity—choosing the right tasks, estimating
+efforts, scheduling smartly, and reviewing progress—you create a flow of
+
+PS ERP: Weekly Planning | 59
+
+consistent momentum. This cadence prevents burnout, avoids distractions,
+and delivers results that stack up toward your quarterly and yearly vision.
+The PS ERP framework gives you the discipline and agility to stay aligned,
+adjust fast, and keep building—one powerful week at a time.
+
+60 | Founder Frameworks
+
+Framework Applied
+Business Scenario: Mobile Manufacturing – Festival Surge Planning
+A leading mobile manufacturing company is gearing up for a significant
+demand spike driven by an upcoming festival season. To capitalize on
+this opportunity, the company has planned a 70% increase in production
+this week to meet market needs and customer expectations.
+To support the surge, three key actions are in motion:
+•
+•
+•
+
+Engaging temporary logistics vendors to ensure smooth delivery
+of finished goods to warehouse hubs.
+Distributing corporate gifts to employees in recognition of the
+festive spirit and to boost morale.
+Making progress on their annual product roadmap, which
+includes launching two new mobile models—a high-end and a
+mid-range variant. The immediate focus is completing the highend version this quarter.
+
+Thinker Perspectives
+Dreamer (Superhuman Thinker):
+“Let’s go bold—double production daily to exceed expectations. Partner
+with multiple logistics vendors to ensure every delivery hub is covered.
+Celebrate employees right away with thoughtful gifts. Why not tease the
+high-end model launch this week to create buzz?”
+Guardian (Military Officer Thinker):
+“Let’s take a measured approach. Validate production capacity vs. actual
+sales demand. Evaluate if we truly need external logistics vendors or if
+internal resources can handle it. Ensure the gifting plan is logistically
+sound and not rushed. Quality and execution must remain intact.”
+
+PS ERP: Weekly Planning | 61
+
+Doer (Athlete Thinker):
+“Let’s execute fast. Complete the production ramp-up within 3 days.
+Activate known logistics partners for faster rollout. Finalize and deliver
+employee gifts this week without delay. Stay sharp, move fast, and
+maintain momentum.”
+PS ERP Weekly Execution Plan
+P – Planning
+•
+
+Annual Goal Task:
+Advance R&D for the high-end mobile model as part of the
+yearly product innovation objective.
+
+•
+
+Quarterly Goal Task:
+Complete proof-of-concept (POC) milestones for the high-end
+model to prepare for pre-launch readiness.
+
+•
+•
+
+Weekly Key Tasks:
+Identify and onboard logistics vendors for increased distribution
+needs
+Finalize and place orders with corporate gifting partners
+Ensure employee gifts are delivered before the festival
+
+•
+•
+
+S – Scheduling
+Weekly Breakdown (Monday to Saturday):
+Task
+
+Day(s) Scheduled
+
+R&D for High-end version
+
+Monday–Wednesday
+
+List POC steps
+
+Thursday–Friday
+
+Identify logistics vendors
+
+Monday
+
+Onboard logistics partners
+
+Wednesday
+
+Identify gift vendors
+
+Monday
+
+Place order for gifts
+
+Wednesday
+
+Deliver gifts to employees
+
+Friday
+
+62 | Founder Frameworks
+
+E – Estimating
+Task
+
+Estimated Time
+
+R&D for high-end version
+
+3 days
+
+List POC steps
+
+2 days
+
+Identify logistics vendors
+
+6 hours
+
+Onboard logistics partners
+
+1 day
+
+Identify gift vendors
+
+4 hours
+
+Place order for gifts
+
+4 hours
+
+Deliver gifts to employees
+
+1 full day
+
+R – Review (Lessons from Last Week)
+Last week’s key learning was the importance of early surge planning ahead
+of festival demand. Coordination across internal teams must improve to
+ensure agility and preparedness when demand spikes.
+P – Progress (Percentage Completion)
+Task
+
+Status
+
+R&D for High-end version
+
+80%
+
+POC Steps for High-end
+
+90%
+
+Logistics Vendor Identification
+
+Completed
+
+Logistics Onboarding
+
+Completed
+
+Gift Vendor Finalized
+
+Completed
+
+Gift Order Placed
+
+Completed
+
+Employee Gift Delivery
+
+Completed
+
+PS ERP: Weekly Planning | 63
+
+Exercise
+Your Business Scenario
+
+Dreamer (Superhuman Thinker):
+
+Guardian (Military Officer Thinker):
+
+Doer (Athlete Thinker):
+
+64 | Founder Frameworks
+
+Apply Framework
+P – Planning
+
+S – Scheduling
+
+E – Estimating
+
+R – Review
+
+PS ERP: Weekly Planning | 65
+
+P – Percentage / Progress
+
+DC ERPRS: Daily Planning
+
+D – Daily Task List
+C – Categorize
+E – Estimate
+R – Review
+P – Prioritize
+S – Schedule
+
+68 | Founder Frameworks
+
+DC ERPRS: Daily Planning
+D – Daily Task List
+List your daily tasks including:
+•
+•
+•
+
+One long-term task
+One short-term task
+Other remaining tasks
+
+Do this a day before, ideally at night, so that you are well prepared ahead
+of the day.
+C – Categorize
+Categorize your tasks based on their function such as Production,
+Marketing, or Sales.
+You can use one letter against each task item to save time—for example:
+•
+•
+•
+
+P = Production
+M = Marketing
+S = Sales
+
+E – Estimate
+Estimate the time required for each task.
+If needed, break down each task into smaller subtasks that provide clear
+steps for implementation.
+R – Review
+Review your progress based on:
+•
+•
+•
+
+Good results
+Learnings
+Areas of improvement
+
+Assign a percentage against each task to track its completion.
+
+DC ERPRS: Daily Planning | 69
+
+P – Prioritize
+Prioritize tasks as High, Medium, or Low to focus on what matters most.
+S – Schedule
+Now schedule your tasks with specific time slots.
+Example:
+•
+•
+
+11:00 AM to 11:30 AM → Task 1
+12:00 PM to 4:00 PM → Task 2
+
+This helps you manage even multiple tasks that require tangible results on
+the same day.
+Why DC ERPRS Works for Daily Planning
+When constructing a building, each building block is important. Every
+basic step matters—like sourcing sand, cement, laying the basement, and
+creating the structure. Then comes placing the bricks one by one, followed
+by doors, windows, and allocating space for the living room, bedroom,
+kitchen, bathroom, balcony, and car parking.
+All of these are done one step at a time to get the desired result.
+Similarly, each day in a year—those 365 days—acts as a building block for
+your business mission.
+DC ERPRS helps you do the basics right, one day at a time.
+
+70 | Founder Frameworks
+
+Framework Applied
+Business Scenario: Strategic Deployment for E-Commerce Growth
+An e-commerce product company is preparing for a major production
+deployment focused on retailer acquisition and tracking. This release is
+a key step toward achieving the company’s annual goal of expanding its
+retailer base and improving engagement.
+The quarterly objective is to onboard 150 new retail sellers. This week’s
+deployment is designed to enhance onboarding flows, improve tracking,
+and drive better adoption among retail store owners.
+Thinker Perspectives
+Dreamer (Superhuman Thinker)
+“Let’s complete the deployment on schedule and go live immediately.
+To maximize value, we could bundle this release with other upcoming
+features. This would position us as a fast-moving, customer-first product
+and boost momentum.”
+Guardian (Military Officer Thinker)
+“Before moving forward, ensure sign-off from development, QA, tech
+ops, business, and customer success. Confirm that all pre-deployment
+checks are cleared. A rollback and backup plan must be in place before
+proceeding.”
+Doer (Athlete Thinker)
+“Let’s lock in the final checks, align everyone in a go/no-go call, and
+deploy as scheduled. Post-deployment, conduct smoke tests and validate
+stability. If issues arise, act immediately with the backup plan. Execute
+without delay.”
+
+DC ERPRS: Daily Planning | 71
+
+DC ERPRS: Daily Planning Breakdown
+D – Daily Task List
+•
+•
+•
+•
+•
+•
+
+One Long-Term Task: Launch a marketing campaign to reach
+new retail store owners (annual goal)
+One Short-Term Task: Accelerate sales team outreach to retail
+prospects (quarterly goal)
+Other Tasks:
+Execute the production deployment
+Attend a meeting with existing retailers
+Onboard new distributors
+
+C – Categorize
+•
+•
+•
+•
+•
+•
+
+Production: Deployment of retailer acquisition and tracking
+feature
+Marketing: Campaign planning to reach retail owners
+Sales: Retailer outreach by the sales team
+Operations:
+Meeting with existing retailers
+Distributor onboarding
+
+E – Estimate
+Task
+
+Time Required
+
+Production deployment
+
+2 hours
+
+Marketing campaign planning
+
+1 hour
+
+Sales outreach
+
+1 hour
+
+Meeting with existing retailers
+
+2 hours
+
+Onboarding new distributors
+
+2 hours
+
+72 | Founder Frameworks
+
+R – Review (Previous Day Reflection)
+•
+•
+•
+
+What Went Well: Pre-deployment planning and cross-team
+sync were well coordinated
+Learnings: Meeting follow-ups must be scheduled in advance to
+prevent delays
+Areas for Improvement: Distributor onboarding could benefit
+from better preparation and resources
+
+P – Prioritize
+Task
+
+Priority
+
+Production deployment
+
+High
+
+Meeting with existing retailers
+
+High
+
+Onboarding new distributors
+
+High
+
+Sales outreach
+
+Medium
+
+Marketing campaign planning
+
+Low
+
+S – Schedule
+Time Slot
+
+Task
+
+6:00 AM – 8:00 AM
+
+Production deployment
+
+10:00 AM – 12:00 PM
+
+Meeting with existing retailers
+
+1:00 PM – 3:00 PM
+
+Onboard new distributors
+
+3:00 PM – 5:00 PM
+
+Sales team outreach
+
+5:00 PM – 6:00 PM
+
+Marketing campaign planning
+
+DC ERPRS: Daily Planning | 73
+
+Exercise
+Your Business Scenario
+
+Dreamer (Superhuman Thinker):
+
+Guardian (Military Officer Thinker):
+
+Doer (Athlete Thinker):
+
+74 | Founder Frameworks
+
+Apply Framework
+D – Daily Task List
+
+C – Categorize
+
+E – Estimate
+
+R – Review
+
+DC ERPRS: Daily Planning | 75
+
+P – Prioritize
+
+S – Schedule
+
+OKS REC SME: System
+
+O – Outcome
+K – Knowledge of Domain
+S – Subsystems Required
+R – Resources
+E – Efficient
+C – Cross-Functional
+S – Simulate
+M – Monitor & Measure
+E – Evaluate & Evolve
+
+78 | Founder Frameworks
+
+OKS REC SME: System
+O – Outcome
+Define the outcome of your business system. Specify in terms of benefits
+for your target customer.
+K – Knowledge of Domain
+To operate your business end-to-end, ensure you have domain knowledge.
+Acquire it from books, experts, or quickly gather insights to see the big
+picture.
+S – Subsystems Required
+List all the subsystems required, such as sales, lead management, inventory,
+procurement, and production, based on your industry.
+R – Resources
+List the people, processes, and tools required for the system. For example,
+each subsystem requires experts to run it, processes to execute it seamlessly,
+and tools like CRM, HRMS, or ERP—not only software but also hardware,
+based on your industry and requirements.
+E – Efficient
+Consider whether each subsystem is productive, scalable, and delegatable.
+Do a rating with a focus on scale.
+C – Cross-Functional
+Structure your subsystem so they operate together for maximum output.
+You can rate the interconnection and current structure with a percentage to
+determine how well they contribute to the overall outcome.
+S – Simulate
+Use flow diagrams and various business scenarios to simulate how your
+system will operate. This gives clarity, direction, and helps save time and
+resources.
+
+OKS REC SME: System | 79
+
+M – Monitor & Measure
+Monitor the performance of each subsystem. Rate it on a scale of 1 to 10.
+Measure progress through all defined metrics to understand the real picture
+of the current system.
+E – Evaluate & Evolve
+Evaluate your system and subsystems by applying percentage ratings. List
+what works and what needs change. Based on this, make improvements
+and adjustments.
+Why OKS REC SME Works for Systems
+Imagine a ship as a system. Its subsystems include the engine, propeller,
+rudder, captain’s deck, crew, bow, anchor, etc. All are combined into one
+structure. For the ship to function, every subsystem must operate properly.
+Similarly, your business system includes sales, leads, customer onboarding,
+production, procurement, inventory, finance, fundraising, marketing,
+research and development, vendor management, contracts, deals, and
+compliance.
+Each subsystem must be structured effectively and placed within an
+operating system to function efficiently. This framework helps you establish
+that structure and make continual improvements.
+
+80 | Founder Frameworks
+
+Framework Applied
+Business Scenario: Global System Scalability for a Formal Dress
+Brand
+A renowned formal dress brand currently operating in North America
+and Europe is planning to restructure its operational systems to support
+two key initiatives:
+Diversification into the casual wear segmen
+Geographic expansion into South Africa, China, Australia, and Dubai
+The goal is to ensure their systems can scale efficiently across product
+categories and new international markets—without disrupting the
+brand’s core formalwear operations.
+Thinker Perspectives
+Dreamer (Superhuman Thinker)
+“Our current systems are adaptable. With the right upgrades, we can
+support not only casual wear but also future categories like sportswear.
+Why limit ourselves to four countries? Let’s think big—expand into
+South Asia, Sri Lanka, Bangladesh. Build a system ready for multiproduct, multi-region scale.”
+Guardian (Military Officer Thinker)
+“Let’s move with strategy and caution.
+We must:
+•
+•
+•
+
+Evaluate if the current system can support new product lines and
+regions
+Assess risk to the core business
+Start with countries where we already have logistics or partial
+presence. Ensure we have sufficient tech, talent, and tools before
+scaling further.”
+
+OKS REC SME: System | 81
+
+Doer (Athlete Thinker)
+“Let’s take action.
+•
+•
+•
+
+Start with a system audit
+Consult domain experts on casual wear
+Pilot the expansion in one region—preferably the most ready
+Once it succeeds, scale to others in sequence. Keep momentum
+high with a fast, focused rollout.”
+
+OKS REC SME: System Framework
+O – Outcome
+Deliver a diverse range of casual wear suitable for social gatherings,
+family occasions, and festivals.
+In every new market (South Africa, China, Australia, Dubai), the brand
+must establish itself as reliable, relatable, and relevant.
+K – Knowledge of Domain
+•
+•
+•
+
+Leverage existing knowledge in social and family-oriented
+apparel
+Acquire insights into cultural traditions, seasonal trends, and
+festival attire in each new market
+Collaborate with local experts to avoid missteps and ensure
+relevance
+
+S – Subsystems Required
+Existing Systems: HR, Finance, Production, Distribution, Marketing,
+Sales
+
+82 | Founder Frameworks
+
+Require Major Changes:
+•
+•
+•
+
+Procurement: Sourcing materials relevant to new geographies
+Vendor Management: Locating culturally aware suppliers
+Online Presence: Localized e-commerce and digital marketing
+
+New Systems:
+•
+•
+
+Cultural & festival-specific planning
+Regional expansion processes and localization strategies
+
+R – Resources
+People
+•
+•
+•
+
+Procurement consultants
+IT/digital experts for localized online platforms
+Cultural experts for each target country
+
+Processes
+•
+•
+
+Procurement & vendor onboarding workflows
+Localization for marketing and sales
+
+Tools
+•
+•
+•
+
+CRM tailored for each region
+Forecasting tools for festival-based demand
+Vendor tracking platforms
+
+E – Efficient (Rating out of 10)
+•
+•
+•
+
+Productive: 8
+Scalable: 7
+Delegatable: 9
+
+OKS REC SME: System | 83
+
+C – Cross-Functional Integration
+Subsystem
+
+Current
+Rating
+
+Comments
+
+HR → Production
+
+8
+
+Stable, supports internal
+scaling
+
+Production → Distribution &
+Sales
+
+9
+
+Strong alignment
+
+Marketing → Sales
+
+7
+
+Needs localization
+
+Procurement → Production
+
+6
+
+Requires region-specific
+adaptation
+
+Vendor → Procurement/
+Production
+
+5
+
+Cultural sourcing needs
+
+Online Presence →
+Marketing/Sales
+
+4
+
+Needs geo-targeted
+enhancements
+
+Cultural/Festival
+Understanding → All
+
+3
+
+Critical for new markets
+
+Expansion System → HR,
+Marketing, Sales
+
+3
+
+Needs framework
+building
+
+S – Simulate
+Scenario 1:
+Festival Season Surge
+|--->HR preps staff availability
+|---> Vendor engagement based on local demand forecasts
+|---> Sales & marketing tailor campaigns to traditions
+|---> Production scales up accordingly
+
+84 | Founder Frameworks
+
+Scenario 2:
+Cultural & Language Barriers
+|---> Miscommunication risks with customers
+|---> Misaligned campaigns
+|---> Requires employee training & local advisors
+M – Monitor & Measure
+Evaluate interconnectedness & performance:
+Subsystem Group
+
+% Integration/Readiness
+
+Core Structure (HR, Production, Sales)
+
+70%
+
+Subsystems Requiring Changes
+
+50%
+
+New Systems for Expansion
+
+30%
+
+E – Evaluate & Evolve
+Strengths:
+•
+•
+
+Strong production capabilities
+Mature HR systems
+
+Improvement Areas:
+•
+•
+•
+
+Need stronger procurement localization
+Enhance digital presence per region
+Invest in tools and processes for festival and cultural alignment
+
+Action Plan:
+•
+•
+•
+
+Upgrade tools for cultural forecasting
+Hire regional advisors
+Pilot one country at a time, measure impact, and replicate
+
+OKS REC SME: System | 85
+
+Exercise
+Your Business Scenario
+
+Dreamer (Superhuman Thinker):
+
+Guardian (Military Officer Thinker):
+
+Doer (Athlete Thinker):
+
+86 | Founder Frameworks
+
+Apply Framework
+O – Outcome
+
+K – Knowledge of Domain
+
+S – Subsystems Required
+
+R – Resources
+
+OKS REC SME: System | 87
+
+E – Efficient
+
+C – Cross-Functional
+
+S – Simulate
+
+M – Monitor & Measure
+
+88 | Founder Frameworks
+
+E – Evaluate & Evolve
+
+PFA SAAS SME: Process
+
+P – Process List
+F – Flow Diagram
+A – All Tasks
+S – Sequencing
+A – Approval Required
+A – Accountable
+S – Swimlane
+S – Simulate
+M – Monitor & Measure
+E – Evaluate & Evolve
+
+90 | Founder Frameworks
+
+PFA SAAS SME: Process
+P – Process List
+List all the processes required for your business: customer onboarding,
+sales process, production process, budget approval process, research and
+development process—based on your industry.
+F – Flow Diagram
+Draw a flow diagram for each process with all the steps involved. This gives
+you a clear direction of flow.
+A – All Tasks
+List all the tasks for each process. Break down each task in place, which
+helps identify the steps for a process.
+S – Sequencing
+Put numbers in ascending order to define the sequence in which tasks must
+flow. Identify which tasks can happen in parallel and which are dependent.
+A – Approval Required
+Find out in the process where approval is required—from you or your
+leaders. This helps in making decisions and moving forward.
+A – Accountable
+List the people accountable for each process and the steps they handle. This
+helps track progress with regular follow-ups.
+S – Swimlane
+Draw a swimlane diagram to map multiple roles or departments involved
+in a process.
+S – Simulate
+Simulate with the flow diagram. Run through real use cases. This gives you
+a clear picture of the process. If needed, pilot test the process.
+
+PFA SAAS SME: Process | 91
+
+M – Monitor & Measure
+Monitor the process and rate it on a scale of 1 to 10. Track the metrics for
+the process. These metrics give the actual real path and performance.
+E – Evaluate & Evolve
+Evaluate your process by applying percentage ratings. List what works
+and what needs to be changed. Based on this, make adjustments in your
+process. Also, get feedback and suggestions from your team—especially
+your leaders or managers. Surveys can also help.
+Why PFA SAAS SME Works for Processes
+Imagine your airline needs to take passengers from London to New York.
+First, customer and luggage check-in happens. Then customer onboarding
+into the airplane. Once it arrives, luggage has to be onboarded.
+The pilot and crew must be in the cockpit. Internally, steps have to be
+explained. The pilot must start the engine and get clearance from the
+runway for takeoff.
+Then, the journey begins. The customer reaches the destination and
+collects the luggage.
+There is a clear sequence of steps. First, the customer must be onboarded.
+Luggage can be done in parallel, but the runway must be cleared first—
+which is dependent for takeoff.
+Similarly, in business, you need approval at different stages.
+Just like a flight, multiple departments can work in parallel, but all tasks
+must be done right.
+That’s why following the PFA SAAS SME process ensures anyone can
+execute it smoothly—helping you streamline your business processes.
+
+92 | Founder Frameworks
+
+Framework Applied
+Business Scenario: Structuring End-to-End Processes for Car
+Manufacturing
+A car manufacturing company is building a robust operational framework
+covering everything from raw material sourcing to customer delivery.
+Their goal is to ensure that all processes are:
+•
+•
+•
+
+Seamless in execution
+Standardized across units
+Efficient across departments
+
+The company wants this foundation to support future scale-up across
+new models and markets.
+Thinker Perspectives
+Dreamer (Superhuman Thinker)
+“Let’s envision the company not just as a manufacturer, but as an
+ecosystem.
+Why stop at production? Let’s unify sales, logistics, procurement, and
+warehousing into structured processes.
+We should design workflows now that can scale effortlessly later.”
+Guardian (Military Officer Thinker)
+“Let’s break this down stage by stage.
+Plan each core area—from sourcing to delivery—with precision.
+Ensure continuity for current operations while aligning with future
+goals.
+Every department must be synchronized before we scale.”
+
+PFA SAAS SME: Process | 93
+
+Doer (Athlete Thinker)
+“Start with what matters most—raw material and warehouse
+coordination.
+Define steps clearly and implement them for one model line.
+Document what works, validate with a consultant, and go live.
+We can refine in motion, but let’s not delay execution.”
+PFA SAAS SME: Applied to Car Manufacturing
+P – Process List
+•
+•
+•
+•
+•
+
+Raw material procurement
+Transportation
+Warehouse management
+Production
+Customer delivery
+
+F – Flow Diagram
+Raw Material
+|---> Vendor
+|---> Transportation
+|---> Warehouse
+Production
+|---> Preparation
+|---> Component moulding
+|---> Assembly Line
+|---> Testing and compliance
+Customer Delivery
+|---> Move to the warehouse
+|---> To the distributors
+
+94 | Founder Frameworks
+
+A – All Tasks
+Raw Material
+•
+•
+•
+
+Vendor stock check
+Assess location, lead time
+Secure approvals for sourcing
+
+Transportation
+•
+•
+
+Decide transportation mode
+Plan connecting logistics to warehouse
+
+Warehouse
+•
+•
+•
+
+Record inventory
+Conduct QC checks
+Notify production with batch info
+
+Production
+•
+•
+•
+•
+
+Send for pre-processing
+Mould components
+Assembly line
+Testing & compliance
+
+Customer Delivery
+•
+•
+
+Move to dispatch warehouse
+Deliver to distribution channels
+
+PFA SAAS SME: Process | 95
+
+S – Sequencing
+Task
+
+Label
+
+Step
+
+Stock check with vendors
+
+P
+
+1
+
+Assess vendor location/time
+
+P
+
+2
+
+Choose transport mode
+
+D
+
+3
+
+Connect transport to warehouse
+
+D
+
+4
+
+Cross-check inventory
+
+D
+
+5
+
+Record inventory
+
+P
+
+6
+
+Update production unit
+
+D
+
+7
+
+Send to production unit
+
+D
+
+8
+
+Send for preprocessing
+
+D
+
+9
+
+Complete component moulding
+
+D
+
+10
+
+Notify assembly department
+
+D
+
+11
+
+Perform assembly
+
+P
+
+12
+
+Conduct testing/compliance
+
+P
+
+13
+
+Move to warehouse for dispatch
+
+D
+
+14
+
+Deliver to distributors
+
+D
+
+15
+
+A – Approval Required
+•
+•
+•
+•
+•
+•
+
+Raw Material Quantity → Procurement Head
+Payment Release → Finance Head
+Production Volume → Production Head
+Compliance Sign-off → QA Head
+Warehouse Dispatch → Warehouse Head
+Final Distribution → Distribution Head
+
+96 | Founder Frameworks
+
+A – Accountable
+Department
+
+Role
+
+Procurement
+
+Vendor Coordinator, Procurement Head
+
+Transportation
+
+Logistics Coordinator
+
+Finance
+
+Finance Head
+
+Warehouse
+
+Inventory Lead, Warehouse Head
+
+Production
+
+Assembly Lead, Production Head, Testing Head
+
+Delivery
+
+Distribution Lead, Regional Coordinator
+
+S – Swimlane
+_________________________________________________
+Procurement Department Inventory Department
+Vendor Coordinator		
+Inventory Coordinator
+Transportation Coordinator Procurement Head
+_________________________________________________
+Finance Department		
+Warehouse Department
+Finance Head			Coordinator
+Associate Head			
+Warehouse Head
+_________________________________________________
+Production Department
+Production Head
+Assembly Head
+Testing Head
+_________________________________________________
+Delivery Department
+Coordinator
+Distribution Head
+_________________________________________________
+
+PFA SAAS SME: Process | 97
+
+S – Simulate
+Scenario: Deliver 100 Cars to Headquarters
+Procurement
+|---> Get approval for raw materials
+|---> Notify vendors & confirm shipment
+|---> Plan transportation
+Warehouse
+|---> Receive inventory
+|---> Quality check & notify production
+Production
+|---> Preprocessing, Moulding, Assembly
+|---> Testing & compliance approval
+Delivery
+|---> Store in dispatch warehouse
+|---> Approve and send to HQ
+M – Monitor & Measure
+Current Process Score: 9/10
+Department
+
+Score (out of 10)
+
+Procurement
+
+8.5
+
+Warehouse
+
+8.5
+
+Production
+
+9.0
+
+Delivery
+
+9.0
+
+Key Metrics:
+•
+•
+•
+•
+
+Vendor lead time
+Inventory turnaround time
+Production cycle time
+On-time delivery %
+
+98 | Founder Frameworks
+
+E – Evaluate & Evolve
+Overall Process Readiness: 90%
+•
+
+Strengths:
+→ Production & delivery units are well-established
+→ Strong team accountability
+
+•
+
+Needs Improvement:
+→ Better coordination between procurement and warehouse
+→ Use tech tools for visibility & tracking
+→ Get ongoing feedback from department leads via surveys
+
+PFA SAAS SME: Process | 99
+
+Exercise
+Your Business Scenario
+
+Dreamer (Superhuman Thinker):
+
+Guardian (Military Officer Thinker):
+
+Doer (Athlete Thinker):
+
+100 | Founder Frameworks
+
+Apply Framework
+P – Process List
+
+F – Flow Diagram
+
+A – All Tasks
+
+S – Sequencing
+
+PFA SAAS SME: Process | 101
+
+A – Approval Required
+
+A – Accountable
+
+S – Swimlane
+
+S – Simulate
+
+102 | Founder Frameworks
+
+M – Monitor & Measure
+
+E – Evaluate & Evolve
+
+RSS FEED SME: SOP
+
+R – Routine Repeated Task
+S – Step-by-Step Document
+S – Screenshots / Videos / Examples
+F – Format (Template)
+E – Educate
+E – Embedded
+D – Delegatable
+S – Simulate
+M – Monitor & Measure
+E – Evaluate & Evolve
+
+104 | Founder Frameworks
+
+RSS FEED SME: SOP
+R – Routine Repeated Task
+List all the routine, repeated tasks in your business.
+S – Step-by-Step Document
+List each step involved for that task in a detailed breakdown.
+S – Screenshots / Videos / Examples
+Add screenshots for easy understanding. Include videos if required and
+examples that help users understand easily.
+F – Format (Template)
+Apply a format or template to the steps that is easy to understand. Give
+headings so that by just glancing, users can grasp the steps.
+E – Educate
+Educate your employees and train them with the instruction by running
+through the SOP, then implement it.
+E – Embedded
+Embed the SOP into your organization for reference and guidance.
+D – Delegatable
+Cross-check your SOP to ensure that any new employee or person can
+follow it easily and take responsibility.
+S – Simulate
+Simulate the SOP with flow diagrams and use cases to help validate the
+practical output of the SOP.
+
+RSS FEED SME: SOP | 105
+
+M – Monitor & Measure
+Monitor your SOP and apply a rating scale to evaluate how well it works.
+Take the metrics—how it saves time and applies in real-time. Get metrics
+based on your industry readiness.
+E – Evaluate & Evolve
+Evaluate your SOP with a percentage or rating scale. List what worked and
+what didn’t. Use feedback from surveys with employees and customers.
+Based on suggestions, make the necessary updates to improve the SOP.
+Why RSS FEED SME Works for SOP
+For example, to admit a patient in a hospital:
+From the reception—welcoming and assessing the seriousness of the
+patient’s condition—to taking care of the admission form, getting the
+history of the patient, taking care of immediate first aid, then allocating
+a room, making them sign the consent form, issuing a hospital gown and
+hygiene kit, and notifying the nurse station and the doctor for patient
+intake...
+These steps must be documented so that any new employee can follow the
+SOP and proceed correctly. If the SOP isn’t followed properly, the patient
+could be in trouble and dissatisfied.
+So, RSS FEED SME helps structure each step involved in your SOP so
+that the business can handle operations effectively and with high efficiency.
+
+106 | Founder Frameworks
+
+Framework Applied
+Business Scenario: SOP Streamlining for International Patient
+Experience
+A multi-location hospital chain is aiming to review its current
+Standard Operating Procedures (SOPs) and create a dedicated SOP for
+international patients—specifically focusing on:
+•
+•
+•
+•
+
+Follow-up scheduling after treatment
+Coordinated doctor appointments
+On-site accommodation arrangements
+Smooth onboarding and transition experience
+
+The goal is to enhance trust, comfort, and operational efficiency for
+international medical travelers and improve the post-treatment journey.
+Thinker Perspectives
+Dreamer (Superhuman Thinker)
+“Let’s reimagine the SOP across all multi-location operations.
+We’ll design a comprehensive flow for international patients—from
+arrival to accommodation, to doctor consultations, and follow-up care.
+Additionally, let’s standardize the SOP for all follow-up services to make
+them smoother and more welcoming.”
+Guardian (Military Officer Thinker)
+“First, conduct a thorough review of the current SOPs to identify
+inconsistencies.
+Pinpoint what steps are missing in the international follow-up process,
+and assess why they were overlooked earlier.
+Ensure new SOPs are future-proof and account for past gaps in
+execution.”
+
+RSS FEED SME: SOP | 107
+
+Doer (Athlete Thinker)
+“Gather all existing SOP documents and analyze immediately.
+Start designing a dedicated SOP for international follow-up—covering
+scheduling, doctor assignments, and accommodation.
+Pilot the new SOP in one location to validate it, then scale across all
+branches once it proves successful.”
+RSS FEED SME Applied
+R – Routine Repeated Tasks
+Core SOP Areas for International Patients:
+•
+•
+•
+•
+•
+•
+
+Post-treatment follow-up coordination
+Doctor appointment scheduling
+International patient onboarding
+Accommodation arrangements
+In-hospital service coordination
+Return travel support
+
+S – Step-by-Step Documentation
+1. Post-Treatment Follow-Up
+•
+•
+•
+•
+
+Send reminders via email, SMS, and calls based on scheduled
+follow-up
+Confirm patient’s preferred timing and language
+Track progress on the hospital portal
+Assign a dedicated care coordinator
+
+2. Doctor Appointment Scheduling
+•
+•
+•
+
+Check doctor availability
+Block slots and confirm with the patient
+Notify patient upon successful scheduling
+
+108 | Founder Frameworks
+
+3. International Patient Onboarding
+•
+•
+•
+
+Coordinate travel logistics with approved vendors
+Share travel itinerary with internal team
+Confirm patient arrival and readiness for next steps
+
+4. Accommodation Arrangements
+•
+•
+•
+
+Verify in-hospital or partner facility availability
+Confirm bookings and food preferences
+Share check-in details with patient and coordinator
+
+5. Service Delivery Coordination
+•
+•
+•
+
+Assign coordinator to assist from check-in to consultation
+Ensure transport between doctor, lab, and accommodation
+Monitor daily checklist and completion
+
+6. Return Travel Support
+•
+•
+•
+
+Confirm readiness to return
+Schedule pickup/drop to airport
+Follow up post-arrival for feedback and final documentation
+
+S – Screenshots / Videos / Examples
+Screenshots
+•
+•
+•
+•
+•
+
+International patient profile in the portal
+Appointment calendar and booking screen
+Coordinator dashboard for daily follow-ups
+Travel logistics module
+Accommodation request and confirmation screen
+
+Videos
+•
+•
+
+Video 1: Overview of international patient journey
+Video 2: Walkthrough of the SOP in action
+
+RSS FEED SME: SOP | 109
+
+Examples
+•
+•
+•
+
+Sample patient support case
+Feedback survey template
+FAQ document for patients and coordinators
+
+F – Format (Template)
+Follow-Up Schedule:
+•
+•
+•
+
+Session 1: [Date & Time]
+Session 2: [Date & Time]
+Session 3: [Date & Time]
+
+Travel Plans:
+•
+•
+•
+•
+
+Arrival Date:
+Appointments:
+Extension (if needed):
+Return Date:
+
+Treatment Plan:
+•
+•
+•
+
+Consultation Steps
+Medical Procedure Schedule
+Medication & Duration
+
+Accommodation:
+•
+•
+•
+•
+
+Hotel/Hospital Stay Name
+Check-in:
+Checkout:
+Food Preference:
+
+E – Educate
+•
+•
+•
+
+Training sessions conducted for frontline staff, coordinators, and
+department heads
+Simulation run-through with team leads
+Access to SOP manuals and quick reference sheets
+
+110 | Founder Frameworks
+
+E – Embedded
+•
+•
+
+SOP integrated into internal systems, onboarding kits, and
+hospital CRM
+Embedded links on coordinator dashboards and hospital ERP
+for easy access
+
+D – Delegatable
+•
+•
+•
+
+New joiners trained and tested to execute SOP steps
+Feedback loop introduced to continuously refine for clarity
+SOP now usable by any staff with minimal handholding
+
+S – Simulate
+Scenario 1:
+Delayed Arrival of International Patient
+|---> Reschedule follow-up appointments
+|---> Notify doctor and reschedule slot
+|---> Update travel vendor and change itinerary
+|---> Adjust accommodation booking
+Scenario 2:
+Extended Stay After Unexpected Treatment Need
+|---> Schedule additional consultation and procedures
+|---> Extend accommodation and notify finance
+|---> Adjust return logistics and inform patient coordinator
+M – Monitor & Measure (Ratings out of 10)
+SOP Component
+
+Rating
+
+Follow-Up Scheduling
+
+8
+
+Travel Planning
+
+8
+
+Treatment Execution
+
+9
+
+Accommodation Support
+
+9
+
+RSS FEED SME: SOP | 111
+
+E – Evaluate & Evolve
+Overall SOP Effectiveness: 85%
+What’s Working Well:
+•
+•
+
+Accommodation services and treatment plans are smooth
+Staff coordination has improved patient satisfaction
+
+Areas for Improvement:
+•
+•
+
+Fine-tuning follow-up reminders and travel logistics
+Improving real-time updates for patients
+
+Action Taken:
+•
+•
+•
+
+Updated SOP steps based on staff feedback
+Added flexibility and escalation steps for delays or changes
+Plan to review again after next international patient cycle
+
+112 | Founder Frameworks
+
+Exercise
+Your Business Scenario
+
+Dreamer (Superhuman Thinker):
+
+Guardian (Military Officer Thinker):
+
+Doer (Athlete Thinker):
+
+Apply Framework
+
+RSS FEED SME: SOP | 113
+
+R – Routine Repeated Task
+
+S – Step-by-Step Document
+
+S – Screenshots / Videos / Examples
+
+F – Format (Template)
+
+114 | Founder Frameworks
+
+E – Educate
+
+E – Embedded
+
+D – Delegatable
+
+S – Simulate
+
+RSS FEED SME: SOP | 115
+
+M – Monitor & Measure
+
+E – Evaluate & Evolve
+
+RPM REAP ER: Execution
+
+R – Result-oriented Action List
+P – Pick Strategy
+M – Milestones
+R – Resources
+E – Execute Strategy
+A – Analyse
+P – Plan Practices
+E – Execute
+R – Review & Re-execute
+
+118 | Founder Frameworks
+
+RPM REAP ER: Execution
+R – Result-oriented Action List
+List all the result-oriented actions for the target you want to achieve in your
+business.
+P – Pick Strategy
+Select the strategy that suits your goal and industry best. This is your testing
+ground before full-scale execution. Examples include:
+•
+•
+•
+•
+
+PoC (Proof of Concept) – Test key functionality or interest
+Wireframe – Visual prototype for internal review
+Simulate via flow diagrams – Explore dependencies and blockers
+1-3-5 Strategy –
+1 lead
+1 customer onboarded
+1 support call resolved
+Then scale: 3, 5, 10+
+
+•
+
+Process Pilot – Run your solution for a small segment before
+expanding
+
+Come up with your own strategy that fits your business, based on your
+industry. The aim is to quickly test the depth of the waters.
+M – Milestones
+Plan your milestones that need to be achieved to reach your end goal.
+R – Resources
+Plan for the resources and expertise required for your execution—
+like people, contacts, vendors, partners, tools, funds, sequencing, and
+dependencies.
+
+RPM REAP ER: Execution | 119
+
+E – Execute Strategy
+Choose and execute your strategy to test the depth of the water. This helps
+with the preparation required before full-scale execution.
+A – Analyse
+Now analyze the chosen strategy and its execution. What new knowledge
+did you gain? Do you want to continue with the same strategy or switch to
+another option before going for full execution?
+P – Plan Practices
+Plan your full-scale execution with a complete goal in mind.
+•
+•
+•
+•
+•
+
+List all the steps.
+Group them by sequence.
+Identify tasks to be done in parallel vs. dependent tasks.
+Finalize your approach and visualize the entire execution journey.
+Create your checklist and initiation plan from start to finish.
+
+E – Execute
+Now you’re ready for the real run.
+•
+•
+•
+•
+•
+•
+•
+
+Execute your plan.
+Mark your checklist.
+Stay focused and keep it simple.
+Coordinate with people, tools, and resources.
+Track progress.
+Adjust as needed based on ground realities.
+Make quick decisions, have patience, delegate where required, and
+focus only on success.
+
+R – Review & Re-execute
+Review your complete execution.
+•
+•
+
+Use metrics like percentage achieved of the end goal.
+Measure efficiency of team, sequence, parallelism, and dependencies.
+
+120 | Founder Frameworks
+
+•
+•
+•
+
+List milestones achieved and improvements to be made.
+Evaluate gaps in execution performance.
+Note any changes needed and adjust accordingly.
+
+Then re-execute based on your updated industry-specific insights.
+Why RPM REAP ER Works for Execution
+Imagine you’re going to drive in a car race.
+Before the race, you practice in test tracks, train your crew, and review
+the car’s performance and timing. You evaluate the accuracy of every turn.
+There could be sudden challenges—like rain or accidents. The final goal is
+to win the trophy.
+But to win, you also need to know your opponents’ strengths and
+weaknesses. Once the race starts, it’s time to execute. You can’t plan during
+the race—you must execute the plan you prepared.
+All planning, preparation, and practice must be done before the race begins.
+Only then will your execution during the race be successful.
+The RPM REAP ER framework helps with pre-execution planning and
+practice—so when it’s time to run, you’ll win the trophy in your business
+execution.
+
+RPM REAP ER: Execution | 121
+
+Framework Applied
+Business Scenario: Expanding into Mobile Development
+A multinational software services company specializing in web
+development plans to expand into mobile application development.
+This strategic move aims to strengthen client relationships, streamline
+cross-platform offerings, and position the company as a comprehensive
+digital transformation partner.
+Thinker Perspectives
+Dreamer (Superhuman Thinker)
+“We already have strong capabilities in web development. By leveraging
+this, we can offer mobile apps, automation testing, and cybersecurity—
+positioning ourselves as a full-spectrum digital partner.”
+Guardian (Military Officer Thinker)
+“Let’s first validate client needs and confirm we have the technical
+bandwidth and budget. We must ensure our delivery remains secure and
+scalable before making a full commitment.”
+Doer (Athlete Thinker)
+“Hire a small core team—one developer, one team lead, one delivery
+manager. Start with a pilot for a few existing clients and one new client.
+Build fast, adapt quickly, and execute with precision.”
+RPM REAP ER Framework: Execution Plan
+R – Result-Oriented Action List
+•
+•
+•
+•
+•
+
+Identify existing clients needing mobile apps
+Review in-house team for mobile development skills
+Hire required roles: mobile developer, team lead, project manager
+Create a pilot plan for current customers
+Define deliverables, timelines, and quality standards
+
+122 | Founder Frameworks
+
+P – Pick Strategy
+The company selects the 1-3-5 Strategy:
+•
+•
+•
+
+Start with 1 client, 1 feature, 1 developer
+After validation, scale to 3 clients
+Once stable, extend to 5 clients
+
+To accelerate the first implementation, the company partners with a
+mobile development firm.
+M – Milestones
+•
+•
+•
+•
+•
+
+Complete pilot project for one client
+Deliver full mobile app for that client
+Roll out to three existing clients
+Expand to five clients
+Begin onboarding of new clients for mobile services
+
+R – Resources
+•
+•
+•
+•
+•
+•
+
+Internal development team with cross-platform experience
+Newly hired mobile developers (Android/iOS)
+Project and delivery managers
+Cybersecurity and QA specialists
+Partner firm for initial project delivery
+Dev tools: Android Studio, Xcode, Firebase, CI/CD platforms
+
+E – Execute Strategy
+•
+•
+•
+•
+•
+
+Initiate PoC with one customer using the partner firm
+Deliver one core feature
+Analyze technical and operational performance
+Use results to optimize for future rollouts
+Transition execution to internal team after knowledge transfer
+
+RPM REAP ER: Execution | 123
+
+A – Analyse
+•
+•
+•
+•
+
+Feedback from PoC reveals specific UI/UX expectations for
+different industries
+Identified need for backend-mobile alignment enhancements
+Gaps in specific domain experience prompted further recruitment
+Decided to run a domain-specific PoC alongside existing efforts
+before scaling further
+
+P – Plan Practices
+Execution Sequencing and Parallelism:
+Step
+
+Task Description
+
+Type
+
+Sequence
+
+1
+
+Run PoC with 1 client
+
+Dependent
+
+1
+
+2
+
+Full implementation
+for 1 client
+
+Dependent
+
+2
+
+3
+
+Implement for 3 clients
+
+Parallel
+
+3
+
+4
+
+Implement for 5 clients
+
+Parallel + Dependent
+
+4
+
+5
+
+Assess remaining
+existing clients
+
+Dependent
+
+5
+
+6
+
+Onboard new clients
+
+Parallel + Dependent
+
+6
+
+The company has now visualized and validated the complete mobile
+expansion roadmap.
+E – Execute
+Execution status:
+• PoC for 1 client – Completed
+• Full implementation for 1 client – Completed
+• Rollout for 3 clients – 95% complete
+• Expansion to 5 clients – 80% complete
+• Evaluation of other existing clients – 75% complete
+• Onboarding new clients – In progress
+Weekly tracking ensures on-time delivery and issue resolution.
+
+124 | Founder Frameworks
+
+R – Review & Re-execute
+Execution Review:
+Phase
+
+Completion
+
+Notes
+
+PoC for 1 client
+
+100%
+
+Delivered successfully via
+partner
+
+Full delivery for 1
+client
+
+100%
+
+Completed by internal team
+
+Rollout to 3 clients
+
+95%
+
+Final testing underway
+
+Expansion to 5 clients
+
+80%
+
+Resource constraints being
+addressed
+
+Existing client audit
+
+75%
+
+Integration feedback in
+progress
+
+New client
+onboarding
+
+50%
+
+Scaling resources and
+defining SLAs
+
+Insights:
+•
+•
+•
+•
+
+Delivery quality is high
+Client satisfaction is strong
+Resource limitations delayed full rollout
+Recruitment and onboarding are prioritized in the next cycle
+
+RPM REAP ER: Execution | 125
+
+Exercise
+Your Business Scenario
+
+Dreamer (Superhuman Thinker):
+
+Guardian (Military Officer Thinker):
+
+Doer (Athlete Thinker):
+
+126 | Founder Frameworks
+
+Apply Framework
+R – Result-oriented Action List
+
+P – Pick Strategy
+
+M – Milestones
+
+R – Resources
+
+RPM REAP ER: Execution | 127
+
+E – Execute Strategy
+
+A – Analyse
+
+P – Plan Practices
+
+E – Execute
+
+128 | Founder Frameworks
+
+R – Review & Re-execute
+
+RUN DCMS ER: Revenue
+
+R – Revenue Generating Activities
+U – Unit Economics
+N – Networking
+D – Distribution Channel
+C – Customer Catalyst
+M – Metrics & Measure
+S – Strategize & Simulate
+E – Execute
+R – Review & Re-execute
+
+130 | Founder Frameworks
+
+RUN DCMS ER: Revenue
+Revenue Generating Activities
+First, list all the revenue-generating activities for your business—such as
+product readiness, services, sales, upselling, cross-selling, customer visits,
+or referrals—based on your industry.
+Unit Economics
+Understand your business’s unit economics, which gives direction for
+revenue generation. It details various factors contributing to the unit
+economics of your business.
+Networking
+Networking for your business with strong connections is highly important
+to take your business to the next stage. Nurture your network and
+relationships in a real way.
+What you sow as a seed, you will reap as a fruit.
+Distribution Channel
+Identify all your distribution channels based on your business—like email
+campaigns, phone calls, social media, networking events, customer visits,
+direct in-store contact, workshops, webinars, referrals, and partnerships.
+Customer Catalyst
+Identify your customer catalysts—pain points or value propositions that
+lead to long-term growth. Focus on what gives your customers high
+efficiency, time savings, or cost reduction.
+Metrics & Measure
+Collect all your key metrics, such as:
+•
+•
+•
+
+Unit economics
+Balance sheet
+Break-even point
+
+RUN DCMS ER: Revenue | 131
+
+•
+•
+•
+
+Sales projections
+Customer growth
+Churn rate
+
+Track and measure what drives your business. Create your budgeting
+strategy based on these insights.
+Strategize & Simulate
+Put a strategic plan in place to achieve your revenue goals.
+List all the actions, then sequence and group them with dependencies.
+Simulate the execution process to ensure clarity and direction for successful
+revenue execution.
+Execute
+Execute your plan step by step.
+Before actual execution, visualize the success path.
+There will be changes in the process, but try to predict potential issues
+before execution and bring in the leverage required for smoother outcomes.
+Review & Re-execute
+Review your execution by tracking progress made.
+Identify which factors worked well and which didn’t contribute to revenue
+generation.
+From these insights, create an improvement plan and re-execute accordingly.
+Why RUN DCMS ER Works for Revenue
+Everyone knows the world runs on money and economics. Every
+government works with a budget.
+Every business operates on a budget. Look around—everything from a
+pen, paper, electricity, laptops, clothes, food, or water relates to revenue
+and economics.
+
+132 | Founder Frameworks
+
+In business, from employee onboarding to office space, production units,
+and maintenance, fixed and variable costs are everywhere.
+To sustain, revenue must be generated profitably, with positive cash flow
+between income and expenses.
+As you see, there are many variable factors impacting revenue generation
+and profitability.
+Obviously, you need to understand and plan for all these variables to fuel
+your business.
+The RUN DCMS ER framework helps you identify those key revenuedriving factors, structure your plan, and execute it effectively.
+
+RUN DCMS ER: Revenue | 133
+
+Framework Applied
+Business Scenario: Bike Brand Enters the EV Market
+A leading bike manufacturing brand is entering the electric vehicle (EV)
+segment with the objective of achieving a 50% return on investment
+(ROI). The vision is to build a profitable, scalable, and stakeholder-driven
+business model that combines product innovation with operational
+efficiency and customer-centricity.
+Thinker Perspectives
+Dreamer (Superhuman Thinker)
+“We already have strong capabilities as a bike manufacturing brand.
+Let’s expand into the electric vehicle space using our existing expertise
+and momentum.
+With demand for EVs rising, this move will significantly boost our
+revenues and brand appeal.
+By targeting the right market and executing well, we can aim for a 50%
+profit margin on EV investments.”
+Guardian (Military Officer Thinker)
+“Let’s evaluate our current profit margins and the performance of our
+core business.
+Do we have enough technical know-how and supply chain readiness to
+support this new segment?
+Also, how do our offerings compare with existing EV competitors in
+terms of pricing, performance, and brand strength?
+We must ensure we’re operationally and strategically ready before making
+large investments.”
+
+134 | Founder Frameworks
+
+Doer (Athlete Thinker)
+“Develop one electric vehicle prototype first and assess all costs
+involved—design, production, distribution, and after-sales.
+Conduct a pilot launch in select areas to validate the entire EV lifecycle—
+from procurement to customer delivery.
+Based on pilot results, scale the production and optimize for profitability
+and process efficiency.”
+R – Revenue Generating Activities
+To drive consistent and diversified revenue in the EV segment, the
+company has identified the following key activities:
+•
+•
+•
+•
+•
+•
+•
+
+Direct EV sales (B2C and B2B)
+Long-term leasing and subscription plans
+Charging stations (public and workplace)
+Maintenance and repair services
+EV accessories and merchandise
+Software services (smart dashboards, app connectivity)
+Corporate tie-ups and fleet deployments
+
+U – Unit Economics
+Understanding cost structure and profitability per vehicle sold:
+•
+•
+•
+•
+•
+•
+•
+
+Fixed Costs: R&D, plant setup, tooling, certification
+Variable Costs: Batteries, raw materials, labor, logistics
+Ongoing Costs: Customer support, marketing, software updates
+Key Inputs:
+Battery replacement cycle
+Charging infrastructure investment
+Distribution and service logistics
+
+Target: Ensure sustainable profit margins through lean manufacturing,
+local sourcing, and battery lifecycle optimization.
+
+RUN DCMS ER: Revenue | 135
+
+N – Networking
+Strategic networking actions include:
+•
+•
+•
+•
+•
+•
+
+Attending EV expos, auto-tech events, and mobility summits
+Engaging with R&D communities and think tanks
+Partnering with charging infrastructure players
+Collaborating with battery innovators and vendors
+Media outreach for thought leadership and visibility
+Community-building with early adopters and green influencers
+
+Relationship nurturing will be central to building long-term credibility
+and collaborative innovation.
+D – Distribution Channel
+A multi-pronged distribution approach is being developed:
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+
+Metro City Penetration:
+B2B deals with corporates and tech parks
+High-traffic EV stalls in malls, campuses, and events
+Digital marketing (influencer campaigns, performance ads)
+Tier 2/3 City Focus:
+Local dealership networks with EV specialization
+Aggregator platform tie-ups (Zypp, Bounce, Yulu, etc.)
+Innovative Models:
+Corporate leasing programs
+EV subscriptions for last-mile delivery companies
+
+C – Customer Catalyst
+EV buyers are driven by these compelling catalysts:
+•
+•
+•
+•
+•
+
+Cost savings: Lower fuel and maintenance expenses
+Convenience: Home charging vs. frequent petrol station visits
+Comfort: Smoother rides with fewer moving parts
+Sustainability: Eco-conscious lifestyle alignment
+Tech appeal: Smart dashboards, mobile tracking, app integration
+
+These motivators guide both messaging and feature design.
+
+136 | Founder Frameworks
+
+M – Metrics & Measure
+Internal ratings out of 10 based on current readiness:
+Metric
+
+Score (/10)
+
+Unit Economics
+
+8
+
+Balance Sheet Readiness
+
+7
+
+Break-even Projections
+
+7
+
+Sales Forecast Accuracy
+
+8
+
+Customer Growth
+
+9
+
+Customer Retention
+
+8
+
+These scores will be reviewed monthly, with a focus on optimizing CAC,
+CLTV, and cost per unit.
+S – Strategize & Simulate
+The strategy incorporates parallel execution with cost-effective
+manufacturing and premium market penetration:
+Strategy:
+Manufacturing in Tier 3 Cities
+•
+•
+•
+
+Proximity to raw materials
+Lower setup and labor costs
+Central distribution point for metro supply
+
+Target Market: Metro Cities
+•
+•
+•
+
+B2B partnerships with tech parks and companies
+Community charging in apartments
+Early adopter campaigns
+
+Marketing Plan:
+•
+•
+
+Performance marketing + community building
+Localized influencer programs
+
+RUN DCMS ER: Revenue | 137
+
+•
+•
+
+Event presence (Auto Expo, tech fairs)
+Co-branded campaigns with corporate partners
+
+Simulation Flow:
+Manufacturing in Tier 3 Cities
+|---> Sourcing locally
+|---> Building scalable infrastructure
+Target Customers (Metro)
+|---> Corporate & Community partnerships
+|---> Workplace EV incentives
+Marketing Execution
+|---> Parallel campaigns across digital + physical
+E – Execute
+The strategy was rolled out with the following real-world outcomes:
+•
+•
+•
+
+Tier 3 Manufacturing Unit: 85% operational
+Metro Market Entry (B2B + Community): 90% deployment
+Marketing Campaigns: 70% completed (with gaps in
+partnership traction)
+
+Execution was closely monitored with weekly dashboards, team syncs,
+and cross-functional review.
+R – Review & Re-execute
+Performance Review:
+Area
+
+Completion
+
+Notes
+
+Manufacturing Setup
+
+85%
+
+On track with local sourcing
+efficiency
+
+Initial Market
+Deployment
+
+90%
+
+Strong response from workplace
+partners
+
+Marketing Strategy
+
+70%
+
+Underperformed in partnerships
+
+138 | Founder Frameworks
+
+Insights:
+•
+•
+•
+•
+•
+
+What worked:
+Manufacturing in Tier 3 cities helped reduce CapEx
+Metro partnerships offered faster lead conversions
+What didn’t:
+Partnership-based marketing was slower to scale than expected
+
+Next Steps:
+•
+•
+•
+•
+
+Strengthen digital marketing (paid + organic)
+Improve partner onboarding flows and incentives
+Expand B2B outreach beyond metro regions
+Reallocate marketing budget to high-converting channels
+
+RUN DCMS ER: Revenue | 139
+
+Exercise
+Your Business Scenario
+
+Dreamer (Superhuman Thinker):
+
+Guardian (Military Officer Thinker):
+
+Doer (Athlete Thinker):
+
+140 | Founder Frameworks
+
+Apply Framework
+R – Revenue Generating Activities
+
+U – Unit Economics
+
+N – Networking
+
+D – Distribution Channel
+
+RUN DCMS ER: Revenue | 141
+
+C – Customer Catalyst
+
+M – Metrics & Measure
+
+S – Strategize & Simulate
+
+E – Execute
+
+142 | Founder Frameworks
+
+R – Review & Re-execute
+
+ERM FABS ER: Evaluation
+
+E – End Goals
+R – Review Performance
+M – Metrics & Measure
+F – Feedback
+A – Assess Risk
+B – Benchmark
+S – Strategize & Simulate
+E – Execute
+R – Review & Re-execute
+
+144 | Founder Frameworks
+
+ERM FABS ER: Evaluation
+End Goals
+List out the end goals of your business. This gives direction for your
+business evaluation and execution.
+Review Performance
+Review performance across areas such as:
+•
+•
+•
+•
+•
+•
+
+Team evaluation
+Financial metrics (profit, revenue)
+Market performance
+Customer feedback
+Operational efficiency
+Execution review (based on your industry)
+
+Metrics & Measure
+List all key metrics such as:
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+•
+
+Sales
+Profit
+Balance sheets
+Break-even point
+Gross profit
+Net profit
+Burn rate
+Runway
+Operational metrics
+Customer metrics
+Market metrics
+MRR (Monthly Recurring Revenue)
+ARR (Annual Recurring Revenue)
+
+ERM FABS ER: Evaluation | 145
+
+Feedback
+Collect feedback and suggestions through surveys from teams, customers,
+and sales or operations teams.
+This helps gain insights from both internal and external sources.
+Assess Risk
+Assess the risks in your business related to:
+•
+•
+•
+•
+
+Financial factors
+Operations
+Legal or regulatory issues
+Market conditions
+
+Plan appropriate mitigation strategies.
+Benchmark
+Benchmark your performance and results against similar businesses or
+industry standards. This helps identify gaps and opportunities.
+Strategize & Simulate
+List action plans based on your current performance and bridge the gap
+to your business goals. Use flow diagrams, use cases, and scenarios to
+simulate potential execution paths. Map the sequence, parallel activities,
+and dependencies.
+Execute
+Now that the plan is ready, execute it to take your business to the next level.
+Always visualize the end-to-end execution before starting. Now it’s time to
+enjoy your business journey.
+Review & Re-execute
+Review the execution and measure the progress through percentage
+completion or scale. Identify what worked and what needs improvement.
+List all the improvements needed, update your action plan, and re-execute.
+
+146 | Founder Frameworks
+
+Why ERM FABS ER Works for Evaluation
+In colleges and universities, students are evaluated based on their grades in
+different subjects.
+In hospitals, doctors are evaluated by their expertise and how effectively
+they treat patients.
+In the film industry, movies are evaluated based on box office collections
+and customer reviews.
+Restaurants are evaluated by assistants for taste, food quality, and consistency
+in preparation.
+Governments are evaluated based on the effectiveness of policies and their
+impact on citizens’ welfare.
+In business:
+•
+•
+•
+
+Products are evaluated by end customers based on results, quality,
+and benefits.
+Investors evaluate businesses using traction, profit, and future
+growth potential.
+Real estate owners evaluate property based on location and longterm value.
+
+Similarly, founders must evaluate their businesses to reach end goals that
+benefit customers, employees, investors, and generate profit.
+ERM FABS ER helps founders conduct comprehensive business evaluations
+with structure and clarity.
+
+ERM FABS ER: Evaluation | 147
+
+Framework Applied
+Business Scenario: International Food Franchise – Strategic
+Evaluation
+An international food franchise brand operating across India, England,
+Ireland, the Netherlands, and Canada is seeking to significantly improve
+sales and customer satisfaction. To achieve this, they are evaluating
+current performance, identifying market-specific gaps, and building
+scalable strategies for global implementation while maintaining local
+relevance.
+Thinker Perspectives
+Dreamer (Superhuman Thinker)
+“With multi-country experience, we can now enhance sales and customer
+experience by making data-driven improvements. A regionally tailored
+yet globally unified strategy can maximize impact.”
+Guardian (Military Officer Thinker)
+“We must investigate why current systems aren’t yielding higher sales or
+satisfaction. Evaluation should identify misalignments and uncover root
+causes before any new initiatives.”
+Doer (Athlete Thinker)
+“Let’s audit processes, define KPIs, and run pilot improvements in one
+region. Once proven, scale it gradually across other markets to ensure
+smooth and measurable rollout.”
+ERM FABS ER: Evaluation Framework
+E – End Goals
+•
+•
+•
+
+Increase sales and customer satisfaction in all operating regions
+Gain deeper understanding of regional market dynamics
+Drive strategic improvements and operational optimization
+
+148 | Founder Frameworks
+
+R – Review Performance (Rating out of 10)
+Evaluation Area
+
+Rating
+
+Team evaluation
+
+7
+
+Financial metrics
+
+8
+
+Market performance
+
+6
+
+Customer feedback
+
+8
+
+Operational efficiency
+
+7
+
+Execution review
+
+8
+
+M – Metrics & Measure (Completion in %)
+Metric
+
+%
+
+Sales
+
+70%
+
+Profit
+
+75%
+
+Balance sheets
+
+80%
+
+Break-even point
+
+70%
+
+Gross profit
+
+80%
+
+Net profit
+
+70%
+
+Burn rate
+
+30%
+
+Runway
+
+80%
+
+Operational metrics
+
+80%
+
+Customer metrics
+
+85%
+
+Market metrics
+
+80%
+
+MRR
+
+75%
+
+ARR
+
+70%
+
+ERM FABS ER: Evaluation | 149
+
+F – Feedback
+Collected through:
+•
+•
+•
+
+Surveys with internal teams, frontline staff, and management
+Customer feedback forms, online reviews, and exit surveys
+Sales and operations interviews across regions
+
+A – Assess Risk (0 = Low, 10 = High)
+Risk Area
+
+Rating
+
+Financial
+
+4
+
+Operational
+
+5
+
+Legal / Regulatory
+
+2
+
+Market Dynamics
+
+8
+
+Mitigation Strategy: Engage a market consultant, initiate R&D efforts,
+and test localized campaigns.
+B – Benchmark
+•
+•
+•
+•
+•
+•
+
+Compared franchise performance with industry standards
+Found improvement opportunities in:
+Market penetration
+Operational cost reduction
+Customer lifetime value
+Sales conversion across platforms
+
+S – Strategize & Simulate
+Get a market consultant for market penetration. Also for sales channels
+benchmarking.
+
+150 | Founder Frameworks
+
+Increase Sales and Customer Satisfaction
+|---> Team & public surveys
+|---> Identify gaps & customer needs
+|---> Pilot loyalty & upsell strategy
+|---> Automate feedback touchpoints
+|---> Measure CSAT & repeat orders
+|---> Optimize sales channels & marketing spend
+|---> Scale successful models
+Deeper Understanding of Regional Market Dynamics
+|---> Hire consultants
+|---> Train teams
+|---> Deploy analytics tools
+Operational Optimization
+|---> Cut costs
+|---> Improve customer experience
+|---> Align supply chain with regional needs
+E – Execute
+•
+•
+•
+•
+•
+
+Visualized end-to-end execution via simulations and dependency
+mapping
+Initiated rollouts across top-performing regions with parallel
+plans:
+Sales and marketing optimization
+Regional experience enhancement
+Operational adjustments
+
+R – Review & Re-execute (Completion %)
+Focus Area
+
+Progress
+
+Increase in Sales & CSAT
+
+90%
+
+Regional Understanding
+
+80%
+
+Operational Optimization
+
+60%
+
+ERM FABS ER: Evaluation | 151
+
+Insights:
+•
+•
+•
+
+Sales uplift and CSAT showed great success in India and Canada
+Operational challenges like inconsistent food quality and delivery
+delay noticed in UK and Netherlands
+A new training module + SOP simplification will be rolled out
+to boost operational consistency
+
+152 | Founder Frameworks
+
+Exercise
+Your Business Scenario
+
+Dreamer (Superhuman Thinker):
+
+Guardian (Military Officer Thinker):
+
+Doer (Athlete Thinker):
+
+ERM FABS ER: Evaluation | 153
+
+Apply Framework
+E – End Goals
+
+R – Review Performance
+
+M – Metrics & Measure
+
+F – Feedback
+
+154 | Founder Frameworks
+
+A – Assess Risk
+
+B – Benchmark
+
+S – Strategize & Simulate
+
+E – Execute
+
+ERM FABS ER: Evaluation | 155
+
+R – Review & Re-execute
+
+ADMINS ER: Crisis
+
+A – Acknowledge Area
+D – Direct Positive Outcome
+M – Mitigation Plan
+I – Implementation Steps
+N – Next Steps
+S – Simulate
+E – Execute
+R – Review & Re-execute
+
+158 | Founder Frameworks
+
+ADMINS ER: Crisis
+Acknowledge Area
+Acknowledge the area where the business has failed—such as sales, delivery,
+process, team, or tech. Focus on actual facts and data.
+Direct Positive Outcome
+Direct your focus to come up with a positive outcome through solutions.
+Look for what positive insights or outcomes you can draw from the
+situation.
+Mitigation Plan
+List out short-term and long-term fixes. Assign roles and set priorities
+accordingly.
+Implementation Steps
+Break down the mitigation plan into clear, actionable steps with timelines.
+Next Steps
+Immediately execute the plan to make quick progress and regain control—
+especially the short-term fixes.
+Strategize & Simulate
+Once short-term control is regained, strategize a long-term fix with a clear
+plan. Simulate possible outcomes and scenarios for better preparedness.
+Execute
+Start implementing the long-term fix while continuing to address the
+short-term resolution.
+Review & Re-execute
+Track the progress of both short-term and long-term fixes. Identify changes
+needed and adjust the plan or strategy. Then, re-execute with improvements.
+
+ADMINS ER: Crisis | 159
+
+Why ADMINS ER Works for Crisis
+Crises can occur unexpectedly in business. Recessions can delay or cancel
+projects. COVID-19, for instance, changed how many businesses operated.
+Resource shortages may happen due to delayed payments. Technology
+upgrades can trigger an immediate pivot due to changes in resource use.
+Your entire team may quit. Key partners or vendors may stop working.
+Sudden price hikes in raw materials can disrupt operations. War or changes
+in global policies can also impact business unexpectedly.
+Accidents in factories can have an impact ranging from medium to severe,
+potentially affecting delivery to customers.
+The primary reason for the ADMINS ER framework is to help businesses
+stay prepared in times of crisis—by identifying, addressing, and resolving
+issues systematically.
+
+160 | Founder Frameworks
+
+Framework Applied
+Crisis Management Using ADMINS ER
+Business Scenario:
+A real estate company is facing a downturn due to economic recession.
+Property sales have declined, buyers are hesitant amid rising costs, and
+ongoing construction projects are stalled due to budget constraints.
+Operations are strained, and the company must quickly adapt to sustain
+itself.
+Thinker Perspectives
+Dreamer (Superhuman Thinker):
+“We’ll turn this challenge into an opportunity by offering customerfriendly financing and exploring new funding sources. With smart
+capital unlocking, we can resume stalled construction and bring value
+to the market faster.”
+Guardian (Military Officer Thinker):
+“We must protect the core. Cut non-essential spending, pause new
+projects, and redirect resources toward essential operations and
+maintenance to keep the company stable.”
+Doer (Athlete Thinker):
+“Let’s act now. Tap into adjacent income streams like rentals, land
+advisory, or property management. Reassign paused resources and move
+swiftly to survive and sustain.”
+ADMINS ER Crisis Response Framework
+A – Acknowledge Area
+Identify factual areas impacted:
+•
+•
+
+Sales: Property bookings have declined significantly.
+Finance: Rising costs and payment delays are straining cash flow.
+
+ADMINS ER: Crisis | 161
+
+•
+•
+
+Operations: Construction halted due to budget constraints.
+Market: Buyer confidence is low amid economic uncertainty.
+
+D – Direct Positive Outcome
+Outline possible solution paths:
+•
+•
+•
+•
+
+Explore untapped sectors or buyer segments with active demand.
+Recover outstanding payments from existing customers.
+Offer advance booking incentives for upcoming projects.
+Focus on inventory that aligns with current buyer sentiment.
+
+M – Mitigation Plan
+Set immediate and strategic mitigation priorities:
+Priority
+
+Task Description
+
+High
+
+Recover pending payments from sold properties
+
+High
+
+Maintain operations with minimal essential resources
+
+Medium
+
+Collect upfront funds from serious prospective buyers
+
+Medium
+
+Explore long-term pivots based on real-time market
+feedback
+
+I – Implementation Steps
+Break down action items with urgency:
+•
+•
+•
+•
+
+Collect outstanding dues from existing customers → High
+Operate lean: Focus on critical business functions only → High
+Engage new buyers with upfront-payment offers → Medium
+Conduct market research for demand-driven repositioning →
+Medium
+
+N – Next Steps
+•
+•
+•
+
+Begin immediate action on high-priority items:
+Started recovery of dues from past sales
+Adjusted operations to minimal viable functioning
+
+162 | Founder Frameworks
+
+S – Strategize & Simulate
+Long-Term Resilience Plan:
+Market Repositioning Strategy
+|---> Conduct R&D on active buyer trends
+|---> Launch pilot offers in specific localities
+|---> Expand offerings based on pilot success
+|---> Diversify income sources
+|---> Rentals, land advisory, maintenance services
+Cost Optimization
+|---> Review all ongoing projects
+|---> Pause underperforming or high-cost assets
+|---> Redirect resources to performing projects
+E – Execute
+Execution has begun for long-term steps:
+•
+•
+
+Market research underway and pilot customer campaigns
+launched
+High-cost project reviews initiated; budget reallocation ongoing
+
+R – Review & Re-execute
+Progress Status (% Completion):
+Task
+
+Completion
+
+Recover pending payments
+
+85%
+
+Lean operational continuity
+
+60%
+
+Market trend analysis & R&D
+
+90%
+
+Cost reduction initiatives
+
+70%
+
+ADMINS ER: Crisis | 163
+
+Insight:
+Dues recovery helped stabilize short-term cash flow. Market research
+revealed promising opportunities in mid-income housing and rental
+properties. Plans are being re-executed with updated learnings for
+improved resilience.
+
+164 | Founder Frameworks
+
+Exercise
+Your Business Scenario
+
+Dreamer (Superhuman Thinker):
+
+Guardian (Military Officer Thinker):
+
+Doer (Athlete Thinker):
+
+ADMINS ER: Crisis | 165
+
+Apply Framework
+A – Acknowledge Area
+
+D – Direct Positive Outcome
+
+M – Mitigation Plan
+
+I – Implementation Steps
+
+166 | Founder Frameworks
+
+N – Next Steps
+
+S – Simulate
+
+E – Execute
+
+R – Review & Re-execute
+
+
