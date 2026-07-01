@@ -1,0 +1,60 @@
+name: Build Desktop Executables
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+        pip install -r requirements.txt
+
+    - name: Decrypt Book
+      run: |
+        openssl enc -aes-256-cbc -d -pbkdf2 -pass pass:${{ secrets.BOOK_DECRYPTION_KEY }} -in FounderFrameworks.txt.enc -out FounderFrameworks.txt
+
+    - name: Build with PyInstaller
+      run: |
+        pyinstaller --name "FounderAI" --windowed --noconfirm --add-data "FounderFrameworks.txt:." --hidden-import="langchain" --hidden-import="chromadb" --hidden-import="llama_cpp" app.py
+
+    - name: Compress MacOS App
+      if: matrix.os == 'macos-latest'
+      run: |
+        cd dist
+        zip -r FounderAI-macOS.zip FounderAI.app
+        
+    - name: Compress Windows App
+      if: matrix.os == 'windows-latest'
+      run: |
+        cd dist
+        Compress-Archive -Path FounderAI -DestinationPath FounderAI-Windows.zip
+
+    - name: Create Release and Upload Assets
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: latest
+        name: Latest Release
+        files: |
+          dist/FounderAI-macOS.zip
+          dist/FounderAI-Windows.zip
