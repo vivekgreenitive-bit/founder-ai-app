@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -31,8 +34,23 @@ jobs:
       run: |
         pyinstaller --name "FounderAI" --windowed --noconfirm --add-data "FounderFrameworks.txt:." --hidden-import="langchain" --hidden-import="chromadb" --hidden-import="llama_cpp" app.py
 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v4
+    - name: Compress MacOS App
+      if: matrix.os == 'macos-latest'
+      run: |
+        cd dist
+        zip -r FounderAI-macOS.zip FounderAI.app
+        
+    - name: Compress Windows App
+      if: matrix.os == 'windows-latest'
+      run: |
+        cd dist
+        Compress-Archive -Path FounderAI.exe -DestinationPath FounderAI-Windows.zip
+
+    - name: Create Release and Upload Assets
+      uses: softprops/action-gh-release@v2
       with:
-        name: FounderAI-${{ runner.os }}
-        path: dist/FounderAI*
+        tag_name: latest
+        name: Latest Release
+        files: |
+          dist/FounderAI-macOS.zip
+          dist/FounderAI-Windows.zip
