@@ -47,10 +47,11 @@ class FounderAIEngine:
             print(f"Error initializing LLM: {e}")
             
     def init_vectorstore(self):
-        """Loads FounderFrameworks.txt and creates a persistent Chroma vector database."""
+        """Loads FounderFrameworks_clean.txt and creates a persistent Chroma vector database."""
         if os.path.exists(self.db_dir) and len(os.listdir(self.db_dir)) > 0:
             # Load existing DB
             self.vectorstore = Chroma(persist_directory=self.db_dir, embedding_function=self.embeddings)
+        else:
             # Build new DB
             clean_file = "FounderFrameworks_clean.txt"
             if not os.path.exists(clean_file):
@@ -89,13 +90,19 @@ ECG KISS | SLR CAMERAS | MC BEERS | PC PEERS | PS ERP | DC ERPRS | OKS REC SME |
 
 ## PROBLEM-TO-FRAMEWORK MAPPING (MANDATORY)
 If the user mentions these problems, you MUST use the corresponding framework from your context:
-- "Project Requirements", "Architecture", "System Setup" -> OKS REC SME (System)
-- "Process", "Workflow", "Automation" -> PFA SAAS SME (Process)
-- "SOP", "Instructions", "Handover" -> RSS FEED SME (SOP)
-- "Revenue", "Sales", "Growth" -> RUN DCMS ER (Revenue)
-- "Planning", "Goals", "Bottleneck" -> ECG KISS (Overall)
-- "Daily Task", "Focus" -> DC ERPRS (Daily)
-- "Execution", "Team Performance" -> RPM REAP ER (Execution)
+- "Project Requirements", "Architecture", "System Setup", "Technical Debt" -> OKS REC SME (System)
+- "Process", "Workflow", "Automation", "Onboarding" -> PFA SAAS SME (Process)
+- "SOP", "Instructions", "Handover", "Training", "Manual" -> RSS FEED SME (SOP)
+- "Revenue", "Sales", "Growth", "Marketing", "Funnel" -> RUN DCMS ER (Revenue)
+- "Planning", "Goals", "Bottleneck", "Stagnation" -> ECG KISS (Overall)
+- "Daily Task", "Focus", "Schedule", "Priorities" -> DC ERPRS (Daily)
+- "Execution", "Team Performance", "Accountability" -> RPM REAP ER (Execution)
+- "Yearly Roadmap", "Strategy", "Vision" -> SLR CAMERAS (Yearly)
+- "Quarterly Goals", "Target Setting" -> MC BEERS (Quarterly)
+- "Fundraising", "Finance", "Investment" -> ERM FABS ER (Evaluation)
+- "Crisis", "Conflict", "Emergency" -> ADMINS ER (Crisis)
+- "Product-Market Fit", "Customer Feedback" -> PC PEERS (Monthly)
+- "Weekly Review", "Course Correction" -> PS ERP (Weekly)
 
 ## ABSOLUTE RULES
 1. FORBIDDEN frameworks — NEVER use or mention: OKRs, SWOT, McKinsey, Porter, BCG Matrix, Lean, Six Sigma, Ansoff, Balanced Scorecard, KPIs (use "Metrics to Track" instead). Any use of these is a critical failure.
