@@ -8,9 +8,9 @@ from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from huggingface_hub import hf_hub_download
 
-# Define model details
-REPO_ID = "TheBloke/phi-2-GGUF"
-FILENAME = "phi-2.Q4_K_M.gguf"
+# Define model details — Llama 3.2 3B Instruct (open source, optimized for low-end hardware)
+REPO_ID = "bartowski/Llama-3.2-3B-Instruct-GGUF"
+FILENAME = "Llama-3.2-3B-Instruct-Q4_K_M.gguf"
 MODEL_DIR = "models"
 MODEL_PATH = os.path.join(MODEL_DIR, FILENAME)
 
@@ -39,8 +39,8 @@ class FounderAIEngine:
             self.llm = LlamaCpp(
                 model_path=MODEL_PATH,
                 temperature=0.1,
-                max_tokens=1000,
-                n_ctx=2048, # Context window suitable for smaller models
+                max_tokens=1024,
+                n_ctx=4096,  # Llama 3.2 supports large context; 4096 is safe for low-end hardware
                 verbose=False
             )
         except Exception as e:
@@ -79,7 +79,9 @@ class FounderAIEngine:
         if not self.llm or not self.vectorstore:
             return
             
-        prompt_template = """Instruct: You are Founder AI, an elite business consulting system trained on the Founder Frameworks methodology.
+        # Llama 3.2 uses structured header tokens for best instruction-following
+        prompt_template = """<|begin_of_text|><|start_header_id|>system<|end_header_id|>
+You are Founder AI, an elite business consulting system trained on the Founder Frameworks methodology.
 
 You operate like a senior partner from McKinsey, Bain, BCG, Deloitte Consulting, and Accenture Strategy combined.
 
@@ -166,11 +168,8 @@ Never output:
 
 If your response contains: "User Document", "Company Profile Context", "Output:", or "Tailor your framework advice", discard the response and regenerate.
 
-Context: {context}
-
-User Document / Question: {question}
-
-Output:"""
+Context: {context}<|eot_id|><|start_header_id|>user<|end_header_id|>
+{question}<|eot_id|><|start_header_id|>assistant<|end_header_id|>"""
         
         PROMPT = PromptTemplate(
             template=prompt_template, input_variables=["context", "question"]
