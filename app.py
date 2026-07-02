@@ -724,11 +724,19 @@ class FounderApp(QMainWindow):
                 )
                 continue
 
-            # Apply line ("Apply this framework to the situation:")
-            if stripped.lower().startswith('apply this framework'):
+            # → Example: lines — shown as indented callout
+            if stripped.startswith('→ Example:') or stripped.startswith('→ example:'):
+                example_text = stripped[len('→ Example:'):].strip() or stripped[len('→ example:'):].strip()
                 html_lines.append(
-                    f'<p style="margin:2px 0 4px 12px; color:#64748b; font-style:italic;">{stripped}</p>'
+                    f'<div style="margin:2px 0 6px 24px; padding:5px 10px; '
+                    f'background:#f0fdf4; border-left:3px solid #86efac; border-radius:3px;">'
+                    f'<span style="color:#166534; font-style:italic; font-size:9pt;">'
+                    f'<b>Example:</b> {example_text}</span></div>'
                 )
+                continue
+
+            # "Apply this framework..." line — suppress it (new prompt removes this)
+            if stripped.lower().startswith('apply this framework'):
                 continue
 
             # Normal paragraph text
