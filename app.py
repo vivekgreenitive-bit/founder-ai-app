@@ -236,137 +236,65 @@ class FounderApp(QMainWindow):
         if not os.path.exists("company_profile.json"):
             QMessageBox.information(self, "Welcome", "Welcome to Founder AI! Let's set up your Company Profile first so the AI can provide personalized advice.")
             self.open_settings()
-        
+           
     def init_ui(self):
         main_widget = QWidget()
         self.setCentralWidget(main_widget)
-        
+
         layout = QVBoxLayout()
-        layout.setContentsMargins(30, 30, 30, 30)
-        layout.setSpacing(20)
+        layout.setContentsMargins(24, 20, 24, 16)
+        layout.setSpacing(10)
         main_widget.setLayout(layout)
-        
-        # Header
+
+        # ── Header ───────────────────────────────────────────────────────────
         header_layout = QHBoxLayout()
         header = QLabel("Founder Frameworks AI")
-        header.setFont(QFont("Arial", 28, QFont.Weight.Bold))
+        header.setFont(QFont("Arial", 22, QFont.Weight.Bold))
         header.setAlignment(Qt.AlignmentFlag.AlignCenter)
         header_layout.addWidget(header, stretch=1)
-        
+
         self.settings_btn = QPushButton("⚙️ Profile")
         self.settings_btn.setToolTip("Set Company Context")
-        self.settings_btn.setFixedSize(120, 45)
+        self.settings_btn.setFixedSize(110, 40)
         self.settings_btn.clicked.connect(self.open_settings)
         header_layout.addWidget(self.settings_btn)
-        
         layout.addLayout(header_layout)
-        
-        # Status Label — human-friendly, no technical jargon
+
         self.status_label = QLabel("Starting up your AI advisor...")
-        self.status_label.setStyleSheet("color: #64748b; font-size: 13px;")
+        self.status_label.setStyleSheet("color: #64748b; font-size: 12px;")
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.status_label)
-        
-        # Step-by-step flow guide
-        flow_widget = QWidget()
-        flow_layout = QHBoxLayout(flow_widget)
-        flow_layout.setContentsMargins(0, 0, 0, 0)
-        flow_layout.setSpacing(0)
-        for step_num, step_text in [
-            ("1", "Describe your challenge"),
-            ("→", ""),
-            ("2", "Choose a framework (optional)"),
-            ("→", ""),
-            ("3", "Get your business diagnosis"),
-        ]:
-            if step_num == "→":
-                arrow = QLabel("→")
-                arrow.setStyleSheet("color: #94a3b8; font-size: 16pt; padding: 0 8px;")
-                arrow.setAlignment(Qt.AlignmentFlag.AlignCenter)
-                flow_layout.addWidget(arrow)
-            else:
-                step_frame = QFrame()
-                step_frame.setStyleSheet("background: #f1f5f9; border-radius: 8px; border: 1px solid #e2e8f0;")
-                step_v = QHBoxLayout(step_frame)
-                step_v.setContentsMargins(12, 6, 12, 6)
-                step_v.setSpacing(8)
-                num_lbl = QLabel(step_num)
-                num_lbl.setStyleSheet("background: #1a7a3c; color: white; border-radius: 10px; min-width: 20px; max-width: 20px; min-height: 20px; max-height: 20px; font-weight: bold; font-size: 10pt; border: none;")
-                num_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-                txt_lbl = QLabel(step_text)
-                txt_lbl.setStyleSheet("color: #334155; font-size: 11pt; background: transparent; border: none;")
-                step_v.addWidget(num_lbl)
-                step_v.addWidget(txt_lbl)
-                flow_layout.addWidget(step_frame)
-        flow_layout.addStretch()
-        layout.addWidget(flow_widget)
-        
-        # Card: Consultation Area
-        card = QFrame()
-        card.setObjectName("CardFrame")
-        card_layout = QVBoxLayout(card)
-        card_layout.setContentsMargins(20, 20, 20, 20)
-        card_layout.setSpacing(15)
-        
-        # Header with Title and Upload Button
-        query_header_layout = QHBoxLayout()
-        query_title = QLabel("Describe your business challenge")
-        query_title.setFont(QFont("Arial", 14, QFont.Weight.Bold))
-        query_header_layout.addWidget(query_title, stretch=1)
-        
-        self.file_label = QLabel("")
-        self.file_label.setStyleSheet("color: #64748b; font-style: italic; font-size: 12pt;")
-        self.file_label.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-        query_header_layout.addWidget(self.file_label)
-        
-        self.upload_btn = QPushButton("📎 Upload a Document")
-        self.upload_btn.setObjectName("SecondaryBtn")
-        self.upload_btn.setMinimumWidth(180)
-        self.upload_btn.setFixedHeight(40)
-        self.upload_btn.clicked.connect(self.upload_file)
-        query_header_layout.addWidget(self.upload_btn)
-        
-        card_layout.addLayout(query_header_layout)
-        
-        self.query_input = QTextEdit()
-        self.query_input.setMaximumHeight(110)
-        self.query_input.setPlaceholderText("What's your biggest business challenge right now?\nE.g.  I am losing customers.  My team is slow.  Everything depends on me.")
-        card_layout.addWidget(self.query_input)
 
-        # Selected Framework Badge (hidden until a framework is chosen)
-        self.badge_widget = QWidget()
-        self.badge_widget.setVisible(False)
-        badge_layout = QHBoxLayout(self.badge_widget)
-        badge_layout.setContentsMargins(0, 0, 0, 0)
-        badge_layout.setSpacing(6)
-        self.badge_label = QLabel()
-        self.badge_label.setStyleSheet(
-            "background: #dcfce7; color: #166534; border: 1px solid #86efac; "
-            "border-radius: 12px; padding: 4px 12px; font-size: 11pt; font-weight: bold;"
+        # ── Output area (fills screen like ChatGPT) ──────────────────────────
+        output_title = QLabel("Your Business Diagnosis")
+        output_title.setFont(QFont("Arial", 13, QFont.Weight.Bold))
+        output_title.setStyleSheet("color: #334155;")
+        layout.addWidget(output_title)
+
+        self.output_area = QTextEdit()
+        self.output_area.setObjectName("OutputArea")
+        self.output_area.setReadOnly(True)
+        self.output_area.setFont(QFont("Arial", 13))
+        self.output_area.setPlaceholderText(
+            "Your business diagnosis will appear here.\n\n"
+            "Type your challenge below and click  ➤  to get started."
         )
-        badge_clear = QPushButton("✕")
-        badge_clear.setFixedSize(24, 24)
-        badge_clear.setToolTip("Remove framework — let AI decide")
-        badge_clear.setStyleSheet(
-            "QPushButton { background: #fee2e2; color: #991b1b; border-radius: 12px; "
-            "border: none; font-weight: bold; font-size: 10pt; }"
-            "QPushButton:hover { background: #fca5a5; }"
-        )
-        badge_clear.clicked.connect(self.clear_framework_selection)
-        badge_layout.addWidget(self.badge_label)
-        badge_layout.addWidget(badge_clear)
-        badge_layout.addStretch()
-        card_layout.addWidget(self.badge_widget)
+        layout.addWidget(self.output_area, stretch=1)
 
-        # ── Framework Toggle Button ───────────────────────────────────────
-        self.fw_toggle_btn = QPushButton("＋  Choose a specific framework  (optional — AI will auto-select if skipped)")
-        self.fw_toggle_btn.setObjectName("FwToggleBtn")
-        self.fw_toggle_btn.setCheckable(True)
-        self.fw_toggle_btn.setChecked(False)
-        self.fw_toggle_btn.clicked.connect(self.toggle_framework_panel)
-        self.fw_toggle_btn.setFixedHeight(38)
-        card_layout.addWidget(self.fw_toggle_btn)
+        # ── Progress Bar ──────────────────────────────────────────────────────
+        self.progress = QProgressBar()
+        self.progress.setRange(0, 0)
+        self.progress.setVisible(False)
+        layout.addWidget(self.progress)
 
+        # ── Bottom Input Area (ChatGPT-style pinned footer) ───────────────────
+        bottom_card = QFrame()
+        bottom_card.setObjectName("CardFrame")
+        bottom_layout = QVBoxLayout(bottom_card)
+        bottom_layout.setContentsMargins(16, 12, 16, 12)
+        bottom_layout.setSpacing(8)
+
+        # Framework categories data
         categories = [
             {
                 "title": "🗓  PLANNING",
@@ -407,27 +335,26 @@ class FounderApp(QMainWindow):
             },
         ]
 
-        # ── Collapsible Framework Panel (hidden by default) ───────────────
+        # ── Collapsible framework panel (expands ABOVE input box) ────────────
         self.fw_panel = QWidget()
         self.fw_panel.setVisible(False)
 
         panel_scroll = QScrollArea()
         panel_scroll.setWidgetResizable(True)
         panel_scroll.setFrameShape(QFrame.Shape.NoFrame)
-        panel_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        panel_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        panel_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         panel_scroll.setStyleSheet("background: transparent; border: none;")
-        panel_scroll.setMinimumHeight(300)
-        panel_scroll.setMaximumHeight(300)
+        panel_scroll.setFixedHeight(280)
 
         col_widget = QWidget()
         col_widget.setStyleSheet("background: transparent;")
-        col_layout = QHBoxLayout(col_widget)
-        col_layout.setSpacing(10)
+        col_layout = QVBoxLayout(col_widget)
+        col_layout.setSpacing(8)
         col_layout.setContentsMargins(0, 0, 0, 0)
 
         for cat in categories:
             col_frame = QFrame()
-            col_frame.setMinimumWidth(280)
             col_frame.setStyleSheet(f"""
                 QFrame {{
                     background-color: {cat['bg']};
@@ -436,76 +363,109 @@ class FounderApp(QMainWindow):
                 }}
             """)
             col_v = QVBoxLayout(col_frame)
-            col_v.setContentsMargins(10, 10, 10, 10)
-            col_v.setSpacing(6)
+            col_v.setContentsMargins(10, 8, 10, 8)
+            col_v.setSpacing(5)
 
             cat_title = QLabel(cat["title"])
-            cat_title.setFont(QFont("Arial", 11, QFont.Weight.Bold))
+            cat_title.setFont(QFont("Arial", 10, QFont.Weight.Bold))
             cat_title.setStyleSheet(f"color: {cat['color']}; letter-spacing: 1px; background: transparent; border: none;")
             col_v.addWidget(cat_title)
 
-            scroll = QScrollArea()
-            scroll.setWidgetResizable(True)
-            scroll.setFrameShape(QFrame.Shape.NoFrame)
-            scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-            scroll.setStyleSheet("background: transparent; border: none;")
-            scroll_content = QWidget()
-            scroll_content.setStyleSheet("background: transparent;")
-            scroll_inner = QVBoxLayout(scroll_content)
-            scroll_inner.setContentsMargins(0, 0, 0, 0)
-            scroll_inner.setSpacing(6)
+            items_row = QHBoxLayout()
+            items_row.setSpacing(6)
             for name, subtitle, desc, prompt in cat["items"]:
                 fw_card = ClickableCard(
                     name, subtitle, desc, prompt,
                     cat["color"], cat["bg"], cat["border"],
                     self.select_framework
                 )
-                scroll_inner.addWidget(fw_card)
-            scroll_inner.addStretch()
-            scroll.setWidget(scroll_content)
-            col_v.addWidget(scroll)
+                fw_card.setMinimumWidth(200)
+                fw_card.setMaximumWidth(280)
+                items_row.addWidget(fw_card)
+            items_row.addStretch()
+            col_v.addLayout(items_row)
             col_layout.addWidget(col_frame)
 
         panel_scroll.setWidget(col_widget)
         fw_panel_layout = QVBoxLayout(self.fw_panel)
-        fw_panel_layout.setContentsMargins(0, 0, 0, 0)
+        fw_panel_layout.setContentsMargins(0, 0, 0, 4)
         fw_panel_layout.addWidget(panel_scroll)
+        bottom_layout.addWidget(self.fw_panel)
 
-        card_layout.addWidget(self.fw_panel)
-        layout.addWidget(card)
+        # ── Selected framework badge ──────────────────────────────────────────
+        self.badge_widget = QWidget()
+        self.badge_widget.setVisible(False)
+        badge_layout = QHBoxLayout(self.badge_widget)
+        badge_layout.setContentsMargins(0, 0, 0, 0)
+        badge_layout.setSpacing(6)
+        self.badge_label = QLabel()
+        self.badge_label.setStyleSheet(
+            "background: #dcfce7; color: #166534; border: 1px solid #86efac; "
+            "border-radius: 12px; padding: 3px 10px; font-size: 10pt; font-weight: bold;"
+        )
+        badge_clear = QPushButton("✕")
+        badge_clear.setFixedSize(22, 22)
+        badge_clear.setToolTip("Remove framework — let AI decide")
+        badge_clear.setStyleSheet(
+            "QPushButton { background: #fee2e2; color: #991b1b; border-radius: 11px; "
+            "border: none; font-weight: bold; font-size: 9pt; }"
+            "QPushButton:hover { background: #fca5a5; }"
+        )
+        badge_clear.clicked.connect(self.clear_framework_selection)
+        badge_layout.addWidget(self.badge_label)
+        badge_layout.addWidget(badge_clear)
+        badge_layout.addStretch()
+        bottom_layout.addWidget(self.badge_widget)
 
-        
-        # Analyze Button
-        self.analyze_btn = QPushButton("Get My Business Diagnosis  →")
-        self.analyze_btn.setObjectName("AnalyzeBtn")
+        # ── Query input row (text + send button inline) ───────────────────────
+        input_row = QHBoxLayout()
+        input_row.setSpacing(8)
+
+        self.query_input = QTextEdit()
+        self.query_input.setMaximumHeight(90)
+        self.query_input.setMinimumHeight(60)
+        self.query_input.setPlaceholderText(
+            "What's your biggest business challenge right now?  "
+            "E.g.  I am losing customers.  My team is slow.  Everything depends on me."
+        )
+        input_row.addWidget(self.query_input, stretch=1)
+
+        self.analyze_btn = QPushButton("➤")
+        self.analyze_btn.setObjectName("SendBtn")
+        self.analyze_btn.setToolTip("Get My Business Diagnosis")
+        self.analyze_btn.setFixedSize(54, 54)
         self.analyze_btn.clicked.connect(self.run_analysis)
         self.analyze_btn.setEnabled(False)
-        layout.addWidget(self.analyze_btn)
-        
-        # Progress Bar
-        self.progress = QProgressBar()
-        self.progress.setRange(0, 0)
-        self.progress.setVisible(False)
-        layout.addWidget(self.progress)
-        
-        # Output Area
-        output_title = QLabel("Your Business Diagnosis")
-        output_title.setFont(QFont("Arial", 14, QFont.Weight.Bold))
-        layout.addWidget(output_title)
-        
-        self.output_area = QTextEdit()
-        self.output_area.setObjectName("OutputArea")
-        self.output_area.setReadOnly(True)
-        self.output_area.setFont(QFont("Arial", 13))
-        self.output_area.setPlaceholderText(
-            "Your business diagnosis will appear here.\n\n"
-            "To get started:\n"
-            "  1. Describe your challenge above (e.g. 'I am losing business')"
-            "  2. Optionally pick a framework"
-            "  3. Click 'Get My Business Diagnosis'"
-        )
-        layout.addWidget(self.output_area, stretch=1)
-        
+        input_row.addWidget(self.analyze_btn, alignment=Qt.AlignmentFlag.AlignBottom)
+        bottom_layout.addLayout(input_row)
+
+        # ── Toolbar: framework toggle + upload + file label ───────────────────
+        toolbar_row = QHBoxLayout()
+        toolbar_row.setSpacing(8)
+
+        self.fw_toggle_btn = QPushButton("＋  Choose a framework  (optional — AI auto-selects)")
+        self.fw_toggle_btn.setObjectName("FwToggleBtn")
+        self.fw_toggle_btn.setCheckable(True)
+        self.fw_toggle_btn.setChecked(False)
+        self.fw_toggle_btn.clicked.connect(self.toggle_framework_panel)
+        self.fw_toggle_btn.setFixedHeight(34)
+        toolbar_row.addWidget(self.fw_toggle_btn, stretch=1)
+
+        self.file_label = QLabel("")
+        self.file_label.setStyleSheet("color: #64748b; font-style: italic; font-size: 10pt;")
+        self.file_label.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+        toolbar_row.addWidget(self.file_label)
+
+        self.upload_btn = QPushButton("📎 Upload")
+        self.upload_btn.setObjectName("SecondaryBtn")
+        self.upload_btn.setFixedHeight(34)
+        self.upload_btn.setMinimumWidth(100)
+        self.upload_btn.clicked.connect(self.upload_file)
+        toolbar_row.addWidget(self.upload_btn)
+
+        bottom_layout.addLayout(toolbar_row)
+        layout.addWidget(bottom_card)
+
     def init_ai(self):
         # We will initialize it synchronously for now, but in a real app 
         # this should be in a thread to not block the UI
@@ -723,6 +683,21 @@ if __name__ == "__main__":
         border-color: #1a7a3c;
         color: #1a7a3c;
         border-style: solid;
+    }
+    /* Inline send button */
+    QPushButton#SendBtn {
+        background-color: #1a7a3c;
+        color: white;
+        border: none;
+        border-radius: 27px;
+        font-size: 20pt;
+        font-weight: bold;
+    }
+    QPushButton#SendBtn:hover {
+        background-color: #145c2d;
+    }
+    QPushButton#SendBtn:disabled {
+        background-color: #94a3b8;
     }
     QProgressBar {
         border: 1px solid #e2e8f0;
