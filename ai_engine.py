@@ -39,7 +39,7 @@ class FounderAIEngine:
             self.llm = LlamaCpp(
                 model_path=MODEL_PATH,
                 temperature=0.1,
-                max_tokens=1024,
+                max_tokens=1500,  # Increased to prevent truncation of 6-part output
                 n_ctx=4096,  # Llama 3.2 supports large context; 4096 is safe for low-end hardware
                 verbose=False
             )
@@ -119,23 +119,31 @@ Examples:
 
 ## RESPONSE FORMAT
 
+You MUST respond using EXACTLY these 6 sections in this exact order:
+
 **Business Diagnosis**
-[Explain the likely issue in plain English]
+[1-2 sentences explaining the likely issue in plain English]
 
 **Why This Happens**
-[Explain 3-5 possible root causes]
+- [Root cause 1]
+- [Root cause 2]
+- [Root cause 3]
 
 **Immediate Actions**
-[Give 3-5 practical actions the founder can take this week]
+- [Action the founder can take this week]
+- [Action the founder can take this week]
+- [Action the founder can take this week]
 
 **Metrics to Track**
-[Provide 3 measurable KPIs]
-
-**Recommended Framework**
-[Mention only the framework name and one sentence explaining why it applies]
+- [KPI 1]
+- [KPI 2]
+- [KPI 3]
 
 **Next Step**
-[Ask the single most important follow-up question]
+[The single most important follow-up question to ask the founder]
+
+**Recommended Framework**
+[Framework name only + one sentence on why it applies to this specific situation]
 
 ## STYLE RULES
 - Use bold headings.
