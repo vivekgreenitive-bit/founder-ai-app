@@ -11,6 +11,45 @@ from PyQt6.QtGui import QFont
 from document_processor import extract_text_from_file
 from ai_engine import FounderAIEngine
 
+
+class ClickableCard(QFrame):
+    """A clickable QFrame card that renders multi-line content properly."""
+    def __init__(self, name, subtitle, desc, prompt, color, bg, border, callback, parent=None):
+        super().__init__(parent)
+        self.prompt = prompt
+        self.callback = callback
+        self.color = color
+        self.bg = bg
+        self.border = border
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setStyleSheet(f"""
+            ClickableCard {{
+                background-color: white;
+                border: 1px solid {border};
+                border-left: 4px solid {color};
+                border-radius: 6px;
+            }}
+            ClickableCard:hover {{
+                background-color: {bg};
+            }}
+        """)
+        v = QVBoxLayout(self)
+        v.setContentsMargins(10, 8, 10, 8)
+        v.setSpacing(2)
+
+        name_label = QLabel(f"<b>{name}</b>  —  {subtitle}")
+        name_label.setStyleSheet(f"color: {color}; font-size: 12pt; background: transparent; border: none;")
+        name_label.setWordWrap(True)
+        v.addWidget(name_label)
+
+        desc_label = QLabel(desc)
+        desc_label.setStyleSheet("color: #64748b; font-size: 10pt; background: transparent; border: none;")
+        desc_label.setWordWrap(True)
+        v.addWidget(desc_label)
+
+    def mousePressEvent(self, event):
+        self.callback(self.prompt)
+
 class AnalysisWorker(QThread):
     finished = pyqtSignal(str)
     
@@ -172,7 +211,7 @@ class FounderApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Founder Frameworks AI Consultant")
-        self.setMinimumSize(900, 700)
+        self.setMinimumSize(1050, 720)
         self.setAcceptDrops(True)
         
         # Data
@@ -308,7 +347,6 @@ class FounderApp(QMainWindow):
                     background-color: {cat['bg']};
                     border: 1.5px solid {cat['border']};
                     border-radius: 10px;
-                    padding: 2px;
                 }}
             """)
             col_v = QVBoxLayout(col_frame)
@@ -317,32 +355,16 @@ class FounderApp(QMainWindow):
 
             cat_title = QLabel(cat["title"])
             cat_title.setFont(QFont("Arial", 11, QFont.Weight.Bold))
-            cat_title.setStyleSheet(f"color: {cat['color']}; letter-spacing: 1px;")
+            cat_title.setStyleSheet(f"color: {cat['color']}; letter-spacing: 1px; background: transparent; border: none;")
             col_v.addWidget(cat_title)
 
             for name, subtitle, desc, prompt in cat["items"]:
-                fw_btn = QPushButton()
-                fw_btn.setObjectName("FrameworkCard")
-                fw_btn.clicked.connect(lambda checked, p=prompt: self.set_quick_prompt(p))
-                fw_btn.setStyleSheet(f"""
-                    QPushButton#FrameworkCard {{
-                        background-color: white;
-                        border: 1px solid {cat['border']};
-                        border-left: 3px solid {cat['color']};
-                        border-radius: 6px;
-                        padding: 8px 10px;
-                        text-align: left;
-                        font-size: 11pt;
-                        color: #1f2937;
-                    }}
-                    QPushButton#FrameworkCard:hover {{
-                        background-color: {cat['bg']};
-                        border-left: 4px solid {cat['color']};
-                    }}
-                """)
-                fw_btn.setText(f"{name}  —  {subtitle}\n{desc}")
-                fw_btn.setMinimumHeight(60)
-                col_v.addWidget(fw_btn)
+                card = ClickableCard(
+                    name, subtitle, desc, prompt,
+                    cat["color"], cat["bg"], cat["border"],
+                    self.set_quick_prompt
+                )
+                col_v.addWidget(card)
 
             col_v.addStretch()
             col_layout.addWidget(col_frame)
