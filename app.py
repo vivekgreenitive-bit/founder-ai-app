@@ -14,7 +14,7 @@ from ai_engine import FounderAIEngine
 
 
 class ClickableCard(QFrame):
-    """A clickable QFrame card that renders multi-line content properly."""
+    """A clickable QFrame card — shows name + subtitle, description on tooltip."""
     def __init__(self, name, subtitle, desc, prompt, color, bg, border, callback, parent=None):
         super().__init__(parent)
         self.prompt = prompt
@@ -23,7 +23,8 @@ class ClickableCard(QFrame):
         self.bg = bg
         self.border = border
         self.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.setMinimumHeight(72)
+        self.setMinimumHeight(46)
+        self.setToolTip(desc)
         self.setSizePolicy(
             QSizePolicy.Policy.Expanding,
             QSizePolicy.Policy.Minimum
@@ -40,20 +41,13 @@ class ClickableCard(QFrame):
             }}
         """)
         v = QVBoxLayout(self)
-        v.setContentsMargins(10, 8, 10, 8)
-        v.setSpacing(2)
+        v.setContentsMargins(10, 7, 10, 7)
+        v.setSpacing(0)
 
         name_label = QLabel(f"<b>{name}</b>  —  {subtitle}")
-        name_label.setStyleSheet(f"color: {color}; font-size: 11pt; background: transparent; border: none;")
-        name_label.setWordWrap(True)
-        name_label.setMinimumHeight(20)
+        name_label.setStyleSheet(f"color: {color}; font-size: 10pt; background: transparent; border: none;")
+        name_label.setWordWrap(False)
         v.addWidget(name_label)
-
-        desc_label = QLabel(desc)
-        desc_label.setStyleSheet("color: #64748b; font-size: 9pt; background: transparent; border: none;")
-        desc_label.setWordWrap(True)
-        desc_label.setMinimumHeight(16)
-        v.addWidget(desc_label)
 
     def mousePressEvent(self, event):
         self.callback(self.prompt)
@@ -727,6 +721,14 @@ if __name__ == "__main__":
     }
     QPushButton#SendBtn:disabled {
         background-color: #94a3b8;
+    }
+    QToolTip {
+        background-color: #1e293b;
+        color: #f1f5f9;
+        border: 1px solid #334155;
+        border-radius: 6px;
+        padding: 6px 10px;
+        font-size: 10pt;
     }
     QProgressBar {
         border: 1px solid #e2e8f0;
