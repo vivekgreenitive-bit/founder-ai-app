@@ -241,60 +241,90 @@ class FounderApp(QMainWindow):
         main_widget = QWidget()
         self.setCentralWidget(main_widget)
 
-        layout = QVBoxLayout()
-        layout.setContentsMargins(24, 20, 24, 16)
-        layout.setSpacing(10)
-        main_widget.setLayout(layout)
+        root = QVBoxLayout()
+        root.setContentsMargins(0, 0, 0, 0)
+        root.setSpacing(0)
+        main_widget.setLayout(root)
 
-        # ── Header ───────────────────────────────────────────────────────────
-        header_layout = QHBoxLayout()
+        # ── Top Header Bar ────────────────────────────────────────────────────
+        header_bar = QFrame()
+        header_bar.setStyleSheet("background: #0f172a; border: none;")
+        header_bar.setFixedHeight(56)
+        header_bar_layout = QHBoxLayout(header_bar)
+        header_bar_layout.setContentsMargins(20, 0, 20, 0)
+
         header = QLabel("Founder Frameworks AI")
-        header.setFont(QFont("Arial", 22, QFont.Weight.Bold))
-        header.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        header_layout.addWidget(header, stretch=1)
+        header.setFont(QFont("Arial", 17, QFont.Weight.Bold))
+        header.setStyleSheet("color: white; background: transparent;")
+        header_bar_layout.addWidget(header)
+
+        self.status_label = QLabel("Starting up...")
+        self.status_label.setStyleSheet("color: #94a3b8; font-size: 11pt; background: transparent;")
+        self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        header_bar_layout.addWidget(self.status_label, stretch=1)
 
         self.settings_btn = QPushButton("⚙️ Profile")
         self.settings_btn.setToolTip("Set Company Context")
-        self.settings_btn.setFixedSize(110, 40)
-        self.settings_btn.clicked.connect(self.open_settings)
-        header_layout.addWidget(self.settings_btn)
-        layout.addLayout(header_layout)
-
-        self.status_label = QLabel("Starting up your AI advisor...")
-        self.status_label.setStyleSheet("color: #64748b; font-size: 12px;")
-        self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(self.status_label)
-
-        # ── Output area (fills screen like ChatGPT) ──────────────────────────
-        output_title = QLabel("Your Business Diagnosis")
-        output_title.setFont(QFont("Arial", 13, QFont.Weight.Bold))
-        output_title.setStyleSheet("color: #334155;")
-        layout.addWidget(output_title)
-
-        self.output_area = QTextEdit()
-        self.output_area.setObjectName("OutputArea")
-        self.output_area.setReadOnly(True)
-        self.output_area.setFont(QFont("Arial", 13))
-        self.output_area.setPlaceholderText(
-            "Your business diagnosis will appear here.\n\n"
-            "Type your challenge below and click  ➤  to get started."
+        self.settings_btn.setFixedSize(100, 34)
+        self.settings_btn.setStyleSheet(
+            "QPushButton { background: #1e293b; color: #cbd5e1; border: 1px solid #334155; "
+            "border-radius: 8px; font-size: 10pt; }"
+            "QPushButton:hover { background: #334155; color: white; }"
         )
-        layout.addWidget(self.output_area, stretch=1)
+        self.settings_btn.clicked.connect(self.open_settings)
+        header_bar_layout.addWidget(self.settings_btn)
+        root.addWidget(header_bar)
 
-        # ── Progress Bar ──────────────────────────────────────────────────────
-        self.progress = QProgressBar()
-        self.progress.setRange(0, 0)
-        self.progress.setVisible(False)
-        layout.addWidget(self.progress)
+        # ── Two-panel body ────────────────────────────────────────────────────
+        body = QWidget()
+        body_layout = QHBoxLayout(body)
+        body_layout.setContentsMargins(0, 0, 0, 0)
+        body_layout.setSpacing(0)
 
-        # ── Bottom Input Area (ChatGPT-style pinned footer) ───────────────────
-        bottom_card = QFrame()
-        bottom_card.setObjectName("CardFrame")
-        bottom_layout = QVBoxLayout(bottom_card)
-        bottom_layout.setContentsMargins(16, 12, 16, 12)
-        bottom_layout.setSpacing(8)
+        # ════════════════════════════════════════════════════════════════════
+        # LEFT PANEL — Framework Navigator
+        # ════════════════════════════════════════════════════════════════════
+        left_panel = QFrame()
+        left_panel.setObjectName("LeftPanel")
+        left_panel.setFixedWidth(300)
+        left_panel.setStyleSheet("""
+            QFrame#LeftPanel {
+                background-color: #f8fafc;
+                border-right: 1px solid #e2e8f0;
+                border: none;
+            }
+        """)
+        left_layout = QVBoxLayout(left_panel)
+        left_layout.setContentsMargins(0, 0, 0, 0)
+        left_layout.setSpacing(0)
 
-        # Framework categories data
+        left_title = QLabel("  Choose a Framework")
+        left_title.setFont(QFont("Arial", 11, QFont.Weight.Bold))
+        left_title.setFixedHeight(38)
+        left_title.setStyleSheet(
+            "color: #475569; background: #f1f5f9; "
+            "border-bottom: 1px solid #e2e8f0; padding-left: 10px;"
+        )
+        left_layout.addWidget(left_title)
+
+        left_hint = QLabel("  Click any card to use that framework")
+        left_hint.setFixedHeight(28)
+        left_hint.setStyleSheet("color: #94a3b8; font-size: 9pt; background: #f8fafc; padding-left: 10px;")
+        left_layout.addWidget(left_hint)
+
+        # Scrollable list of all categories + cards
+        sidebar_scroll = QScrollArea()
+        sidebar_scroll.setWidgetResizable(True)
+        sidebar_scroll.setFrameShape(QFrame.Shape.NoFrame)
+        sidebar_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        sidebar_scroll.setStyleSheet("background: #f8fafc; border: none;")
+
+        sidebar_content = QWidget()
+        sidebar_content.setStyleSheet("background: #f8fafc;")
+        sidebar_inner = QVBoxLayout(sidebar_content)
+        sidebar_inner.setContentsMargins(8, 8, 8, 8)
+        sidebar_inner.setSpacing(10)
+
         categories = [
             {
                 "title": "🗓  PLANNING",
@@ -302,11 +332,11 @@ class FounderApp(QMainWindow):
                 "bg": "#f0fdf4",
                 "border": "#bbf7d0",
                 "items": [
-                    ("ECG KISS", "Overall Business Diagnostic", "Define your end goal, identify gaps, and simulate solutions for your overall business.", "Run the ECG KISS overall business diagnosis on my situation and identify my biggest operational gap."),
-                    ("SLR CAMERAS", "Yearly Planning", "Plan your yearly milestones, allocate resources, and schedule for long-term success.", "Apply the SLR CAMERAS framework to help me build a structured yearly plan for my business."),
-                    ("MC BEERS", "Quarterly Planning", "Break down quarterly goals into sprints and keep your team aligned.", "Use the MC BEERS framework to break down my goals into a 90-day execution sprint."),
-                    ("PC PEERS", "Monthly Planning", "Manage monthly priorities, people, and execution checkpoints.", "Apply the PC PEERS framework to create a focused monthly planning structure for my team."),
-                    ("PS ERP", "Weekly Planning", "Organize your weekly focus so you stop wasting time on low-value tasks.", "Use the PS ERP framework to organize my weekly priorities and stop wasting time on low-value tasks."),
+                    ("ECG KISS", "Overall Business Diagnostic", "Define your end goal, identify gaps, and simulate solutions.", "Run the ECG KISS overall business diagnosis on my situation and identify my biggest operational gap."),
+                    ("SLR CAMERAS", "Yearly Planning", "Plan your yearly milestones, allocate resources, schedule.", "Apply the SLR CAMERAS framework to help me build a structured yearly plan for my business."),
+                    ("MC BEERS", "Quarterly Planning", "Break down quarterly goals into sprints.", "Use the MC BEERS framework to break down my goals into a 90-day execution sprint."),
+                    ("PC PEERS", "Monthly Planning", "Manage monthly priorities, people, execution checkpoints.", "Apply the PC PEERS framework to create a focused monthly planning structure for my team."),
+                    ("PS ERP", "Weekly Planning", "Organize weekly focus so you stop wasting time on low-value tasks.", "Use the PS ERP framework to organize my weekly priorities and stop wasting time on low-value tasks."),
                     ("DC ERPRS", "Daily Planning", "Structure each day to maximize output and create momentum.", "Apply the DC ERPRS framework to structure my daily schedule and make every day count."),
                 ]
             },
@@ -316,9 +346,9 @@ class FounderApp(QMainWindow):
                 "bg": "#fffbeb",
                 "border": "#fde68a",
                 "items": [
-                    ("OKS REC SME", "Business System Architecture", "Build systems that run without you so you stop being the bottleneck.", "Use the OKS REC SME framework to design a system that removes me as the bottleneck."),
-                    ("PFA SAAS SME", "Business Process Mapping", "Define and streamline the core processes inside your business.", "Apply the PFA SAAS SME framework to document and optimize a core business process."),
-                    ("RSS FEED SME", "SOP Builder", "Create SOPs so your team executes consistently without supervision.", "Use the RSS FEED SME framework to create an SOP so my team stops making errors on routine tasks."),
+                    ("OKS REC SME", "Business System Architecture", "Build systems that run without you.", "Use the OKS REC SME framework to design a system that removes me as the bottleneck."),
+                    ("PFA SAAS SME", "Business Process Mapping", "Define and streamline core business processes.", "Apply the PFA SAAS SME framework to document and optimize a core business process."),
+                    ("RSS FEED SME", "SOP Builder", "Create SOPs so your team executes consistently.", "Use the RSS FEED SME framework to create an SOP so my team stops making errors on routine tasks."),
                 ]
             },
             {
@@ -327,72 +357,82 @@ class FounderApp(QMainWindow):
                 "bg": "#eff6ff",
                 "border": "#bfdbfe",
                 "items": [
-                    ("RPM REAP ER", "Business Execution Strategy", "Diagnose why execution is failing and create a structured recovery plan.", "Apply the RPM REAP ER framework to diagnose why my execution is breaking down and fix it."),
-                    ("RUN DCMS ER", "Revenue Generation", "Identify and fix revenue leaks to drive consistent business growth.", "Use the RUN DCMS ER framework to find and fix the revenue leaks in my business."),
-                    ("ERM FABS ER", "Business Evaluation", "Evaluate what is working and what needs to change immediately.", "Apply the ERM FABS ER framework to evaluate what is working and what needs to change immediately."),
-                    ("ADMINS ER", "Crisis Management", "Manage an active business crisis with a clear structured response plan.", "Use the ADMINS ER framework to help me manage the current crisis in my business."),
+                    ("RPM REAP ER", "Business Execution Strategy", "Diagnose why execution is failing.", "Apply the RPM REAP ER framework to diagnose why my execution is breaking down and fix it."),
+                    ("RUN DCMS ER", "Revenue Generation", "Identify and fix revenue leaks.", "Use the RUN DCMS ER framework to find and fix the revenue leaks in my business."),
+                    ("ERM FABS ER", "Business Evaluation", "Evaluate what is working and what needs to change.", "Apply the ERM FABS ER framework to evaluate what is working and what needs to change immediately."),
+                    ("ADMINS ER", "Crisis Management", "Manage an active business crisis with a clear plan.", "Use the ADMINS ER framework to help me manage the current crisis in my business."),
                 ]
             },
         ]
 
-        # ── Collapsible framework panel (expands ABOVE input box) ────────────
-        self.fw_panel = QWidget()
-        self.fw_panel.setVisible(False)
-
-        panel_scroll = QScrollArea()
-        panel_scroll.setWidgetResizable(True)
-        panel_scroll.setFrameShape(QFrame.Shape.NoFrame)
-        panel_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
-        panel_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        panel_scroll.setStyleSheet("background: transparent; border: none;")
-        panel_scroll.setFixedHeight(280)
-
-        col_widget = QWidget()
-        col_widget.setStyleSheet("background: transparent;")
-        col_layout = QVBoxLayout(col_widget)
-        col_layout.setSpacing(8)
-        col_layout.setContentsMargins(0, 0, 0, 0)
-
         for cat in categories:
-            col_frame = QFrame()
-            col_frame.setStyleSheet(f"""
-                QFrame {{
-                    background-color: {cat['bg']};
-                    border: 1.5px solid {cat['border']};
-                    border-radius: 10px;
-                }}
-            """)
-            col_v = QVBoxLayout(col_frame)
-            col_v.setContentsMargins(10, 8, 10, 8)
-            col_v.setSpacing(5)
+            # Category header
+            cat_header = QLabel(cat["title"])
+            cat_header.setFont(QFont("Arial", 10, QFont.Weight.Bold))
+            cat_header.setFixedHeight(30)
+            cat_header.setStyleSheet(
+                f"color: {cat['color']}; background: {cat['bg']}; "
+                f"border: 1px solid {cat['border']}; border-radius: 6px; "
+                f"padding-left: 8px; letter-spacing: 1px;"
+            )
+            sidebar_inner.addWidget(cat_header)
 
-            cat_title = QLabel(cat["title"])
-            cat_title.setFont(QFont("Arial", 10, QFont.Weight.Bold))
-            cat_title.setStyleSheet(f"color: {cat['color']}; letter-spacing: 1px; background: transparent; border: none;")
-            col_v.addWidget(cat_title)
-
-            items_row = QHBoxLayout()
-            items_row.setSpacing(6)
+            # Framework cards stacked vertically in the sidebar
             for name, subtitle, desc, prompt in cat["items"]:
                 fw_card = ClickableCard(
                     name, subtitle, desc, prompt,
                     cat["color"], cat["bg"], cat["border"],
                     self.select_framework
                 )
-                fw_card.setMinimumWidth(200)
-                fw_card.setMaximumWidth(280)
-                items_row.addWidget(fw_card)
-            items_row.addStretch()
-            col_v.addLayout(items_row)
-            col_layout.addWidget(col_frame)
+                sidebar_inner.addWidget(fw_card)
 
-        panel_scroll.setWidget(col_widget)
-        fw_panel_layout = QVBoxLayout(self.fw_panel)
-        fw_panel_layout.setContentsMargins(0, 0, 0, 4)
-        fw_panel_layout.addWidget(panel_scroll)
-        bottom_layout.addWidget(self.fw_panel)
+        sidebar_inner.addStretch()
+        sidebar_scroll.setWidget(sidebar_content)
+        left_layout.addWidget(sidebar_scroll)
+        body_layout.addWidget(left_panel)
 
-        # ── Selected framework badge ──────────────────────────────────────────
+        # ════════════════════════════════════════════════════════════════════
+        # RIGHT PANEL — Output + Input
+        # ════════════════════════════════════════════════════════════════════
+        right_panel = QWidget()
+        right_layout = QVBoxLayout(right_panel)
+        right_layout.setContentsMargins(16, 12, 16, 12)
+        right_layout.setSpacing(8)
+
+        # Output title
+        out_title_row = QHBoxLayout()
+        output_title = QLabel("Your Business Diagnosis")
+        output_title.setFont(QFont("Arial", 13, QFont.Weight.Bold))
+        output_title.setStyleSheet("color: #1e293b;")
+        out_title_row.addWidget(output_title, stretch=1)
+        right_layout.addLayout(out_title_row)
+
+        # Output area (fills space)
+        self.output_area = QTextEdit()
+        self.output_area.setObjectName("OutputArea")
+        self.output_area.setReadOnly(True)
+        self.output_area.setFont(QFont("Arial", 13))
+        self.output_area.setPlaceholderText(
+            "Your business diagnosis will appear here.\n\n"
+            "👈  Pick a framework from the left panel  (or skip — AI will choose for you)\n"
+            "⬇️   Type your challenge below and press  ➤"
+        )
+        right_layout.addWidget(self.output_area, stretch=1)
+
+        # Progress bar
+        self.progress = QProgressBar()
+        self.progress.setRange(0, 0)
+        self.progress.setVisible(False)
+        right_layout.addWidget(self.progress)
+
+        # ── Bottom input card ─────────────────────────────────────────────
+        bottom_card = QFrame()
+        bottom_card.setObjectName("CardFrame")
+        bottom_layout = QVBoxLayout(bottom_card)
+        bottom_layout.setContentsMargins(14, 10, 14, 10)
+        bottom_layout.setSpacing(6)
+
+        # Selected framework badge
         self.badge_widget = QWidget()
         self.badge_widget.setVisible(False)
         badge_layout = QHBoxLayout(self.badge_widget)
@@ -405,7 +445,7 @@ class FounderApp(QMainWindow):
         )
         badge_clear = QPushButton("✕")
         badge_clear.setFixedSize(22, 22)
-        badge_clear.setToolTip("Remove framework — let AI decide")
+        badge_clear.setToolTip("Remove — let AI decide")
         badge_clear.setStyleSheet(
             "QPushButton { background: #fee2e2; color: #991b1b; border-radius: 11px; "
             "border: none; font-weight: bold; font-size: 9pt; }"
@@ -417,15 +457,15 @@ class FounderApp(QMainWindow):
         badge_layout.addStretch()
         bottom_layout.addWidget(self.badge_widget)
 
-        # ── Query input row (text + send button inline) ───────────────────────
+        # Query row: text input + send button
         input_row = QHBoxLayout()
         input_row.setSpacing(8)
 
         self.query_input = QTextEdit()
-        self.query_input.setMaximumHeight(90)
-        self.query_input.setMinimumHeight(60)
+        self.query_input.setMaximumHeight(85)
+        self.query_input.setMinimumHeight(55)
         self.query_input.setPlaceholderText(
-            "What's your biggest business challenge right now?  "
+            "What's your biggest business challenge right now? "
             "E.g.  I am losing customers.  My team is slow.  Everything depends on me."
         )
         input_row.addWidget(self.query_input, stretch=1)
@@ -433,38 +473,32 @@ class FounderApp(QMainWindow):
         self.analyze_btn = QPushButton("➤")
         self.analyze_btn.setObjectName("SendBtn")
         self.analyze_btn.setToolTip("Get My Business Diagnosis")
-        self.analyze_btn.setFixedSize(54, 54)
+        self.analyze_btn.setFixedSize(52, 52)
         self.analyze_btn.clicked.connect(self.run_analysis)
         self.analyze_btn.setEnabled(False)
         input_row.addWidget(self.analyze_btn, alignment=Qt.AlignmentFlag.AlignBottom)
         bottom_layout.addLayout(input_row)
 
-        # ── Toolbar: framework toggle + upload + file label ───────────────────
+        # Toolbar: file label + upload
         toolbar_row = QHBoxLayout()
         toolbar_row.setSpacing(8)
 
-        self.fw_toggle_btn = QPushButton("＋  Choose a framework  (optional — AI auto-selects)")
-        self.fw_toggle_btn.setObjectName("FwToggleBtn")
-        self.fw_toggle_btn.setCheckable(True)
-        self.fw_toggle_btn.setChecked(False)
-        self.fw_toggle_btn.clicked.connect(self.toggle_framework_panel)
-        self.fw_toggle_btn.setFixedHeight(34)
-        toolbar_row.addWidget(self.fw_toggle_btn, stretch=1)
-
         self.file_label = QLabel("")
-        self.file_label.setStyleSheet("color: #64748b; font-style: italic; font-size: 10pt;")
-        self.file_label.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-        toolbar_row.addWidget(self.file_label)
+        self.file_label.setStyleSheet("color: #64748b; font-style: italic; font-size: 9pt;")
+        toolbar_row.addWidget(self.file_label, stretch=1)
 
-        self.upload_btn = QPushButton("📎 Upload")
+        self.upload_btn = QPushButton("📎 Upload a Document")
         self.upload_btn.setObjectName("SecondaryBtn")
-        self.upload_btn.setFixedHeight(34)
-        self.upload_btn.setMinimumWidth(100)
+        self.upload_btn.setFixedHeight(30)
+        self.upload_btn.setMinimumWidth(160)
         self.upload_btn.clicked.connect(self.upload_file)
         toolbar_row.addWidget(self.upload_btn)
 
         bottom_layout.addLayout(toolbar_row)
-        layout.addWidget(bottom_card)
+        right_layout.addWidget(bottom_card)
+
+        body_layout.addWidget(right_panel, stretch=1)
+        root.addWidget(body, stretch=1)
 
     def init_ai(self):
         # We will initialize it synchronously for now, but in a real app 
@@ -483,26 +517,17 @@ class FounderApp(QMainWindow):
         dialog.exec()
         
     def toggle_framework_panel(self, checked):
-        self.fw_panel.setVisible(checked)
-        if checked:
-            self.fw_toggle_btn.setText("－  Hide frameworks")
-        else:
-            self.fw_toggle_btn.setText("＋  Choose a specific framework  (optional — AI will auto-select if skipped)")
+        # No-op — framework panel is now the persistent left sidebar
+        pass
 
     def select_framework(self, prompt):
-        """Called when a framework card is clicked. Stores the framework prompt
-        as a badge and collapses the panel — query box stays clean."""
-        # Extract the framework name from the prompt for the badge
+        """Called when a framework card is clicked — shows badge in input area."""
         import re
         match = re.search(r'(ECG KISS|SLR CAMERAS|MC BEERS|PC PEERS|PS ERP|DC ERPRS|OKS REC SME|PFA SAAS SME|RSS FEED SME|RPM REAP ER|RUN DCMS ER|ERM FABS ER|ADMINS ER)', prompt)
         name = match.group(1) if match else "Framework"
         self.selected_framework_prompt = prompt
         self.badge_label.setText(f"🎯  Using: {name}")
         self.badge_widget.setVisible(True)
-        # Auto-collapse the panel
-        self.fw_panel.setVisible(False)
-        self.fw_toggle_btn.setChecked(False)
-        self.fw_toggle_btn.setText("＋  Choose a specific framework  (optional — AI will auto-select if skipped)")
 
     def clear_framework_selection(self):
         self.selected_framework_prompt = None
@@ -588,6 +613,10 @@ if __name__ == "__main__":
     }
     QLabel {
         color: #0f172a;
+    }
+    QFrame#LeftPanel {
+        background-color: #f8fafc;
+        border-right: 1px solid #e2e8f0;
     }
     QFrame#CardFrame {
         background-color: #ffffff;
