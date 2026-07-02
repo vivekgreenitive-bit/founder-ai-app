@@ -337,8 +337,10 @@ class FounderApp(QMainWindow):
             },
         ]
 
-        col_layout = QHBoxLayout()
+        col_widget = QWidget()
+        col_layout = QHBoxLayout(col_widget)
         col_layout.setSpacing(10)
+        col_layout.setContentsMargins(0, 0, 0, 0)
 
         for cat in categories:
             col_frame = QFrame()
@@ -359,17 +361,17 @@ class FounderApp(QMainWindow):
             col_v.addWidget(cat_title)
 
             for name, subtitle, desc, prompt in cat["items"]:
-                card = ClickableCard(
+                fw_card = ClickableCard(
                     name, subtitle, desc, prompt,
                     cat["color"], cat["bg"], cat["border"],
                     self.set_quick_prompt
                 )
-                col_v.addWidget(card)
+                col_v.addWidget(fw_card)
 
             col_v.addStretch()
             col_layout.addWidget(col_frame)
 
-        card_layout.addLayout(col_layout)
+        card_layout.addWidget(col_widget)
         layout.addWidget(card)
 
         
