@@ -4,7 +4,8 @@ import json
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                              QHBoxLayout, QPushButton, QTextEdit, QLabel, 
                              QFileDialog, QProgressBar, QMessageBox,
-                             QDialog, QFormLayout, QLineEdit, QDialogButtonBox, QFrame, QComboBox)
+                             QDialog, QFormLayout, QLineEdit, QDialogButtonBox,
+                             QFrame, QComboBox, QScrollArea)
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
 from PyQt6.QtGui import QFont
 
@@ -253,11 +254,45 @@ class FounderApp(QMainWindow):
         
         layout.addLayout(header_layout)
         
-        # Status Label
-        self.status_label = QLabel("Initializing AI Engine...")
-        self.status_label.setStyleSheet("color: #64748b; font-size: 14px; font-weight: bold;")
+        # Status Label — human-friendly, no technical jargon
+        self.status_label = QLabel("Starting up your AI advisor...")
+        self.status_label.setStyleSheet("color: #64748b; font-size: 13px;")
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.status_label)
+        
+        # Step-by-step flow guide
+        flow_widget = QWidget()
+        flow_layout = QHBoxLayout(flow_widget)
+        flow_layout.setContentsMargins(0, 0, 0, 0)
+        flow_layout.setSpacing(0)
+        for step_num, step_text in [
+            ("1", "Describe your challenge"),
+            ("→", ""),
+            ("2", "Choose a framework (optional)"),
+            ("→", ""),
+            ("3", "Get your business diagnosis"),
+        ]:
+            if step_num == "→":
+                arrow = QLabel("→")
+                arrow.setStyleSheet("color: #94a3b8; font-size: 16pt; padding: 0 8px;")
+                arrow.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                flow_layout.addWidget(arrow)
+            else:
+                step_frame = QFrame()
+                step_frame.setStyleSheet("background: #f1f5f9; border-radius: 8px; border: 1px solid #e2e8f0;")
+                step_v = QHBoxLayout(step_frame)
+                step_v.setContentsMargins(12, 6, 12, 6)
+                step_v.setSpacing(8)
+                num_lbl = QLabel(step_num)
+                num_lbl.setStyleSheet("background: #1a7a3c; color: white; border-radius: 10px; min-width: 20px; max-width: 20px; min-height: 20px; max-height: 20px; font-weight: bold; font-size: 10pt; border: none;")
+                num_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                txt_lbl = QLabel(step_text)
+                txt_lbl.setStyleSheet("color: #334155; font-size: 11pt; background: transparent; border: none;")
+                step_v.addWidget(num_lbl)
+                step_v.addWidget(txt_lbl)
+                flow_layout.addWidget(step_frame)
+        flow_layout.addStretch()
+        layout.addWidget(flow_widget)
         
         # Card: Consultation Area
         card = QFrame()
@@ -268,7 +303,7 @@ class FounderApp(QMainWindow):
         
         # Header with Title and Upload Button
         query_header_layout = QHBoxLayout()
-        query_title = QLabel("Ask the AI Consultant")
+        query_title = QLabel("Describe your business challenge")
         query_title.setFont(QFont("Arial", 14, QFont.Weight.Bold))
         query_header_layout.addWidget(query_title, stretch=1)
         
@@ -277,9 +312,9 @@ class FounderApp(QMainWindow):
         self.file_label.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         query_header_layout.addWidget(self.file_label)
         
-        self.upload_btn = QPushButton("📎 Upload Context")
+        self.upload_btn = QPushButton("📎 Upload a Document (optional)")
         self.upload_btn.setObjectName("SecondaryBtn")
-        self.upload_btn.setFixedSize(160, 40)
+        self.upload_btn.setFixedSize(220, 40)
         self.upload_btn.clicked.connect(self.upload_file)
         query_header_layout.addWidget(self.upload_btn)
         
@@ -290,11 +325,9 @@ class FounderApp(QMainWindow):
         self.query_input.setPlaceholderText("E.g., I am losing business and I work 16 hours a day.")
         card_layout.addWidget(self.query_input)
         
-        # Founder Framework Selector Chips
-        # Framework Selector: 3-column categorized card panel
-        fw_section_label = QLabel("Choose a Framework to Apply:")
-        fw_section_label.setFont(QFont("Arial", 13, QFont.Weight.Bold))
-        fw_section_label.setStyleSheet("color: #1f2937; margin-top: 5px;")
+        fw_section_label = QLabel("Step 2 — Choose a Framework (optional, or let AI decide):")
+        fw_section_label.setFont(QFont("Arial", 12, QFont.Weight.Bold))
+        fw_section_label.setStyleSheet("color: #475569; margin-top: 5px;")
         card_layout.addWidget(fw_section_label)
 
         categories = [
@@ -342,7 +375,7 @@ class FounderApp(QMainWindow):
         col_layout.setSpacing(10)
         col_layout.setContentsMargins(0, 0, 0, 0)
 
-        for cat in categories:
+        for i, cat in enumerate(categories):
             col_frame = QFrame()
             col_frame.setStyleSheet(f"""
                 QFrame {{
@@ -360,15 +393,38 @@ class FounderApp(QMainWindow):
             cat_title.setStyleSheet(f"color: {cat['color']}; letter-spacing: 1px; background: transparent; border: none;")
             col_v.addWidget(cat_title)
 
-            for name, subtitle, desc, prompt in cat["items"]:
-                fw_card = ClickableCard(
-                    name, subtitle, desc, prompt,
-                    cat["color"], cat["bg"], cat["border"],
-                    self.set_quick_prompt
-                )
-                col_v.addWidget(fw_card)
+            # Planning has 6 items — wrap in a scroll area to stay readable
+            if i == 0:
+                scroll = QScrollArea()
+                scroll.setWidgetResizable(True)
+                scroll.setFrameShape(QFrame.Shape.NoFrame)
+                scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+                scroll.setStyleSheet("background: transparent; border: none;")
+                scroll_content = QWidget()
+                scroll_content.setStyleSheet("background: transparent;")
+                scroll_inner = QVBoxLayout(scroll_content)
+                scroll_inner.setContentsMargins(0, 0, 0, 0)
+                scroll_inner.setSpacing(6)
+                for name, subtitle, desc, prompt in cat["items"]:
+                    fw_card = ClickableCard(
+                        name, subtitle, desc, prompt,
+                        cat["color"], cat["bg"], cat["border"],
+                        self.set_quick_prompt
+                    )
+                    scroll_inner.addWidget(fw_card)
+                scroll_inner.addStretch()
+                scroll.setWidget(scroll_content)
+                col_v.addWidget(scroll)
+            else:
+                for name, subtitle, desc, prompt in cat["items"]:
+                    fw_card = ClickableCard(
+                        name, subtitle, desc, prompt,
+                        cat["color"], cat["bg"], cat["border"],
+                        self.set_quick_prompt
+                    )
+                    col_v.addWidget(fw_card)
+                col_v.addStretch()
 
-            col_v.addStretch()
             col_layout.addWidget(col_frame)
 
         card_layout.addWidget(col_widget)
@@ -376,7 +432,7 @@ class FounderApp(QMainWindow):
 
         
         # Analyze Button
-        self.analyze_btn = QPushButton("Analyze with Founder Frameworks")
+        self.analyze_btn = QPushButton("Get My Business Diagnosis  →")
         self.analyze_btn.setObjectName("AnalyzeBtn")
         self.analyze_btn.clicked.connect(self.run_analysis)
         self.analyze_btn.setEnabled(False)
@@ -389,7 +445,7 @@ class FounderApp(QMainWindow):
         layout.addWidget(self.progress)
         
         # Output Area
-        output_title = QLabel("AI Analysis:")
+        output_title = QLabel("Your Business Diagnosis")
         output_title.setFont(QFont("Arial", 14, QFont.Weight.Bold))
         layout.addWidget(output_title)
         
@@ -397,6 +453,13 @@ class FounderApp(QMainWindow):
         self.output_area.setObjectName("OutputArea")
         self.output_area.setReadOnly(True)
         self.output_area.setFont(QFont("Arial", 13))
+        self.output_area.setPlaceholderText(
+            "Your business diagnosis will appear here.\n\n"
+            "To get started:\n"
+            "  1. Describe your challenge above (e.g. 'I am losing business')"
+            "  2. Optionally pick a framework"
+            "  3. Click 'Get My Business Diagnosis'"
+        )
         layout.addWidget(self.output_area, stretch=1)
         
     def init_ai(self):
@@ -404,8 +467,8 @@ class FounderApp(QMainWindow):
         # this should be in a thread to not block the UI
         try:
             self.engine = FounderAIEngine()
-            self.status_label.setText("AI Engine Ready (Using FounderFrameworks.txt)")
-            self.status_label.setStyleSheet("color: green;")
+            self.status_label.setText("✅  Ready. Describe your challenge and get your diagnosis.")
+            self.status_label.setStyleSheet("color: #1a7a3c; font-size: 13px;")
             self.analyze_btn.setEnabled(True)
         except Exception as e:
             self.status_label.setText(f"AI Engine Error: {str(e)}")
