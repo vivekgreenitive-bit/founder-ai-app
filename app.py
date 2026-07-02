@@ -329,14 +329,43 @@ class FounderApp(QMainWindow):
         card_layout.addLayout(query_header_layout)
         
         self.query_input = QTextEdit()
-        self.query_input.setMaximumHeight(100)
-        self.query_input.setPlaceholderText("E.g., I am losing business and I work 16 hours a day.")
+        self.query_input.setMaximumHeight(110)
+        self.query_input.setPlaceholderText("What's your biggest business challenge right now?\nE.g.  I am losing customers.  My team is slow.  Everything depends on me.")
         card_layout.addWidget(self.query_input)
-        
-        fw_section_label = QLabel("Step 2 — Choose a Framework (optional, or let AI decide):")
-        fw_section_label.setFont(QFont("Arial", 12, QFont.Weight.Bold))
-        fw_section_label.setStyleSheet("color: #475569; margin-top: 5px;")
-        card_layout.addWidget(fw_section_label)
+
+        # Selected Framework Badge (hidden until a framework is chosen)
+        self.badge_widget = QWidget()
+        self.badge_widget.setVisible(False)
+        badge_layout = QHBoxLayout(self.badge_widget)
+        badge_layout.setContentsMargins(0, 0, 0, 0)
+        badge_layout.setSpacing(6)
+        self.badge_label = QLabel()
+        self.badge_label.setStyleSheet(
+            "background: #dcfce7; color: #166534; border: 1px solid #86efac; "
+            "border-radius: 12px; padding: 4px 12px; font-size: 11pt; font-weight: bold;"
+        )
+        badge_clear = QPushButton("✕")
+        badge_clear.setFixedSize(24, 24)
+        badge_clear.setToolTip("Remove framework — let AI decide")
+        badge_clear.setStyleSheet(
+            "QPushButton { background: #fee2e2; color: #991b1b; border-radius: 12px; "
+            "border: none; font-weight: bold; font-size: 10pt; }"
+            "QPushButton:hover { background: #fca5a5; }"
+        )
+        badge_clear.clicked.connect(self.clear_framework_selection)
+        badge_layout.addWidget(self.badge_label)
+        badge_layout.addWidget(badge_clear)
+        badge_layout.addStretch()
+        card_layout.addWidget(self.badge_widget)
+
+        # ── Framework Toggle Button ───────────────────────────────────────
+        self.fw_toggle_btn = QPushButton("＋  Choose a specific framework  (optional — AI will auto-select if skipped)")
+        self.fw_toggle_btn.setObjectName("FwToggleBtn")
+        self.fw_toggle_btn.setCheckable(True)
+        self.fw_toggle_btn.setChecked(False)
+        self.fw_toggle_btn.clicked.connect(self.toggle_framework_panel)
+        self.fw_toggle_btn.setFixedHeight(38)
+        card_layout.addWidget(self.fw_toggle_btn)
 
         categories = [
             {
@@ -378,13 +407,17 @@ class FounderApp(QMainWindow):
             },
         ]
 
-        # Wrap entire framework panel in scroll area so it never collapses
+        # ── Collapsible Framework Panel (hidden by default) ───────────────
+        self.fw_panel = QWidget()
+        self.fw_panel.setVisible(False)
+
         panel_scroll = QScrollArea()
         panel_scroll.setWidgetResizable(True)
         panel_scroll.setFrameShape(QFrame.Shape.NoFrame)
         panel_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         panel_scroll.setStyleSheet("background: transparent; border: none;")
-        panel_scroll.setMinimumHeight(320)
+        panel_scroll.setMinimumHeight(300)
+        panel_scroll.setMaximumHeight(300)
 
         col_widget = QWidget()
         col_widget.setStyleSheet("background: transparent;")
@@ -392,7 +425,7 @@ class FounderApp(QMainWindow):
         col_layout.setSpacing(10)
         col_layout.setContentsMargins(0, 0, 0, 0)
 
-        for i, cat in enumerate(categories):
+        for cat in categories:
             col_frame = QFrame()
             col_frame.setMinimumWidth(280)
             col_frame.setStyleSheet(f"""
@@ -411,7 +444,6 @@ class FounderApp(QMainWindow):
             cat_title.setStyleSheet(f"color: {cat['color']}; letter-spacing: 1px; background: transparent; border: none;")
             col_v.addWidget(cat_title)
 
-            # All columns scroll — Planning has 6 items, others 3-4
             scroll = QScrollArea()
             scroll.setWidgetResizable(True)
             scroll.setFrameShape(QFrame.Shape.NoFrame)
@@ -426,17 +458,20 @@ class FounderApp(QMainWindow):
                 fw_card = ClickableCard(
                     name, subtitle, desc, prompt,
                     cat["color"], cat["bg"], cat["border"],
-                    self.set_quick_prompt
+                    self.select_framework
                 )
                 scroll_inner.addWidget(fw_card)
             scroll_inner.addStretch()
             scroll.setWidget(scroll_content)
             col_v.addWidget(scroll)
-
             col_layout.addWidget(col_frame)
 
         panel_scroll.setWidget(col_widget)
-        card_layout.addWidget(panel_scroll)
+        fw_panel_layout = QVBoxLayout(self.fw_panel)
+        fw_panel_layout.setContentsMargins(0, 0, 0, 0)
+        fw_panel_layout.addWidget(panel_scroll)
+
+        card_layout.addWidget(self.fw_panel)
         layout.addWidget(card)
 
         
@@ -487,7 +522,34 @@ class FounderApp(QMainWindow):
         dialog = ProfileDialog(self)
         dialog.exec()
         
+    def toggle_framework_panel(self, checked):
+        self.fw_panel.setVisible(checked)
+        if checked:
+            self.fw_toggle_btn.setText("－  Hide frameworks")
+        else:
+            self.fw_toggle_btn.setText("＋  Choose a specific framework  (optional — AI will auto-select if skipped)")
+
+    def select_framework(self, prompt):
+        """Called when a framework card is clicked. Stores the framework prompt
+        as a badge and collapses the panel — query box stays clean."""
+        # Extract the framework name from the prompt for the badge
+        import re
+        match = re.search(r'(ECG KISS|SLR CAMERAS|MC BEERS|PC PEERS|PS ERP|DC ERPRS|OKS REC SME|PFA SAAS SME|RSS FEED SME|RPM REAP ER|RUN DCMS ER|ERM FABS ER|ADMINS ER)', prompt)
+        name = match.group(1) if match else "Framework"
+        self.selected_framework_prompt = prompt
+        self.badge_label.setText(f"🎯  Using: {name}")
+        self.badge_widget.setVisible(True)
+        # Auto-collapse the panel
+        self.fw_panel.setVisible(False)
+        self.fw_toggle_btn.setChecked(False)
+        self.fw_toggle_btn.setText("＋  Choose a specific framework  (optional — AI will auto-select if skipped)")
+
+    def clear_framework_selection(self):
+        self.selected_framework_prompt = None
+        self.badge_widget.setVisible(False)
+
     def set_quick_prompt(self, text):
+        """Legacy method kept for compatibility."""
         self.query_input.setPlainText(text)
         
     def dragEnterEvent(self, event):
@@ -527,17 +589,26 @@ class FounderApp(QMainWindow):
                 
     def run_analysis(self):
         query = self.query_input.toPlainText().strip()
-        if not query and not self.current_document_text:
-            QMessageBox.warning(self, "Input Required", "Please upload a document or type a question.")
+
+        # If a framework was selected, combine it with the user's natural language
+        if hasattr(self, 'selected_framework_prompt') and self.selected_framework_prompt:
+            if query:
+                combined = f"{query}\n\nPlease apply the framework: {self.selected_framework_prompt}"
+            else:
+                combined = self.selected_framework_prompt
+        else:
+            combined = query
+
+        if not combined and not self.current_document_text:
+            QMessageBox.warning(self, "Input Required", "Please describe your challenge above.")
             return
-            
+
         self.analyze_btn.setEnabled(False)
         self.progress.setVisible(True)
         self.output_area.clear()
-        self.status_label.setText("Analyzing...")
-        
-        # Run in thread
-        self.worker = AnalysisWorker(self.engine, query, self.current_document_text)
+        self.status_label.setText("Analyzing your business challenge...")
+
+        self.worker = AnalysisWorker(self.engine, combined, self.current_document_text)
         self.worker.finished.connect(self.on_analysis_complete)
         self.worker.start()
         
@@ -631,6 +702,27 @@ if __name__ == "__main__":
     }
     QPushButton#AnalyzeBtn:disabled {
         background-color: #94a3b8;
+    }
+    /* Framework toggle button */
+    QPushButton#FwToggleBtn {
+        background-color: #f8fafc;
+        color: #475569;
+        border: 1.5px dashed #cbd5e1;
+        border-radius: 8px;
+        padding: 6px 14px;
+        font-size: 11pt;
+        text-align: left;
+    }
+    QPushButton#FwToggleBtn:hover {
+        background-color: #f1f5f9;
+        border-color: #1a7a3c;
+        color: #1a7a3c;
+    }
+    QPushButton#FwToggleBtn:checked {
+        background-color: #f0fdf4;
+        border-color: #1a7a3c;
+        color: #1a7a3c;
+        border-style: solid;
     }
     QProgressBar {
         border: 1px solid #e2e8f0;
