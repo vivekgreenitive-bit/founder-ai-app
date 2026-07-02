@@ -81,33 +81,34 @@ class FounderAIEngine:
         if not self.llm or not self.vectorstore:
             return
             
-        # Using a simpler instruction format that the model respects better in raw tests
-        prompt_template = """ABSOLUTE RULE: YOU MUST OUTPUT YOUR ENTIRE RESPONSE IN THE FOLLOWING 6-PART SEQUENCE. DO NOT USE ANY OTHER HEADERS OR STEPS.
+        # Simplified prompt with Hallucination Guard and repetition penalty
+        prompt_template = """ABSOLUTE RULE: YOU MUST OUTPUT YOUR ENTIRE RESPONSE IN THE FOLLOWING 6-PART SEQUENCE. STOP IMMEDIATELY AFTER THE ATHLETE PERSPECTIVE. DO NOT REPEAT THE RESPONSE.
 
-CRITICAL: APPLY ONLY ONE (1) RELEVANT FRAMEWORK FROM THE 13 FOUNDER FRAMEWORKS. DO NOT OVERWHELM THE FOUNDER WITH MULTIPLE TOOLS. PICK THE SINGLE MOST IMPACTFUL ONE.
+HALLUCINATION GUARD: YOU ARE FORBIDDEN FROM USING GENERIC FRAMEWORKS (LEAN STARTUP, OKRS, SWOT, ETC). YOU MUST ONLY USE ONE OF THE 13 FOUNDER FRAMEWORKS FROM THE SOURCE TEXT:
+ECG KISS | SLR CAMERAS | MC BEERS | PC PEERS | PS ERP | DC ERPRS | OKS REC SME | PFA SAAS SME | RSS FEED SME | RPM REAP ER | RUN DCMS ER | ERM FABS ER | ADMINS ER
 
 1. Business Scenario
-[2-3 sentences grounded in the founder's realistic context]
+[2-3 sentences tailored to the founder's challenge]
 
 2. Framework Name
-[The exact name of the SINGLE selected Founder Framework from FounderFrameworks.txt]
+[The exact name of the SINGLE Founder Framework chosen from the 13 above]
 
 3. Relevant Framework Sections Applied
-*Highlighting only the high-impact elements of the ONE selected framework:*
+*Applying the high-impact acronym letters from the source text:*
 [Acronym Letter] – [Name]: [Specific real-time application]
 → Example: [Concrete real-world example]
 
 4. Dreamer Perspective
-[Possibilities, innovation, and long-term vision]
+[Possibilities and long-term vision]
 
 5. Guardian Perspective
-[Risks, sustainability, and operational stability]
+[Risks and operational stability]
 
 6. Athlete Perspective
-[Execution, momentum, and measurable outcomes]
+[Execution and momentum]
 
 **Your #1 Priority This Week**
-[One specific action based on the Athlete perspective]
+[One action based on the Athlete perspective]
 
 Context: {context}
 
