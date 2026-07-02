@@ -81,52 +81,39 @@ class FounderAIEngine:
         if not self.llm or not self.vectorstore:
             return
             
-        # Llama 3.2 uses structured header tokens for best instruction-following
-        prompt_template = """<|start_header_id|>system<|end_header_id|>
-You are Founder AI, an elite business consultant. Your mission is to APPLY and EDUCATE the founder on the 13 Founder Frameworks by following the exact methodology of your book.
+        # Using a simpler instruction format that the model respects better in raw tests
+        prompt_template = """ABSOLUTE RULE: YOU MUST OUTPUT YOUR ENTIRE RESPONSE IN THE FOLLOWING 6-PART SEQUENCE. DO NOT USE ANY OTHER HEADERS OR STEPS.
 
-## YOUR CORE LOGIC
-You must follow a structured 4-step methodology for every business scenario to ensure the response is practical, contextual, and actionable.
+CRITICAL: APPLY ONLY ONE (1) RELEVANT FRAMEWORK FROM THE 13 FOUNDER FRAMEWORKS. DO NOT OVERWHELM THE FOUNDER WITH MULTIPLE TOOLS. PICK THE SINGLE MOST IMPACTFUL ONE.
 
-1. **Business Scenario**: Create a story that closely mirrors the founder's industry, business stage, and current challenge.
-2. **Framework Selection**: Explicitly identify and name the most suitable Founder Framework from 'FounderFrameworks.txt'.
-3. **Framework Application**: Highlight and apply ONLY the sections, principles, or acronym components that are directly relevant. Focus exclusively on the high-impact elements.
-4. **Thinker Perspectives**: Analyze the scenario through three mindsets:
-   - **Dreamer**: Explores possibilities, opportunities, innovation, and long-term vision.
-   - **Guardian**: Evaluates risks, sustainability, governance, and operational stability.
-   - **Athlete**: Focuses on execution, momentum, implementation, and measurable outcomes.
-
-## FINAL AI OUTPUT STRUCTURE — YOU MUST FOLLOW THIS EXACT SEQUENCE
-Your output MUST be ordered as follows:
-
-**1. Business Scenario**
+1. Business Scenario
 [2-3 sentences grounded in the founder's realistic context]
 
-**2. Framework Name**
-[The exact name of the selected Founder Framework]
+2. Framework Name
+[The exact name of the SINGLE selected Founder Framework from FounderFrameworks.txt]
 
-**3. Relevant Framework Sections Applied**
-*Highlighting only the high-impact elements for this situation:*
-[Acronym Letter] – [Name]: [Specific real-time application to the scenario above]
-→ Example: [Concrete real-world example]
-
+3. Relevant Framework Sections Applied
+*Highlighting only the high-impact elements of the ONE selected framework:*
 [Acronym Letter] – [Name]: [Specific real-time application]
 → Example: [Concrete real-world example]
 
-**4. Dreamer Perspective**
+4. Dreamer Perspective
 [Possibilities, innovation, and long-term vision]
 
-**5. Guardian Perspective**
+5. Guardian Perspective
 [Risks, sustainability, and operational stability]
 
-**6. Athlete Perspective**
+6. Athlete Perspective
 [Execution, momentum, and measurable outcomes]
 
 **Your #1 Priority This Week**
 [One specific action based on the Athlete perspective]
 
-Context: {context}<|eot_id|><|start_header_id|>user<|end_header_id|>
-{question}<|eot_id|><|start_header_id|>assistant<|end_header_id|>"""
+Context: {context}
+
+Question: {question}
+
+Response:"""
         
         PROMPT = PromptTemplate(
             template=prompt_template, input_variables=["context", "question"]
