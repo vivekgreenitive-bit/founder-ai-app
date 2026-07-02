@@ -114,11 +114,21 @@ Actionable Framework Analysis:"""
             if os.path.exists(profile_path):
                 with open(profile_path, 'r') as f:
                     data = json.load(f)
+                    name = data.get("name", "")
                     industry = data.get("industry", "")
-                    revenue = data.get("revenue", "")
-                    goal = data.get("goal", "")
-                    if industry or revenue or goal:
-                        full_query += f"\n\n--- Company Context ---\nIndustry: {industry}\nRevenue: {revenue}\n1-Year Goal: {goal}\n-----------------------\nTailor your framework advice strictly to this specific business context."
+                    stage = data.get("stage", "")
+                    team = data.get("team", "")
+                    challenge = data.get("challenge", "")
+                    
+                    if industry or stage or challenge:
+                        full_query += f"\n\n--- Executive Context Briefing ---\n"
+                        if name: full_query += f"Business Name: {name}\n"
+                        if industry: full_query += f"Industry: {industry}\n"
+                        if stage: full_query += f"Business Stage: {stage}\n"
+                        if team: full_query += f"Team Size: {team}\n"
+                        if challenge: full_query += f"Primary Challenge: {challenge}\n"
+                        full_query += "---------------------------------\n"
+                        full_query += "Tailor your framework advice strictly to this specific business context and demographic."
         except Exception as e:
             print("Could not load company context:", e)
 

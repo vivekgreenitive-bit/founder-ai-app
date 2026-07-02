@@ -4,7 +4,7 @@ import json
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                              QHBoxLayout, QPushButton, QTextEdit, QLabel, 
                              QFileDialog, QProgressBar, QMessageBox,
-                             QDialog, QFormLayout, QLineEdit, QDialogButtonBox, QFrame)
+                             QDialog, QFormLayout, QLineEdit, QDialogButtonBox, QFrame, QComboBox)
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
 from PyQt6.QtGui import QFont
 
@@ -30,44 +30,132 @@ class AnalysisWorker(QThread):
 class ProfileDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("Company Profile")
-        self.setMinimumWidth(400)
+        self.setWindowTitle("Executive Context Briefing")
+        self.setMinimumWidth(550)
         
-        self.layout = QFormLayout(self)
+        main_layout = QVBoxLayout(self)
+        main_layout.setContentsMargins(30, 30, 30, 30)
+        main_layout.setSpacing(20)
         
-        self.industry_input = QLineEdit()
-        self.revenue_input = QLineEdit()
-        self.goal_input = QLineEdit()
+        # Header
+        title = QLabel("Executive Context Briefing")
+        title.setFont(QFont("Arial", 20, QFont.Weight.Bold))
+        title.setStyleSheet("color: #1f2937;")
+        main_layout.addWidget(title)
         
-        self.layout.addRow("Industry:", self.industry_input)
-        self.layout.addRow("Current Revenue:", self.revenue_input)
-        self.layout.addRow("1-Year Goal:", self.goal_input)
+        subtitle = QLabel("To provide elite, tailored operational advice, the Founder AI needs to understand your current business landscape.")
+        subtitle.setWordWrap(True)
+        subtitle.setStyleSheet("color: #64748b; font-size: 13pt; margin-bottom: 10px;")
+        main_layout.addWidget(subtitle)
+        
+        self.form_layout = QFormLayout()
+        self.form_layout.setSpacing(15)
+        self.form_layout.setLabelAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+        
+        # Inputs
+        self.name_input = QLineEdit()
+        self.name_input.setPlaceholderText("e.g. Acme Corp")
+        
+        self.industry_input = QComboBox()
+        self.industry_input.addItems(["SaaS / Software", "E-commerce", "Manufacturing", "Agency / Services", "Retail", "Healthcare", "Real Estate", "Other"])
+        
+        self.stage_input = QComboBox()
+        self.stage_input.addItems(["Pre-revenue / Idea", "Early Stage ($0 - $1M)", "Growth ($1M - $10M)", "Enterprise ($10M+)"])
+        
+        self.team_input = QComboBox()
+        self.team_input.addItems(["Solo Founder", "2 - 10 Employees", "11 - 50 Employees", "50+ Employees"])
+        
+        self.challenge_input = QComboBox()
+        self.challenge_input.addItems(["Founder is the Bottleneck", "Unpredictable Cash Flow", "Team Execution Errors / Lack of SOPs", "Stagnant Revenue Growth", "Other"])
+        
+        # Style all inputs
+        input_style = """
+            QLineEdit, QComboBox {
+                padding: 10px;
+                border: 1px solid #cbd5e1;
+                border-radius: 6px;
+                background: #ffffff;
+                font-size: 13pt;
+                color: #334155;
+            }
+            QComboBox::drop-down {
+                border: none;
+            }
+        """
+        self.name_input.setStyleSheet(input_style)
+        self.industry_input.setStyleSheet(input_style)
+        self.stage_input.setStyleSheet(input_style)
+        self.team_input.setStyleSheet(input_style)
+        self.challenge_input.setStyleSheet(input_style)
+        
+        # Label Styling
+        label_font = QFont("Arial", 12, QFont.Weight.Bold)
+        
+        def add_styled_row(label_text, widget):
+            lbl = QLabel(label_text)
+            lbl.setFont(label_font)
+            lbl.setStyleSheet("color: #334155;")
+            self.form_layout.addRow(lbl, widget)
+            
+        add_styled_row("Business Name:", self.name_input)
+        add_styled_row("Industry Segment:", self.industry_input)
+        add_styled_row("Business Stage:", self.stage_input)
+        add_styled_row("Team Size:", self.team_input)
+        add_styled_row("Primary Challenge:", self.challenge_input)
+        
+        main_layout.addLayout(self.form_layout)
         
         # Load existing data
         self.profile_path = "company_profile.json"
         self.load_profile()
         
-        self.buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
-        self.buttons.accepted.connect(self.accept)
-        self.buttons.rejected.connect(self.reject)
-        self.layout.addWidget(self.buttons)
+        # Save Button
+        self.save_btn = QPushButton("Initialize Founder AI Context")
+        self.save_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #1a7a3c;
+                color: white;
+                font-weight: bold;
+                font-size: 14pt;
+                padding: 15px;
+                border: none;
+                border-radius: 8px;
+                margin-top: 15px;
+            }
+            QPushButton:hover {
+                background-color: #145c2d;
+            }
+        """)
+        self.save_btn.clicked.connect(self.accept)
+        main_layout.addWidget(self.save_btn)
+        
+        self.setStyleSheet("QDialog { background-color: #f8fafc; }")
+        
+    def set_combo_text(self, combo, text):
+        index = combo.findText(text)
+        if index >= 0:
+            combo.setCurrentIndex(index)
         
     def load_profile(self):
         if os.path.exists(self.profile_path):
             try:
                 with open(self.profile_path, 'r') as f:
                     data = json.load(f)
-                    self.industry_input.setText(data.get("industry", ""))
-                    self.revenue_input.setText(data.get("revenue", ""))
-                    self.goal_input.setText(data.get("goal", ""))
+                    self.name_input.setText(data.get("name", ""))
+                    self.set_combo_text(self.industry_input, data.get("industry", ""))
+                    self.set_combo_text(self.stage_input, data.get("stage", ""))
+                    self.set_combo_text(self.team_input, data.get("team", ""))
+                    self.set_combo_text(self.challenge_input, data.get("challenge", ""))
             except:
                 pass
                 
     def accept(self):
         data = {
-            "industry": self.industry_input.text(),
-            "revenue": self.revenue_input.text(),
-            "goal": self.goal_input.text()
+            "name": self.name_input.text(),
+            "industry": self.industry_input.currentText(),
+            "stage": self.stage_input.currentText(),
+            "team": self.team_input.currentText(),
+            "challenge": self.challenge_input.currentText()
         }
         try:
             with open(self.profile_path, 'w') as f:
