@@ -213,8 +213,19 @@ class FounderApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Founder Frameworks AI Consultant")
-        self.setMinimumSize(1050, 700)
-        self.showMaximized()
+        self.setMinimumSize(960, 640)
+
+        # Size the window to fit the screen naturally — desktop app feel
+        from PyQt6.QtGui import QGuiApplication
+        screen = QGuiApplication.primaryScreen().availableGeometry()
+        w = min(1280, int(screen.width() * 0.90))
+        h = min(820, int(screen.height() * 0.90))
+        self.resize(w, h)
+        # Center on screen
+        self.move(
+            screen.x() + (screen.width() - w) // 2,
+            screen.y() + (screen.height() - h) // 2
+        )
         self.setAcceptDrops(True)
         
         # Data
