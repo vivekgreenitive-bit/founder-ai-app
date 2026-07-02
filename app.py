@@ -23,7 +23,7 @@ class ClickableCard(QFrame):
         self.bg = bg
         self.border = border
         self.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.setMinimumHeight(46)
+        self.setMinimumHeight(36)
         self.setToolTip(desc)
         self.setSizePolicy(
             QSizePolicy.Policy.Expanding,
@@ -41,11 +41,11 @@ class ClickableCard(QFrame):
             }}
         """)
         v = QVBoxLayout(self)
-        v.setContentsMargins(10, 7, 10, 7)
+        v.setContentsMargins(10, 5, 10, 5)
         v.setSpacing(0)
 
         name_label = QLabel(f"<b>{name}</b>  —  {subtitle}")
-        name_label.setStyleSheet(f"color: {color}; font-size: 10pt; background: transparent; border: none;")
+        name_label.setStyleSheet(f"color: {color}; font-size: 9pt; background: transparent; border: none;")
         name_label.setWordWrap(False)
         v.addWidget(name_label)
 
@@ -213,7 +213,8 @@ class FounderApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Founder Frameworks AI Consultant")
-        self.setMinimumSize(1050, 720)
+        self.setMinimumSize(1050, 700)
+        self.showMaximized()
         self.setAcceptDrops(True)
         
         # Data
@@ -316,8 +317,8 @@ class FounderApp(QMainWindow):
         sidebar_content = QWidget()
         sidebar_content.setStyleSheet("background: #f8fafc;")
         sidebar_inner = QVBoxLayout(sidebar_content)
-        sidebar_inner.setContentsMargins(8, 8, 8, 8)
-        sidebar_inner.setSpacing(10)
+        sidebar_inner.setContentsMargins(6, 6, 6, 6)
+        sidebar_inner.setSpacing(3)
 
         categories = [
             {
@@ -359,19 +360,23 @@ class FounderApp(QMainWindow):
             },
         ]
 
-        for cat in categories:
-            # Category header
+        for idx, cat in enumerate(categories):
+            # Add spacing before every section except the first
+            if idx > 0:
+                sidebar_inner.addSpacing(8)
+
+            # Category header — compact pill label
             cat_header = QLabel(cat["title"])
-            cat_header.setFont(QFont("Arial", 10, QFont.Weight.Bold))
-            cat_header.setFixedHeight(30)
+            cat_header.setFont(QFont("Arial", 9, QFont.Weight.Bold))
+            cat_header.setFixedHeight(22)
             cat_header.setStyleSheet(
                 f"color: {cat['color']}; background: {cat['bg']}; "
-                f"border: 1px solid {cat['border']}; border-radius: 6px; "
+                f"border: 1px solid {cat['border']}; border-radius: 4px; "
                 f"padding-left: 8px; letter-spacing: 1px;"
             )
             sidebar_inner.addWidget(cat_header)
 
-            # Framework cards stacked vertically in the sidebar
+            # Framework cards — tightly spaced
             for name, subtitle, desc, prompt in cat["items"]:
                 fw_card = ClickableCard(
                     name, subtitle, desc, prompt,
