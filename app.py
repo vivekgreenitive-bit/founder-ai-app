@@ -251,31 +251,55 @@ class FounderApp(QMainWindow):
         self.query_input.setPlaceholderText("E.g., I am losing business and I work 16 hours a day.")
         card_layout.addWidget(self.query_input)
         
-        # 1-Click Diagnostic Buttons
-        quick_btns_layout = QHBoxLayout()
-        quick_btns_layout.setSpacing(10)
-        
-        btn1 = QPushButton("Delegation")
-        btn1.setObjectName("ChipBtn")
-        btn1.clicked.connect(lambda: self.set_quick_prompt("Act as my COO. Run the OKS REC SME framework on my daily schedule and tell me how to delegate tasks to remove myself as the bottleneck."))
-        quick_btns_layout.addWidget(btn1)
-        
-        btn2 = QPushButton("SOP Creation")
-        btn2.setObjectName("ChipBtn")
-        btn2.clicked.connect(lambda: self.set_quick_prompt("Run the RSS FEED SME framework. Help me create an SOP structure so my team stops making errors on routine tasks."))
-        quick_btns_layout.addWidget(btn2)
-        
-        btn3 = QPushButton("Diagnostic")
-        btn3.setObjectName("ChipBtn")
-        btn3.clicked.connect(lambda: self.set_quick_prompt("Run the ECG KISS diagnostic framework on my business to help me identify gaps and simulate strategic solutions for growth."))
-        quick_btns_layout.addWidget(btn3)
-        
-        btn4 = QPushButton("Quarterly Planning")
-        btn4.setObjectName("ChipBtn")
-        btn4.clicked.connect(lambda: self.set_quick_prompt("Use the MC BEERS framework to help me break down our yearly goals into a rigid 90-day execution plan."))
-        quick_btns_layout.addWidget(btn4)
-        
-        card_layout.addLayout(quick_btns_layout)
+        # Founder Framework Selector Chips
+        chip_label = QLabel("Apply a Founder Framework:")
+        chip_label.setStyleSheet("color: #64748b; font-size: 11pt; font-weight: bold;")
+        card_layout.addWidget(chip_label)
+
+        frameworks = [
+            ("ECG KISS", "Run the ECG KISS overall business diagnosis on my situation and identify my biggest operational gap."),
+            ("SLR CAMERAS", "Apply the SLR CAMERAS framework to help me build a structured yearly plan for my business."),
+            ("MC BEERS", "Use the MC BEERS framework to break down my goals into a 90-day execution sprint."),
+            ("PC PEERS", "Apply the PC PEERS framework to create a focused monthly planning structure for my team."),
+            ("PS ERP", "Use the PS ERP framework to organize my weekly priorities and stop wasting time on low-value tasks."),
+            ("DC ERPRS", "Apply the DC ERPRS framework to structure my daily schedule and make every day count."),
+            ("OKS REC SME", "Use the OKS REC SME framework to design a system that removes me as the bottleneck."),
+            ("PFA SAAS SME", "Apply the PFA SAAS SME framework to document and optimize a core business process."),
+            ("RSS FEED SME", "Use the RSS FEED SME framework to create an SOP so my team stops making errors on routine tasks."),
+            ("RPM REAP ER", "Apply the RPM REAP ER framework to diagnose why my execution is breaking down and fix it."),
+            ("RUN DCMS ER", "Use the RUN DCMS ER framework to find and fix the revenue leaks in my business."),
+            ("ERM FABS ER", "Apply the ERM FABS ER framework to evaluate what is working and what needs to change immediately."),
+            ("ADMINS ER", "Use the ADMINS ER framework to help me manage the current crisis in my business."),
+        ]
+
+        # Row 1
+        row1 = QHBoxLayout()
+        row1.setSpacing(8)
+        for name, prompt in frameworks[:5]:
+            btn = QPushButton(name)
+            btn.setObjectName("ChipBtn")
+            btn.clicked.connect(lambda checked, p=prompt: self.set_quick_prompt(p))
+            row1.addWidget(btn)
+        card_layout.addLayout(row1)
+
+        # Row 2
+        row2 = QHBoxLayout()
+        row2.setSpacing(8)
+        for name, prompt in frameworks[5:10]:
+            btn = QPushButton(name)
+            btn.setObjectName("ChipBtn")
+            btn.clicked.connect(lambda checked, p=prompt: self.set_quick_prompt(p))
+            row2.addWidget(btn)
+        card_layout.addLayout(row2)
+
+        # Row 3
+        row3 = QHBoxLayout()
+        row3.setSpacing(8)
+        for name, prompt in frameworks[10:]:
+            btn = QPushButton(name)
+            btn.setObjectName("ChipBtn")
+            btn.clicked.connect(lambda checked, p=prompt: self.set_quick_prompt(p))
+            row3.addWidget(btn)
         layout.addWidget(card)
         
         # Analyze Button
