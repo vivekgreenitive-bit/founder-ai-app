@@ -724,14 +724,16 @@ class FounderApp(QMainWindow):
                 )
                 continue
 
-            # → Example: lines — shown as indented callout
+            # → Example: lines — shown as indented callout with "Sample Data" badge
             if stripped.startswith('→ Example:') or stripped.startswith('→ example:'):
                 example_text = stripped[len('→ Example:'):].strip() or stripped[len('→ example:'):].strip()
                 html_lines.append(
-                    f'<div style="margin:2px 0 6px 24px; padding:5px 10px; '
-                    f'background:#f0fdf4; border-left:3px solid #86efac; border-radius:3px;">'
-                    f'<span style="color:#166534; font-style:italic; font-size:9pt;">'
-                    f'<b>Example:</b> {example_text}</span></div>'
+                    f'<div style="margin:2px 0 6px 24px; padding:6px 10px; '
+                    f'background:#f0fdf4; border-left:3px solid #86efac; border-radius:4px;">'
+                    f'<span style="background:#bbf7d0; color:#166534; font-size:7pt; font-weight:bold; '
+                    f'padding:1px 6px; border-radius:8px; margin-right:6px; vertical-align:middle;">'
+                    f'SAMPLE DATA</span>'
+                    f'<span style="color:#166534; font-style:italic; font-size:9pt;">{example_text}</span></div>'
                 )
                 continue
 
@@ -746,9 +748,21 @@ class FounderApp(QMainWindow):
             else:
                 html_lines.append('<br/>')
 
+        # Append real-data CTA at the bottom of every diagnosis
+        cta = (
+            '<div style="margin-top:18px; padding:12px 16px; '
+            'background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px;">'
+            '<p style="margin:0 0 4px 0; font-weight:bold; color:#1d4ed8; font-size:10pt;">'
+            '💡 These examples use sample data.</p>'
+            '<p style="margin:0; color:#1e40af; font-size:9pt;">'
+            'Share your real numbers — revenue, team size, costs, timelines — '
+            'in the input below and I will apply each framework step directly to your actual situation.'
+            '</p></div>'
+        )
         return (
             '<html><body style="font-family: Arial; font-size: 12pt; padding: 8px;">'
             + ''.join(html_lines)
+            + cta
             + '</body></html>'
         )
 
