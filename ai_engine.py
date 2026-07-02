@@ -106,6 +106,22 @@ Actionable Framework Analysis:"""
             return "Error: AI Engine is not fully initialized. Please ensure the model file exists."
             
         full_query = query
+        
+        # Inject Company Context if it exists
+        try:
+            import json
+            profile_path = "company_profile.json"
+            if os.path.exists(profile_path):
+                with open(profile_path, 'r') as f:
+                    data = json.load(f)
+                    industry = data.get("industry", "")
+                    revenue = data.get("revenue", "")
+                    goal = data.get("goal", "")
+                    if industry or revenue or goal:
+                        full_query += f"\n\n--- Company Context ---\nIndustry: {industry}\nRevenue: {revenue}\n1-Year Goal: {goal}\n-----------------------\nTailor your framework advice strictly to this specific business context."
+        except Exception as e:
+            print("Could not load company context:", e)
+
         if document_text:
             full_query += f"\n\n--- User Uploaded Document ---\n{document_text}\n------------------------------\n"
             full_query += "Please analyze the document above using the Founder Frameworks."
