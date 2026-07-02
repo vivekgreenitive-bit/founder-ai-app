@@ -588,7 +588,7 @@ class FounderApp(QMainWindow):
 
     def copy_output(self):
         """Copy diagnosis text to clipboard."""
-        text = self.output_area.toPlainText()
+        text = getattr(self, '_plain_result', self.output_area.toPlainText())
         if text:
             QApplication.clipboard().setText(text)
             self.status_label.setText("✅ Copied to clipboard!")
@@ -672,10 +672,83 @@ class FounderApp(QMainWindow):
         self.worker.finished.connect(self.on_analysis_complete)
         self.worker.start()
         
+    def markdown_to_html(self, text: str) -> str:
+        """Convert the AI's markdown output to clean HTML for display."""
+        import re
+        lines = text.split('\n')
+        html_lines = []
+        in_steps = False
+
+        for line in lines:
+            stripped = line.strip()
+
+            # Framework section headers: **Framework: NAME — Role**
+            if re.match(r'^\*\*(Framework:|Supporting Framework:)', stripped):
+                inner = re.sub(r'^\*\*|\*\*$', '', stripped)
+                html_lines.append(
+                    f'<div style="margin-top:14px; margin-bottom:4px; padding:6px 10px; '
+                    f'background:#f0fdf4; border-left:4px solid #1a7a3c; border-radius:4px;">'
+                    f'<span style="color:#1a7a3c; font-weight:bold; font-size:11pt;">{inner}</span></div>'
+                )
+                in_steps = True
+                continue
+
+            # Other bold headings: **Diagnosis**, **Root Causes**, etc.
+            if re.match(r'^\*\*.+\*\*$', stripped):
+                inner = re.sub(r'^\*\*|\*\*$', '', stripped)
+                html_lines.append(
+                    f'<p style="margin-top:12px; margin-bottom:2px; '
+                    f'font-weight:bold; font-size:11pt; color:#1e293b;">{inner}</p>'
+                )
+                in_steps = False
+                continue
+
+            # Numbered steps: Step 1: ...
+            m = re.match(r'^Step\s*(\d+):\s*(.+)', stripped)
+            if m:
+                num, content = m.group(1), m.group(2)
+                html_lines.append(
+                    f'<div style="display:flex; margin:3px 0 3px 12px;">'
+                    f'<span style="min-width:24px; font-weight:bold; color:#1a7a3c;">{num}.</span>'
+                    f'<span style="color:#334155;">{content}</span></div>'
+                )
+                continue
+
+            # Bullet points
+            if stripped.startswith('- '):
+                content = stripped[2:]
+                # bold inline **text**
+                content = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', content)
+                html_lines.append(
+                    f'<div style="margin:2px 0 2px 12px; color:#475569;">• {content}</div>'
+                )
+                continue
+
+            # Apply line ("Apply this framework to the situation:")
+            if stripped.lower().startswith('apply this framework'):
+                html_lines.append(
+                    f'<p style="margin:2px 0 4px 12px; color:#64748b; font-style:italic;">{stripped}</p>'
+                )
+                continue
+
+            # Normal paragraph text
+            if stripped:
+                line_html = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', stripped)
+                html_lines.append(f'<p style="margin:4px 0; color:#334155;">{line_html}</p>')
+            else:
+                html_lines.append('<br/>')
+
+        return (
+            '<html><body style="font-family: Arial; font-size: 12pt; padding: 8px;">'
+            + ''.join(html_lines)
+            + '</body></html>'
+        )
+
     def on_analysis_complete(self, result):
         self.progress.setVisible(False)
         self.analyze_btn.setEnabled(True)
-        self.output_area.setPlainText(result)
+        self._plain_result = result          # store for clipboard copy
+        self.output_area.setHtml(self.markdown_to_html(result))
         self.copy_btn.setVisible(True)
         self.status_label.setText("✅  Analysis complete. Copy or start a new diagnosis.")
         self.status_label.setStyleSheet("color: #1a7a3c; font-size: 12px;")
