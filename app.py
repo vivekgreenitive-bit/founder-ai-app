@@ -23,11 +23,11 @@ class ClickableCard(QFrame):
         self.bg = bg
         self.border = border
         self.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.setMinimumHeight(36)
+        self.setMinimumHeight(30)
         self.setToolTip(desc)
         self.setSizePolicy(
             QSizePolicy.Policy.Expanding,
-            QSizePolicy.Policy.Minimum
+            QSizePolicy.Policy.Expanding   # fills whatever height is available
         )
         self.setStyleSheet(f"""
             ClickableCard {{
@@ -317,8 +317,8 @@ class FounderApp(QMainWindow):
         sidebar_content = QWidget()
         sidebar_content.setStyleSheet("background: #f8fafc;")
         sidebar_inner = QVBoxLayout(sidebar_content)
-        sidebar_inner.setContentsMargins(6, 6, 6, 6)
-        sidebar_inner.setSpacing(3)
+        sidebar_inner.setContentsMargins(5, 5, 5, 5)
+        sidebar_inner.setSpacing(2)
 
         categories = [
             {
@@ -385,7 +385,7 @@ class FounderApp(QMainWindow):
                 )
                 sidebar_inner.addWidget(fw_card)
 
-        sidebar_inner.addStretch()
+        # No addStretch — cards expand to fill the full sidebar height on any screen
         sidebar_scroll.setWidget(sidebar_content)
         left_layout.addWidget(sidebar_scroll)
         body_layout.addWidget(left_panel)
