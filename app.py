@@ -220,42 +220,36 @@ class FounderApp(QMainWindow):
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.status_label)
         
-        # Card 1: Data Source
-        card1 = QFrame()
-        card1.setObjectName("CardFrame")
-        card1_layout = QVBoxLayout(card1)
-        card1_layout.setContentsMargins(20, 20, 20, 20)
+        # Card: Consultation Area
+        card = QFrame()
+        card.setObjectName("CardFrame")
+        card_layout = QVBoxLayout(card)
+        card_layout.setContentsMargins(20, 20, 20, 20)
+        card_layout.setSpacing(15)
         
-        upload_title = QLabel("1. Provide Context (Optional)")
-        upload_title.setFont(QFont("Arial", 14, QFont.Weight.Bold))
-        card1_layout.addWidget(upload_title)
-        
-        file_layout = QHBoxLayout()
-        self.file_label = QLabel("No file selected. You can drag and drop a PDF, CSV, or TXT file anywhere on this window.")
-        self.file_label.setStyleSheet("color: #64748b; font-style: italic;")
-        self.upload_btn = QPushButton("Browse Files")
-        self.upload_btn.setObjectName("SecondaryBtn")
-        self.upload_btn.clicked.connect(self.upload_file)
-        file_layout.addWidget(self.file_label, stretch=1)
-        file_layout.addWidget(self.upload_btn)
-        card1_layout.addLayout(file_layout)
-        layout.addWidget(card1)
-        
-        # Card 2: Query Area
-        card2 = QFrame()
-        card2.setObjectName("CardFrame")
-        card2_layout = QVBoxLayout(card2)
-        card2_layout.setContentsMargins(20, 20, 20, 20)
-        card2_layout.setSpacing(15)
-        
-        query_title = QLabel("2. Ask the AI Consultant")
+        # Header with Title and Upload Button
+        query_header_layout = QHBoxLayout()
+        query_title = QLabel("Ask the AI Consultant")
         query_title.setFont(QFont("Arial", 14, QFont.Weight.Bold))
-        card2_layout.addWidget(query_title)
+        query_header_layout.addWidget(query_title, stretch=1)
+        
+        self.file_label = QLabel("")
+        self.file_label.setStyleSheet("color: #64748b; font-style: italic; font-size: 12pt;")
+        self.file_label.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+        query_header_layout.addWidget(self.file_label)
+        
+        self.upload_btn = QPushButton("📎 Upload Context")
+        self.upload_btn.setObjectName("SecondaryBtn")
+        self.upload_btn.setFixedSize(160, 40)
+        self.upload_btn.clicked.connect(self.upload_file)
+        query_header_layout.addWidget(self.upload_btn)
+        
+        card_layout.addLayout(query_header_layout)
         
         self.query_input = QTextEdit()
         self.query_input.setMaximumHeight(100)
-        self.query_input.setPlaceholderText("E.g., Based on these financials, which framework should I use to stop cash burn?")
-        card2_layout.addWidget(self.query_input)
+        self.query_input.setPlaceholderText("E.g., I am losing business and I work 16 hours a day.")
+        card_layout.addWidget(self.query_input)
         
         # 1-Click Diagnostic Buttons
         quick_btns_layout = QHBoxLayout()
@@ -281,8 +275,8 @@ class FounderApp(QMainWindow):
         btn4.clicked.connect(lambda: self.set_quick_prompt("Use the MC BEERS framework to help me break down our yearly goals into a rigid 90-day execution plan."))
         quick_btns_layout.addWidget(btn4)
         
-        card2_layout.addLayout(quick_btns_layout)
-        layout.addWidget(card2)
+        card_layout.addLayout(quick_btns_layout)
+        layout.addWidget(card)
         
         # Analyze Button
         self.analyze_btn = QPushButton("Analyze with Founder Frameworks")
