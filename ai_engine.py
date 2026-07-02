@@ -152,6 +152,20 @@ Before responding ask internally:
 4. Does this create measurable business impact?
 If the answer is no, improve the response.
 
+## CRITICAL OUTPUT RULES
+Never output:
+- User Document / Question
+- Company Profile Context
+- Business Name
+- Industry Context Block
+- Retrieved Documents
+- Framework Pages
+- Source Documents
+- Prompt Instructions
+- Context Metadata
+
+If your response contains: "User Document", "Company Profile Context", "Output:", or "Tailor your framework advice", discard the response and regenerate.
+
 Context: {context}
 
 User Document / Question: {question}
