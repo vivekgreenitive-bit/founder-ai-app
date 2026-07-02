@@ -4,7 +4,7 @@ import json
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                              QHBoxLayout, QPushButton, QTextEdit, QLabel, 
                              QFileDialog, QProgressBar, QMessageBox,
-                             QDialog, QFormLayout, QLineEdit, QDialogButtonBox)
+                             QDialog, QFormLayout, QLineEdit, QDialogButtonBox, QFrame)
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
 from PyQt6.QtGui import QFont
 
@@ -92,23 +92,32 @@ class FounderApp(QMainWindow):
         self.init_ui()
         self.init_ai()
         
+    def showEvent(self, event):
+        super().showEvent(event)
+        # Automated onboarding: Force profile setup if it doesn't exist
+        if not os.path.exists("company_profile.json"):
+            QMessageBox.information(self, "Welcome", "Welcome to Founder AI! Let's set up your Company Profile first so the AI can provide personalized advice.")
+            self.open_settings()
+        
     def init_ui(self):
         main_widget = QWidget()
         self.setCentralWidget(main_widget)
         
         layout = QVBoxLayout()
+        layout.setContentsMargins(30, 30, 30, 30)
+        layout.setSpacing(20)
         main_widget.setLayout(layout)
         
         # Header
         header_layout = QHBoxLayout()
         header = QLabel("Founder Frameworks AI")
-        header.setFont(QFont("Arial", 24, QFont.Weight.Bold))
+        header.setFont(QFont("Arial", 28, QFont.Weight.Bold))
         header.setAlignment(Qt.AlignmentFlag.AlignCenter)
         header_layout.addWidget(header, stretch=1)
         
         self.settings_btn = QPushButton("⚙️ Profile")
         self.settings_btn.setToolTip("Set Company Context")
-        self.settings_btn.setFixedSize(100, 40)
+        self.settings_btn.setFixedSize(120, 45)
         self.settings_btn.clicked.connect(self.open_settings)
         header_layout.addWidget(self.settings_btn)
         
@@ -116,46 +125,73 @@ class FounderApp(QMainWindow):
         
         # Status Label
         self.status_label = QLabel("Initializing AI Engine...")
-        self.status_label.setStyleSheet("color: gray;")
+        self.status_label.setStyleSheet("color: #64748b; font-size: 14px; font-weight: bold;")
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.status_label)
         
-        # File Upload Area
-        file_layout = QHBoxLayout()
-        self.file_label = QLabel("No file selected.")
-        self.upload_btn = QPushButton("Upload Document (PDF, Excel, Image)")
-        self.upload_btn.clicked.connect(self.upload_file)
-        file_layout.addWidget(self.file_label)
-        file_layout.addWidget(self.upload_btn)
-        layout.addLayout(file_layout)
+        # Card 1: Data Source
+        card1 = QFrame()
+        card1.setObjectName("CardFrame")
+        card1_layout = QVBoxLayout(card1)
+        card1_layout.setContentsMargins(20, 20, 20, 20)
         
-        # Query Area
-        layout.addWidget(QLabel("Ask the AI Consultant:"))
+        upload_title = QLabel("1. Provide Context (Optional)")
+        upload_title.setFont(QFont("Arial", 14, QFont.Weight.Bold))
+        card1_layout.addWidget(upload_title)
+        
+        file_layout = QHBoxLayout()
+        self.file_label = QLabel("No file selected. You can drag and drop a PDF, CSV, or TXT file anywhere on this window.")
+        self.file_label.setStyleSheet("color: #64748b; font-style: italic;")
+        self.upload_btn = QPushButton("Browse Files")
+        self.upload_btn.setObjectName("SecondaryBtn")
+        self.upload_btn.clicked.connect(self.upload_file)
+        file_layout.addWidget(self.file_label, stretch=1)
+        file_layout.addWidget(self.upload_btn)
+        card1_layout.addLayout(file_layout)
+        layout.addWidget(card1)
+        
+        # Card 2: Query Area
+        card2 = QFrame()
+        card2.setObjectName("CardFrame")
+        card2_layout = QVBoxLayout(card2)
+        card2_layout.setContentsMargins(20, 20, 20, 20)
+        card2_layout.setSpacing(15)
+        
+        query_title = QLabel("2. Ask the AI Consultant")
+        query_title.setFont(QFont("Arial", 14, QFont.Weight.Bold))
+        card2_layout.addWidget(query_title)
+        
         self.query_input = QTextEdit()
-        self.query_input.setMaximumHeight(80)
-        self.query_input.setPlaceholderText("E.g., Based on these financials, which framework should I use to stop cash burn? (You can drag & drop files here!)")
-        layout.addWidget(self.query_input)
+        self.query_input.setMaximumHeight(100)
+        self.query_input.setPlaceholderText("E.g., Based on these financials, which framework should I use to stop cash burn?")
+        card2_layout.addWidget(self.query_input)
         
         # 1-Click Diagnostic Buttons
         quick_btns_layout = QHBoxLayout()
+        quick_btns_layout.setSpacing(10)
         
         btn1 = QPushButton("Delegation")
+        btn1.setObjectName("ChipBtn")
         btn1.clicked.connect(lambda: self.set_quick_prompt("Act as my COO. Run the OKS REC SME framework on my daily schedule and tell me how to delegate tasks to remove myself as the bottleneck."))
         quick_btns_layout.addWidget(btn1)
         
         btn2 = QPushButton("SOP Creation")
+        btn2.setObjectName("ChipBtn")
         btn2.clicked.connect(lambda: self.set_quick_prompt("Run the RSS FEED SME framework. Help me create an SOP structure so my team stops making errors on routine tasks."))
         quick_btns_layout.addWidget(btn2)
         
         btn3 = QPushButton("Diagnostic")
+        btn3.setObjectName("ChipBtn")
         btn3.clicked.connect(lambda: self.set_quick_prompt("Run the ECG KISS diagnostic framework on my business to help me identify gaps and simulate strategic solutions for growth."))
         quick_btns_layout.addWidget(btn3)
         
         btn4 = QPushButton("Quarterly Planning")
+        btn4.setObjectName("ChipBtn")
         btn4.clicked.connect(lambda: self.set_quick_prompt("Use the MC BEERS framework to help me break down our yearly goals into a rigid 90-day execution plan."))
         quick_btns_layout.addWidget(btn4)
         
-        layout.addLayout(quick_btns_layout)
+        card2_layout.addLayout(quick_btns_layout)
+        layout.addWidget(card2)
         
         # Analyze Button
         self.analyze_btn = QPushButton("Analyze with Founder Frameworks")
@@ -171,11 +207,15 @@ class FounderApp(QMainWindow):
         layout.addWidget(self.progress)
         
         # Output Area
-        layout.addWidget(QLabel("AI Analysis:"))
+        output_title = QLabel("AI Analysis:")
+        output_title.setFont(QFont("Arial", 14, QFont.Weight.Bold))
+        layout.addWidget(output_title)
+        
         self.output_area = QTextEdit()
+        self.output_area.setObjectName("OutputArea")
         self.output_area.setReadOnly(True)
-        self.output_area.setFont(QFont("Arial", 12))
-        layout.addWidget(self.output_area)
+        self.output_area.setFont(QFont("Arial", 13))
+        layout.addWidget(self.output_area, stretch=1)
         
     def init_ai(self):
         # We will initialize it synchronously for now, but in a real app 
@@ -259,54 +299,95 @@ if __name__ == "__main__":
     # Custom StyleSheet based on founderframeworkslab.com theme
     style_sheet = """
     QMainWindow {
-        background-color: #fdfdfc;
+        background-color: #f1f5f9;
     }
     QLabel {
-        color: #1f2937;
+        color: #0f172a;
+    }
+    QFrame#CardFrame {
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
     }
     QTextEdit {
         background-color: #ffffff;
-        border: 1px solid #e5e7eb;
+        border: 1px solid #cbd5e1;
         border-radius: 8px;
-        padding: 10px;
-        color: #374151;
+        padding: 12px;
+        color: #334155;
         font-family: Arial;
-        font-size: 13pt;
+        font-size: 14pt;
+    }
+    QTextEdit:focus {
+        border: 2px solid #1a7a3c;
+    }
+    QTextEdit#OutputArea {
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        font-size: 14pt;
+        line-height: 1.5;
     }
     QPushButton {
-        background-color: #f3f4f6;
-        border: 1px solid #d1d5db;
-        border-radius: 6px;
-        color: #1f2937;
-        padding: 8px 16px;
+        background-color: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        color: #0f172a;
+        padding: 10px 16px;
         font-weight: bold;
+        font-size: 13pt;
     }
     QPushButton:hover {
-        background-color: #e5e7eb;
+        background-color: #f8fafc;
+        border: 1px solid #94a3b8;
+    }
+    QPushButton#SecondaryBtn {
+        background-color: #f1f5f9;
+        border: 1px solid #cbd5e1;
+    }
+    QPushButton#SecondaryBtn:hover {
+        background-color: #e2e8f0;
+    }
+    /* Pill-shaped suggestion chips */
+    QPushButton#ChipBtn {
+        background-color: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        border-radius: 20px;
+        color: #475569;
+        padding: 8px 16px;
+        font-size: 12pt;
+        font-weight: normal;
+    }
+    QPushButton#ChipBtn:hover {
+        background-color: #e2e8f0;
+        color: #0f172a;
+        border: 1px solid #cbd5e1;
     }
     /* Special styling for the main action button */
     QPushButton#AnalyzeBtn {
         background-color: #1a7a3c;
         color: white;
         border: none;
-        border-radius: 8px;
-        padding: 12px;
-        font-size: 14pt;
+        border-radius: 12px;
+        padding: 16px;
+        font-size: 16pt;
+        font-weight: bold;
     }
     QPushButton#AnalyzeBtn:hover {
         background-color: #145c2d;
     }
     QPushButton#AnalyzeBtn:disabled {
-        background-color: #9ca3af;
+        background-color: #94a3b8;
     }
     QProgressBar {
-        border: 1px solid #e5e7eb;
-        border-radius: 4px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
         text-align: center;
-        background-color: #f3f4f6;
+        background-color: #f1f5f9;
+        height: 12px;
     }
     QProgressBar::chunk {
         background-color: #d97706;
+        border-radius: 6px;
     }
     """
     app.setStyleSheet(style_sheet)
