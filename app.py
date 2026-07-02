@@ -22,35 +22,52 @@ class ClickableCard(QFrame):
         self.color = color
         self.bg = bg
         self.border = border
+        self._selected = False
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setMinimumHeight(30)
         self.setToolTip(desc)
         self.setSizePolicy(
             QSizePolicy.Policy.Expanding,
-            QSizePolicy.Policy.Expanding   # fills whatever height is available
+            QSizePolicy.Policy.Expanding
         )
-        self.setStyleSheet(f"""
-            ClickableCard {{
-                background-color: white;
-                border: 1px solid {border};
-                border-left: 4px solid {color};
-                border-radius: 6px;
-            }}
-            ClickableCard:hover {{
-                background-color: {bg};
-            }}
-        """)
+        self._apply_style(False)
         v = QVBoxLayout(self)
         v.setContentsMargins(10, 5, 10, 5)
         v.setSpacing(0)
-
         name_label = QLabel(f"<b>{name}</b>  —  {subtitle}")
         name_label.setStyleSheet(f"color: {color}; font-size: 9pt; background: transparent; border: none;")
         name_label.setWordWrap(False)
         v.addWidget(name_label)
 
+    def _apply_style(self, selected):
+        if selected:
+            self.setStyleSheet(f"""
+                ClickableCard {{
+                    background-color: {self.bg};
+                    border: 2px solid {self.color};
+                    border-left: 5px solid {self.color};
+                    border-radius: 6px;
+                }}
+            """)
+        else:
+            self.setStyleSheet(f"""
+                ClickableCard {{
+                    background-color: white;
+                    border: 1px solid {self.border};
+                    border-left: 4px solid {self.color};
+                    border-radius: 6px;
+                }}
+                ClickableCard:hover {{
+                    background-color: {self.bg};
+                }}
+            """)
+
+    def set_selected(self, selected):
+        self._selected = selected
+        self._apply_style(selected)
+
     def mousePressEvent(self, event):
-        self.callback(self.prompt)
+        self.callback(self.prompt, self)
 
 class AnalysisWorker(QThread):
     finished = pyqtSignal(str)
@@ -232,6 +249,9 @@ class FounderApp(QMainWindow):
         self.engine = None
         self.current_document_text = ""
         self.current_file_path = ""
+        self.selected_framework_prompt = None
+        self._selected_card = None        # track highlighted sidebar card
+        self._all_sidebar_cards = []      # list of all ClickableCard widgets
         
         self.init_ui()
         self.init_ai()
@@ -313,11 +333,6 @@ class FounderApp(QMainWindow):
         )
         left_layout.addWidget(left_title)
 
-        left_hint = QLabel("  Click any card to use that framework")
-        left_hint.setFixedHeight(28)
-        left_hint.setStyleSheet("color: #94a3b8; font-size: 9pt; background: #f8fafc; padding-left: 10px;")
-        left_layout.addWidget(left_hint)
-
         # Scrollable list of all categories + cards
         sidebar_scroll = QScrollArea()
         sidebar_scroll.setWidgetResizable(True)
@@ -394,6 +409,7 @@ class FounderApp(QMainWindow):
                     cat["color"], cat["bg"], cat["border"],
                     self.select_framework
                 )
+                self._all_sidebar_cards.append(fw_card)
                 sidebar_inner.addWidget(fw_card)
 
         # No addStretch — cards expand to fill the full sidebar height on any screen
@@ -409,23 +425,41 @@ class FounderApp(QMainWindow):
         right_layout.setContentsMargins(16, 12, 16, 12)
         right_layout.setSpacing(8)
 
-        # Output title
+        # Output title row with Copy + New buttons
         out_title_row = QHBoxLayout()
         output_title = QLabel("Your Business Diagnosis")
         output_title.setFont(QFont("Arial", 13, QFont.Weight.Bold))
         output_title.setStyleSheet("color: #1e293b;")
         out_title_row.addWidget(output_title, stretch=1)
+
+        self.copy_btn = QPushButton("📋 Copy")
+        self.copy_btn.setObjectName("SecondaryBtn")
+        self.copy_btn.setFixedHeight(30)
+        self.copy_btn.setMinimumWidth(80)
+        self.copy_btn.setToolTip("Copy diagnosis to clipboard")
+        self.copy_btn.setVisible(False)
+        self.copy_btn.clicked.connect(self.copy_output)
+        out_title_row.addWidget(self.copy_btn)
+
+        new_btn = QPushButton("➕ New")
+        new_btn.setObjectName("SecondaryBtn")
+        new_btn.setFixedHeight(30)
+        new_btn.setMinimumWidth(70)
+        new_btn.setToolTip("Start a new diagnosis")
+        new_btn.clicked.connect(self.new_session)
+        out_title_row.addWidget(new_btn)
+
         right_layout.addLayout(out_title_row)
 
-        # Output area (fills space)
         self.output_area = QTextEdit()
         self.output_area.setObjectName("OutputArea")
         self.output_area.setReadOnly(True)
         self.output_area.setFont(QFont("Arial", 13))
         self.output_area.setPlaceholderText(
-            "Your business diagnosis will appear here.\n\n"
-            "👈  Pick a framework from the left panel  (or skip — AI will choose for you)\n"
-            "⬇️   Type your challenge below and press  ➤"
+            "Your diagnosis will appear here.\n\n"
+            "1️⃣  Pick a framework on the left  (optional)\n"
+            "2️⃣  Type your challenge below\n"
+            "3️⃣  Press ➤ to get your diagnosis"
         )
         right_layout.addWidget(self.output_area, stretch=1)
 
@@ -442,24 +476,26 @@ class FounderApp(QMainWindow):
         bottom_layout.setContentsMargins(14, 10, 14, 10)
         bottom_layout.setSpacing(6)
 
-        # Selected framework badge
+        # Selected framework badge — clean pill style, no red circle
         self.badge_widget = QWidget()
         self.badge_widget.setVisible(False)
         badge_layout = QHBoxLayout(self.badge_widget)
         badge_layout.setContentsMargins(0, 0, 0, 0)
-        badge_layout.setSpacing(6)
+        badge_layout.setSpacing(0)
         self.badge_label = QLabel()
         self.badge_label.setStyleSheet(
             "background: #dcfce7; color: #166534; border: 1px solid #86efac; "
-            "border-radius: 12px; padding: 3px 10px; font-size: 10pt; font-weight: bold;"
+            "border-radius: 10px 0px 0px 10px; padding: 3px 10px; font-size: 9pt; font-weight: bold;"
         )
-        badge_clear = QPushButton("✕")
-        badge_clear.setFixedSize(22, 22)
+        badge_clear = QPushButton(" × ")
+        badge_clear.setFixedHeight(26)
+        badge_clear.setMinimumWidth(28)
         badge_clear.setToolTip("Remove — let AI decide")
         badge_clear.setStyleSheet(
-            "QPushButton { background: #fee2e2; color: #991b1b; border-radius: 11px; "
-            "border: none; font-weight: bold; font-size: 9pt; }"
-            "QPushButton:hover { background: #fca5a5; }"
+            "QPushButton { background: #bbf7d0; color: #166534; "
+            "border: 1px solid #86efac; border-left: none; "
+            "border-radius: 0px 10px 10px 0px; font-weight: bold; font-size: 10pt; padding: 0px 4px; }"
+            "QPushButton:hover { background: #fca5a5; color: #991b1b; border-color: #fca5a5; }"
         )
         badge_clear.clicked.connect(self.clear_framework_selection)
         badge_layout.addWidget(self.badge_label)
@@ -474,16 +510,13 @@ class FounderApp(QMainWindow):
         self.query_input = QTextEdit()
         self.query_input.setMaximumHeight(85)
         self.query_input.setMinimumHeight(55)
-        self.query_input.setPlaceholderText(
-            "What's your biggest business challenge right now? "
-            "E.g.  I am losing customers.  My team is slow.  Everything depends on me."
-        )
+        self.query_input.setPlaceholderText("Describe your biggest business challenge...")
         input_row.addWidget(self.query_input, stretch=1)
 
         self.analyze_btn = QPushButton("➤")
         self.analyze_btn.setObjectName("SendBtn")
         self.analyze_btn.setToolTip("Get My Business Diagnosis")
-        self.analyze_btn.setFixedSize(52, 52)
+        self.analyze_btn.setFixedSize(42, 42)
         self.analyze_btn.clicked.connect(self.run_analysis)
         self.analyze_btn.setEnabled(False)
         input_row.addWidget(self.analyze_btn, alignment=Qt.AlignmentFlag.AlignBottom)
@@ -530,9 +563,16 @@ class FounderApp(QMainWindow):
         # No-op — framework panel is now the persistent left sidebar
         pass
 
-    def select_framework(self, prompt):
-        """Called when a framework card is clicked — shows badge in input area."""
+    def select_framework(self, prompt, card_widget):
+        """Called when a framework card is clicked — highlights card and shows badge."""
         import re
+        # Deselect previously selected card
+        if self._selected_card is not None:
+            self._selected_card.set_selected(False)
+        # Highlight the new card
+        card_widget.set_selected(True)
+        self._selected_card = card_widget
+
         match = re.search(r'(ECG KISS|SLR CAMERAS|MC BEERS|PC PEERS|PS ERP|DC ERPRS|OKS REC SME|PFA SAAS SME|RSS FEED SME|RPM REAP ER|RUN DCMS ER|ERM FABS ER|ADMINS ER)', prompt)
         name = match.group(1) if match else "Framework"
         self.selected_framework_prompt = prompt
@@ -542,6 +582,29 @@ class FounderApp(QMainWindow):
     def clear_framework_selection(self):
         self.selected_framework_prompt = None
         self.badge_widget.setVisible(False)
+        if self._selected_card is not None:
+            self._selected_card.set_selected(False)
+            self._selected_card = None
+
+    def copy_output(self):
+        """Copy diagnosis text to clipboard."""
+        text = self.output_area.toPlainText()
+        if text:
+            QApplication.clipboard().setText(text)
+            self.status_label.setText("✅ Copied to clipboard!")
+            self.status_label.setStyleSheet("color: #1a7a3c; font-size: 12px;")
+
+    def new_session(self):
+        """Clear everything for a fresh diagnosis."""
+        self.output_area.clear()
+        self.query_input.clear()
+        self.clear_framework_selection()
+        self.current_document_text = ""
+        self.current_file_path = ""
+        self.file_label.setText("")
+        self.copy_btn.setVisible(False)
+        self.status_label.setText("✅  Ready. Describe your challenge and get your diagnosis.")
+        self.status_label.setStyleSheet("color: #1a7a3c; font-size: 12px;")
 
     def set_quick_prompt(self, text):
         """Legacy method kept for compatibility."""
@@ -600,7 +663,9 @@ class FounderApp(QMainWindow):
 
         self.analyze_btn.setEnabled(False)
         self.progress.setVisible(True)
-        self.output_area.clear()
+        self.output_area.setPlaceholderText("")
+        self.output_area.setPlainText("🔄  Analyzing your challenge...\n\nPlease wait a moment.")
+        self.copy_btn.setVisible(False)
         self.status_label.setText("Analyzing your business challenge...")
 
         self.worker = AnalysisWorker(self.engine, combined, self.current_document_text)
@@ -611,7 +676,9 @@ class FounderApp(QMainWindow):
         self.progress.setVisible(False)
         self.analyze_btn.setEnabled(True)
         self.output_area.setPlainText(result)
-        self.status_label.setText("Analysis Complete.")
+        self.copy_btn.setVisible(True)
+        self.status_label.setText("✅  Analysis complete. Copy or start a new diagnosis.")
+        self.status_label.setStyleSheet("color: #1a7a3c; font-size: 12px;")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
@@ -728,8 +795,8 @@ if __name__ == "__main__":
         background-color: #1a7a3c;
         color: white;
         border: none;
-        border-radius: 27px;
-        font-size: 20pt;
+        border-radius: 21px;
+        font-size: 16pt;
         font-weight: bold;
     }
     QPushButton#SendBtn:hover {
