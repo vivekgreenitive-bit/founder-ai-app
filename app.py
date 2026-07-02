@@ -30,7 +30,7 @@ class AnalysisWorker(QThread):
 class ProfileDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("Executive Context Briefing")
+        self.setWindowTitle("Company Profile Setup")
         self.setMinimumWidth(550)
         
         main_layout = QVBoxLayout(self)
@@ -38,12 +38,12 @@ class ProfileDialog(QDialog):
         main_layout.setSpacing(20)
         
         # Header
-        title = QLabel("Executive Context Briefing")
+        title = QLabel("Company Profile Setup")
         title.setFont(QFont("Arial", 20, QFont.Weight.Bold))
         title.setStyleSheet("color: #1f2937;")
         main_layout.addWidget(title)
         
-        subtitle = QLabel("To provide elite, tailored operational advice, the Founder AI needs to understand your current business landscape.")
+        subtitle = QLabel("To provide personalized, actionable advice based on the Founder Frameworks, the AI needs to understand your current business landscape.")
         subtitle.setWordWrap(True)
         subtitle.setStyleSheet("color: #64748b; font-size: 13pt; margin-bottom: 10px;")
         main_layout.addWidget(subtitle)
@@ -110,7 +110,7 @@ class ProfileDialog(QDialog):
         self.load_profile()
         
         # Save Button
-        self.save_btn = QPushButton("Initialize Founder AI Context")
+        self.save_btn = QPushButton("Save Company Profile")
         self.save_btn.setStyleSheet("""
             QPushButton {
                 background-color: #1a7a3c;
@@ -128,6 +128,9 @@ class ProfileDialog(QDialog):
         """)
         self.save_btn.clicked.connect(self.accept)
         main_layout.addWidget(self.save_btn)
+        
+        # Add stretch to push everything to the top and prevent weird huge gaps
+        main_layout.addStretch()
         
         self.setStyleSheet("QDialog { background-color: #f8fafc; }")
         

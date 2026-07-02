@@ -121,7 +121,7 @@ Actionable Framework Analysis:"""
                     challenge = data.get("challenge", "")
                     
                     if industry or stage or challenge:
-                        full_query += f"\n\n--- Executive Context Briefing ---\n"
+                        full_query += f"\n\n--- Company Profile Context ---\n"
                         if name: full_query += f"Business Name: {name}\n"
                         if industry: full_query += f"Industry: {industry}\n"
                         if stage: full_query += f"Business Stage: {stage}\n"
