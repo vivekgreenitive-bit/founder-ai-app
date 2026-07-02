@@ -252,55 +252,104 @@ class FounderApp(QMainWindow):
         card_layout.addWidget(self.query_input)
         
         # Founder Framework Selector Chips
-        chip_label = QLabel("Apply a Founder Framework:")
-        chip_label.setStyleSheet("color: #64748b; font-size: 11pt; font-weight: bold;")
-        card_layout.addWidget(chip_label)
+        # Framework Selector: 3-column categorized card panel
+        fw_section_label = QLabel("Choose a Framework to Apply:")
+        fw_section_label.setFont(QFont("Arial", 13, QFont.Weight.Bold))
+        fw_section_label.setStyleSheet("color: #1f2937; margin-top: 5px;")
+        card_layout.addWidget(fw_section_label)
 
-        frameworks = [
-            ("ECG KISS", "Run the ECG KISS overall business diagnosis on my situation and identify my biggest operational gap."),
-            ("SLR CAMERAS", "Apply the SLR CAMERAS framework to help me build a structured yearly plan for my business."),
-            ("MC BEERS", "Use the MC BEERS framework to break down my goals into a 90-day execution sprint."),
-            ("PC PEERS", "Apply the PC PEERS framework to create a focused monthly planning structure for my team."),
-            ("PS ERP", "Use the PS ERP framework to organize my weekly priorities and stop wasting time on low-value tasks."),
-            ("DC ERPRS", "Apply the DC ERPRS framework to structure my daily schedule and make every day count."),
-            ("OKS REC SME", "Use the OKS REC SME framework to design a system that removes me as the bottleneck."),
-            ("PFA SAAS SME", "Apply the PFA SAAS SME framework to document and optimize a core business process."),
-            ("RSS FEED SME", "Use the RSS FEED SME framework to create an SOP so my team stops making errors on routine tasks."),
-            ("RPM REAP ER", "Apply the RPM REAP ER framework to diagnose why my execution is breaking down and fix it."),
-            ("RUN DCMS ER", "Use the RUN DCMS ER framework to find and fix the revenue leaks in my business."),
-            ("ERM FABS ER", "Apply the ERM FABS ER framework to evaluate what is working and what needs to change immediately."),
-            ("ADMINS ER", "Use the ADMINS ER framework to help me manage the current crisis in my business."),
+        categories = [
+            {
+                "title": "🗓  PLANNING",
+                "color": "#1a7a3c",
+                "bg": "#f0fdf4",
+                "border": "#bbf7d0",
+                "items": [
+                    ("ECG KISS", "Overall Business Diagnostic", "Define your end goal, identify gaps, and simulate solutions for your overall business.", "Run the ECG KISS overall business diagnosis on my situation and identify my biggest operational gap."),
+                    ("SLR CAMERAS", "Yearly Planning", "Plan your yearly milestones, allocate resources, and schedule for long-term success.", "Apply the SLR CAMERAS framework to help me build a structured yearly plan for my business."),
+                    ("MC BEERS", "Quarterly Planning", "Break down quarterly goals into sprints and keep your team aligned.", "Use the MC BEERS framework to break down my goals into a 90-day execution sprint."),
+                    ("PC PEERS", "Monthly Planning", "Manage monthly priorities, people, and execution checkpoints.", "Apply the PC PEERS framework to create a focused monthly planning structure for my team."),
+                    ("PS ERP", "Weekly Planning", "Organize your weekly focus so you stop wasting time on low-value tasks.", "Use the PS ERP framework to organize my weekly priorities and stop wasting time on low-value tasks."),
+                    ("DC ERPRS", "Daily Planning", "Structure each day to maximize output and create momentum.", "Apply the DC ERPRS framework to structure my daily schedule and make every day count."),
+                ]
+            },
+            {
+                "title": "⚙️  OPERATIONS",
+                "color": "#b45309",
+                "bg": "#fffbeb",
+                "border": "#fde68a",
+                "items": [
+                    ("OKS REC SME", "Business System Architecture", "Build systems that run without you so you stop being the bottleneck.", "Use the OKS REC SME framework to design a system that removes me as the bottleneck."),
+                    ("PFA SAAS SME", "Business Process Mapping", "Define and streamline the core processes inside your business.", "Apply the PFA SAAS SME framework to document and optimize a core business process."),
+                    ("RSS FEED SME", "SOP Builder", "Create SOPs so your team executes consistently without supervision.", "Use the RSS FEED SME framework to create an SOP so my team stops making errors on routine tasks."),
+                ]
+            },
+            {
+                "title": "🚀  EXECUTION",
+                "color": "#1d4ed8",
+                "bg": "#eff6ff",
+                "border": "#bfdbfe",
+                "items": [
+                    ("RPM REAP ER", "Business Execution Strategy", "Diagnose why execution is failing and create a structured recovery plan.", "Apply the RPM REAP ER framework to diagnose why my execution is breaking down and fix it."),
+                    ("RUN DCMS ER", "Revenue Generation", "Identify and fix revenue leaks to drive consistent business growth.", "Use the RUN DCMS ER framework to find and fix the revenue leaks in my business."),
+                    ("ERM FABS ER", "Business Evaluation", "Evaluate what is working and what needs to change immediately.", "Apply the ERM FABS ER framework to evaluate what is working and what needs to change immediately."),
+                    ("ADMINS ER", "Crisis Management", "Manage an active business crisis with a clear structured response plan.", "Use the ADMINS ER framework to help me manage the current crisis in my business."),
+                ]
+            },
         ]
 
-        # Row 1
-        row1 = QHBoxLayout()
-        row1.setSpacing(8)
-        for name, prompt in frameworks[:5]:
-            btn = QPushButton(name)
-            btn.setObjectName("ChipBtn")
-            btn.clicked.connect(lambda checked, p=prompt: self.set_quick_prompt(p))
-            row1.addWidget(btn)
-        card_layout.addLayout(row1)
+        col_layout = QHBoxLayout()
+        col_layout.setSpacing(10)
 
-        # Row 2
-        row2 = QHBoxLayout()
-        row2.setSpacing(8)
-        for name, prompt in frameworks[5:10]:
-            btn = QPushButton(name)
-            btn.setObjectName("ChipBtn")
-            btn.clicked.connect(lambda checked, p=prompt: self.set_quick_prompt(p))
-            row2.addWidget(btn)
-        card_layout.addLayout(row2)
+        for cat in categories:
+            col_frame = QFrame()
+            col_frame.setStyleSheet(f"""
+                QFrame {{
+                    background-color: {cat['bg']};
+                    border: 1.5px solid {cat['border']};
+                    border-radius: 10px;
+                    padding: 2px;
+                }}
+            """)
+            col_v = QVBoxLayout(col_frame)
+            col_v.setContentsMargins(10, 10, 10, 10)
+            col_v.setSpacing(6)
 
-        # Row 3
-        row3 = QHBoxLayout()
-        row3.setSpacing(8)
-        for name, prompt in frameworks[10:]:
-            btn = QPushButton(name)
-            btn.setObjectName("ChipBtn")
-            btn.clicked.connect(lambda checked, p=prompt: self.set_quick_prompt(p))
-            row3.addWidget(btn)
+            cat_title = QLabel(cat["title"])
+            cat_title.setFont(QFont("Arial", 11, QFont.Weight.Bold))
+            cat_title.setStyleSheet(f"color: {cat['color']}; letter-spacing: 1px;")
+            col_v.addWidget(cat_title)
+
+            for name, subtitle, desc, prompt in cat["items"]:
+                fw_btn = QPushButton()
+                fw_btn.setObjectName("FrameworkCard")
+                fw_btn.clicked.connect(lambda checked, p=prompt: self.set_quick_prompt(p))
+                fw_btn.setStyleSheet(f"""
+                    QPushButton#FrameworkCard {{
+                        background-color: white;
+                        border: 1px solid {cat['border']};
+                        border-left: 3px solid {cat['color']};
+                        border-radius: 6px;
+                        padding: 8px 10px;
+                        text-align: left;
+                        font-size: 11pt;
+                        color: #1f2937;
+                    }}
+                    QPushButton#FrameworkCard:hover {{
+                        background-color: {cat['bg']};
+                        border-left: 4px solid {cat['color']};
+                    }}
+                """)
+                fw_btn.setText(f"{name}  —  {subtitle}\n{desc}")
+                fw_btn.setMinimumHeight(60)
+                col_v.addWidget(fw_btn)
+
+            col_v.addStretch()
+            col_layout.addWidget(col_frame)
+
+        card_layout.addLayout(col_layout)
         layout.addWidget(card)
+
         
         # Analyze Button
         self.analyze_btn = QPushButton("Analyze with Founder Frameworks")
