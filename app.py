@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                              QHBoxLayout, QPushButton, QTextEdit, QLabel, 
                              QFileDialog, QProgressBar, QMessageBox,
                              QDialog, QFormLayout, QLineEdit, QDialogButtonBox,
-                             QFrame, QComboBox, QScrollArea)
+                             QFrame, QComboBox, QScrollArea, QSizePolicy)
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
 from PyQt6.QtGui import QFont
 
@@ -23,6 +23,11 @@ class ClickableCard(QFrame):
         self.bg = bg
         self.border = border
         self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setMinimumHeight(72)
+        self.setSizePolicy(
+            QSizePolicy.Policy.Expanding,
+            QSizePolicy.Policy.Minimum
+        )
         self.setStyleSheet(f"""
             ClickableCard {{
                 background-color: white;
@@ -39,13 +44,15 @@ class ClickableCard(QFrame):
         v.setSpacing(2)
 
         name_label = QLabel(f"<b>{name}</b>  —  {subtitle}")
-        name_label.setStyleSheet(f"color: {color}; font-size: 12pt; background: transparent; border: none;")
+        name_label.setStyleSheet(f"color: {color}; font-size: 11pt; background: transparent; border: none;")
         name_label.setWordWrap(True)
+        name_label.setMinimumHeight(20)
         v.addWidget(name_label)
 
         desc_label = QLabel(desc)
-        desc_label.setStyleSheet("color: #64748b; font-size: 10pt; background: transparent; border: none;")
+        desc_label.setStyleSheet("color: #64748b; font-size: 9pt; background: transparent; border: none;")
         desc_label.setWordWrap(True)
+        desc_label.setMinimumHeight(16)
         v.addWidget(desc_label)
 
     def mousePressEvent(self, event):
@@ -312,9 +319,10 @@ class FounderApp(QMainWindow):
         self.file_label.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         query_header_layout.addWidget(self.file_label)
         
-        self.upload_btn = QPushButton("📎 Upload a Document (optional)")
+        self.upload_btn = QPushButton("📎 Upload a Document")
         self.upload_btn.setObjectName("SecondaryBtn")
-        self.upload_btn.setFixedSize(220, 40)
+        self.upload_btn.setMinimumWidth(180)
+        self.upload_btn.setFixedHeight(40)
         self.upload_btn.clicked.connect(self.upload_file)
         query_header_layout.addWidget(self.upload_btn)
         
@@ -370,13 +378,23 @@ class FounderApp(QMainWindow):
             },
         ]
 
+        # Wrap entire framework panel in scroll area so it never collapses
+        panel_scroll = QScrollArea()
+        panel_scroll.setWidgetResizable(True)
+        panel_scroll.setFrameShape(QFrame.Shape.NoFrame)
+        panel_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        panel_scroll.setStyleSheet("background: transparent; border: none;")
+        panel_scroll.setMinimumHeight(320)
+
         col_widget = QWidget()
+        col_widget.setStyleSheet("background: transparent;")
         col_layout = QHBoxLayout(col_widget)
         col_layout.setSpacing(10)
         col_layout.setContentsMargins(0, 0, 0, 0)
 
         for i, cat in enumerate(categories):
             col_frame = QFrame()
+            col_frame.setMinimumWidth(280)
             col_frame.setStyleSheet(f"""
                 QFrame {{
                     background-color: {cat['bg']};
@@ -393,41 +411,32 @@ class FounderApp(QMainWindow):
             cat_title.setStyleSheet(f"color: {cat['color']}; letter-spacing: 1px; background: transparent; border: none;")
             col_v.addWidget(cat_title)
 
-            # Planning has 6 items — wrap in a scroll area to stay readable
-            if i == 0:
-                scroll = QScrollArea()
-                scroll.setWidgetResizable(True)
-                scroll.setFrameShape(QFrame.Shape.NoFrame)
-                scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-                scroll.setStyleSheet("background: transparent; border: none;")
-                scroll_content = QWidget()
-                scroll_content.setStyleSheet("background: transparent;")
-                scroll_inner = QVBoxLayout(scroll_content)
-                scroll_inner.setContentsMargins(0, 0, 0, 0)
-                scroll_inner.setSpacing(6)
-                for name, subtitle, desc, prompt in cat["items"]:
-                    fw_card = ClickableCard(
-                        name, subtitle, desc, prompt,
-                        cat["color"], cat["bg"], cat["border"],
-                        self.set_quick_prompt
-                    )
-                    scroll_inner.addWidget(fw_card)
-                scroll_inner.addStretch()
-                scroll.setWidget(scroll_content)
-                col_v.addWidget(scroll)
-            else:
-                for name, subtitle, desc, prompt in cat["items"]:
-                    fw_card = ClickableCard(
-                        name, subtitle, desc, prompt,
-                        cat["color"], cat["bg"], cat["border"],
-                        self.set_quick_prompt
-                    )
-                    col_v.addWidget(fw_card)
-                col_v.addStretch()
+            # All columns scroll — Planning has 6 items, others 3-4
+            scroll = QScrollArea()
+            scroll.setWidgetResizable(True)
+            scroll.setFrameShape(QFrame.Shape.NoFrame)
+            scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+            scroll.setStyleSheet("background: transparent; border: none;")
+            scroll_content = QWidget()
+            scroll_content.setStyleSheet("background: transparent;")
+            scroll_inner = QVBoxLayout(scroll_content)
+            scroll_inner.setContentsMargins(0, 0, 0, 0)
+            scroll_inner.setSpacing(6)
+            for name, subtitle, desc, prompt in cat["items"]:
+                fw_card = ClickableCard(
+                    name, subtitle, desc, prompt,
+                    cat["color"], cat["bg"], cat["border"],
+                    self.set_quick_prompt
+                )
+                scroll_inner.addWidget(fw_card)
+            scroll_inner.addStretch()
+            scroll.setWidget(scroll_content)
+            col_v.addWidget(scroll)
 
             col_layout.addWidget(col_frame)
 
-        card_layout.addWidget(col_widget)
+        panel_scroll.setWidget(col_widget)
+        card_layout.addWidget(panel_scroll)
         layout.addWidget(card)
 
         
