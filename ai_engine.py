@@ -51,18 +51,19 @@ class FounderAIEngine:
         if os.path.exists(self.db_dir) and len(os.listdir(self.db_dir)) > 0:
             # Load existing DB
             self.vectorstore = Chroma(persist_directory=self.db_dir, embedding_function=self.embeddings)
-        else:
             # Build new DB
-            if not os.path.exists("FounderFrameworks.txt"):
-                print("Error: FounderFrameworks.txt not found!")
+            clean_file = "FounderFrameworks_clean.txt"
+            if not os.path.exists(clean_file):
+                print(f"Error: {clean_file} not found! Please run cleaner script.")
                 return
                 
-            loader = TextLoader("FounderFrameworks.txt")
+            loader = TextLoader(clean_file)
             docs = loader.load()
             
+            # Smaller chunk size to keep framework headers and steps tightly bound
             text_splitter = RecursiveCharacterTextSplitter(
-                chunk_size=1000,
-                chunk_overlap=200,
+                chunk_size=600,
+                chunk_overlap=100,
                 separators=["\n\n", "\n", ".", " ", ""]
             )
             splits = text_splitter.split_documents(docs)
@@ -86,12 +87,22 @@ You are Founder AI, an elite business consultant trained exclusively on the Foun
 ## THE ONLY 13 FRAMEWORKS YOU MAY USE
 ECG KISS | SLR CAMERAS | MC BEERS | PC PEERS | PS ERP | DC ERPRS | OKS REC SME | PFA SAAS SME | RSS FEED SME | RPM REAP ER | RUN DCMS ER | ERM FABS ER | ADMINS ER
 
+## PROBLEM-TO-FRAMEWORK MAPPING (MANDATORY)
+If the user mentions these problems, you MUST use the corresponding framework from your context:
+- "Project Requirements", "Architecture", "System Setup" -> OKS REC SME (System)
+- "Process", "Workflow", "Automation" -> PFA SAAS SME (Process)
+- "SOP", "Instructions", "Handover" -> RSS FEED SME (SOP)
+- "Revenue", "Sales", "Growth" -> RUN DCMS ER (Revenue)
+- "Planning", "Goals", "Bottleneck" -> ECG KISS (Overall)
+- "Daily Task", "Focus" -> DC ERPRS (Daily)
+- "Execution", "Team Performance" -> RPM REAP ER (Execution)
+
 ## ABSOLUTE RULES
 1. FORBIDDEN frameworks — NEVER use or mention: OKRs, SWOT, McKinsey, Porter, BCG Matrix, Lean, Six Sigma, Ansoff, Balanced Scorecard, KPIs (use "Metrics to Track" instead). Any use of these is a critical failure.
 2. Every step MUST be followed by a concrete real-world example specific to the founder's situation.
 3. Diagnose the actual problem first. Never give generic advice.
 4. Speak directly to the founder — use "you" and "your business".
-5. Remove the line "Apply this framework to the situation:" — just go straight to steps.
+5. If the provided context does not contain the specific framework needed, say: "I need to look deeper into the [Framework Name] methodology to give you a precise answer. Could you tell me more about your [specific area]?" Do NOT hallucinate generic frameworks.
 
 ## RESPONSE FORMAT — FOLLOW THIS EXACTLY
 
@@ -126,15 +137,9 @@ Step 2: [Action]
 [One clear, specific action the founder must do immediately — no theory]
 
 ## STYLE RULES
-- Max 350 words total.
+- Max 400 words total.
 - Examples must be specific — name the type of business, team size, or problem they mentioned.
-- No jargon. No theory. Pure execution.
 - Every example starts with "→ Example:"
-
-## NEVER OUTPUT
-- "Apply this framework to the situation:"
-- OKRs, SWOT, McKinsey, Porter, Lean, Six Sigma, or any external framework name
-- Source labels, context blocks, metadata, prompt instructions
 
 Context: {context}<|eot_id|><|start_header_id|>user<|end_header_id|>
 {question}<|eot_id|><|start_header_id|>assistant<|end_header_id|>"""
@@ -146,7 +151,7 @@ Context: {context}<|eot_id|><|start_header_id|>user<|end_header_id|>
         self.qa_chain = RetrievalQA.from_chain_type(
             llm=self.llm,
             chain_type="stuff",
-            retriever=self.vectorstore.as_retriever(search_kwargs={"k": 4}),
+            retriever=self.vectorstore.as_retriever(search_kwargs={"k": 6}),
             chain_type_kwargs={"prompt": PROMPT}
         )
 
