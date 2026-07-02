@@ -6,8 +6,8 @@ from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                              QFileDialog, QProgressBar, QMessageBox,
                              QDialog, QFormLayout, QLineEdit, QDialogButtonBox,
                              QFrame, QComboBox, QScrollArea, QSizePolicy)
-from PyQt6.QtCore import Qt, QThread, pyqtSignal
-from PyQt6.QtGui import QFont
+from PyQt6.QtCore import Qt, QThread, pyqtSignal, QEvent
+from PyQt6.QtGui import QFont, QKeyEvent, QKeySequence
 
 from document_processor import extract_text_from_file
 from ai_engine import FounderAIEngine
@@ -510,7 +510,8 @@ class FounderApp(QMainWindow):
         self.query_input = QTextEdit()
         self.query_input.setMaximumHeight(85)
         self.query_input.setMinimumHeight(55)
-        self.query_input.setPlaceholderText("Describe your biggest business challenge...")
+        self.query_input.setPlaceholderText("Describe your challenge... (Press Enter to Send)")
+        self.query_input.installEventFilter(self)
         input_row.addWidget(self.query_input, stretch=1)
 
         self.analyze_btn = QPushButton("➤")
