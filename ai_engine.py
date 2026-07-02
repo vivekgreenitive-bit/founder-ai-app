@@ -153,37 +153,46 @@ Context: {context}<|eot_id|><|start_header_id|>user<|end_header_id|>
     def analyze_query(self, query: str, document_text: str = "") -> str:
         if not self.qa_chain:
             return "Error: AI Engine is not fully initialized. Please ensure the model file exists."
-            
-        full_query = query
-        
-        # Inject Company Context if it exists
+
+        # ── Build the query with the actual problem FIRST and prominent ──────
+        # Company profile is background context ONLY — never substitute it for
+        # the real question the founder is asking right now.
+        background = ""
         try:
             import json
             profile_path = "company_profile.json"
             if os.path.exists(profile_path):
                 with open(profile_path, 'r') as f:
                     data = json.load(f)
-                    name = data.get("name", "")
+                    name     = data.get("name", "")
                     industry = data.get("industry", "")
-                    stage = data.get("stage", "")
-                    team = data.get("team", "")
-                    challenge = data.get("challenge", "")
-                    
-                    if industry or stage or challenge:
-                        full_query += f"\n\n[Business context: "
-                        if name: full_query += f"Company={name}. "
-                        if industry: full_query += f"Industry={industry}. "
-                        if stage: full_query += f"Stage={stage}. "
-                        if team: full_query += f"Team={team}. "
-                        if challenge: full_query += f"Main challenge={challenge}."
-                        full_query += "]"
+                    stage    = data.get("stage", "")
+                    team     = data.get("team", "")
+                    # NOTE: we intentionally exclude the profile's "challenge" field
+                    # so it does not override the founder's actual question below.
+                    parts = []
+                    if name:     parts.append(f"Company: {name}")
+                    if industry: parts.append(f"Industry: {industry}")
+                    if stage:    parts.append(f"Stage: {stage}")
+                    if team:     parts.append(f"Team: {team}")
+                    if parts:
+                        background = "[Background — use for personalisation only, do NOT use as the problem to solve: " \
+                                     + ", ".join(parts) + "]"
         except Exception as e:
             print("Could not load company context:", e)
 
         if document_text:
-            full_query += f"\n\n--- User Uploaded Document ---\n{document_text}\n------------------------------\n"
-            full_query += "Please analyze the document above using the Founder Frameworks."
-            
+            background += (
+                f"\n\n[Uploaded document — analyse this in context of the problem below]:\n"
+                f"{document_text}\n"
+            )
+
+        # The founder's ACTUAL problem is the primary focus — always solve THIS
+        full_query = (
+            f"SOLVE THIS SPECIFIC PROBLEM (ignore any other challenges): {query}\n\n"
+            f"{background}"
+        )
+
         try:
             response = self.qa_chain.invoke(full_query)
             return response['result']
