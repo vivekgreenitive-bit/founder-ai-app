@@ -660,14 +660,14 @@ class FounderApp(QMainWindow):
             '<div style="font-family: Arial; font-size: 12pt; padding: 10px; color: #334155;">'
             '<h3 style="color: #1e293b; margin-top: 0;">🔄 Analyzing Your Business Challenge...</h3>'
             '<p style="color: #64748b; font-size: 10pt;">Please wait a moment while the local multi-agent pipeline processes your request.</p>'
-            '<ul style="list-style-type: none; padding-left: 0; line-height: 1.6;">'
-            '<li style="color: #d97706; font-weight: bold;">🔄 Understanding your business challenge...</li>'
-            '<li style="color: #94a3b8;">⏳ Selecting the relevant Founder Framework</li>'
-            '<li style="color: #94a3b8;">⏳ Retrieving framework knowledge</li>'
-            '<li style="color: #94a3b8;">⏳ Retrieving memory context</li>'
-            '<li style="color: #94a3b8;">⏳ Developing the strategy</li>'
-            '<li style="color: #94a3b8;">⏳ Building the execution plan</li>'
-            '<li style="color: #94a3b8;">⏳ Finalizing the recommendation</li>'
+            '<ul style="list-style-type: none; padding-left: 0; line-height: 1.8;">'
+            '<li style="color: #d97706; font-weight: bold;">🔄 <b>AssessmentAgent</b>: Understanding your business challenge...</li>'
+            '<li style="color: #94a3b8;">⏳ <b>FrameworkSelectionAgent</b>: Selecting the relevant Founder Framework</li>'
+            '<li style="color: #94a3b8;">⏳ <b>KnowledgeRetrievalAgent</b>: Retrieving framework knowledge</li>'
+            '<li style="color: #94a3b8;">⏳ <b>MemoryAgent</b>: Retrieving memory context</li>'
+            '<li style="color: #94a3b8;">⏳ <b>StrategyAgent</b>: Developing the strategy</li>'
+            '<li style="color: #94a3b8;">⏳ <b>ExecutionCoachAgent</b>: Building the execution plan</li>'
+            '<li style="color: #94a3b8;">⏳ <b>ResponseComposer</b>: Finalizing the recommendation</li>'
             '</ul></div>'
         )
         self.copy_btn.setVisible(False)
@@ -683,33 +683,33 @@ class FounderApp(QMainWindow):
         self.status_label.setStyleSheet("color: #d97706; font-weight: bold; font-size: 13px;")
         
         steps = [
-            "Understanding your business challenge",
-            "Selecting the relevant Founder Framework",
-            "Retrieving framework knowledge",
-            "Retrieving memory context",
-            "Developing the strategy",
-            "Building the execution plan",
-            "Finalizing the recommendation"
+            ("AssessmentAgent", "Understanding your business challenge"),
+            ("FrameworkSelectionAgent", "Selecting the relevant Founder Framework"),
+            ("KnowledgeRetrievalAgent", "Retrieving framework knowledge"),
+            ("MemoryAgent", "Retrieving memory context"),
+            ("StrategyAgent", "Developing the strategy"),
+            ("ExecutionCoachAgent", "Building the execution plan"),
+            ("ResponseComposer", "Finalizing the recommendation")
         ]
         
         current_idx = -1
-        for idx, step in enumerate(steps):
-            if step in status:
+        for idx, (agent, desc) in enumerate(steps):
+            if desc in status:
                 current_idx = idx
                 break
                 
         html = '<div style="font-family: Arial; font-size: 12pt; padding: 10px; color: #334155;">'
         html += '<h3 style="color: #1e293b; margin-top: 0;">🔄 Analyzing Your Business Challenge...</h3>'
         html += '<p style="color: #64748b; font-size: 10pt;">Please wait a moment while the local multi-agent pipeline processes your request.</p>'
-        html += '<ul style="list-style-type: none; padding-left: 0; line-height: 1.6;">'
+        html += '<ul style="list-style-type: none; padding-left: 0; line-height: 1.8;">'
         
-        for idx, step in enumerate(steps):
+        for idx, (agent, desc) in enumerate(steps):
             if idx < current_idx:
-                html += f'<li style="color: #166534; font-weight: bold;">✅ {step}</li>'
+                html += f'<li style="color: #166534; font-weight: bold;">✅ <b>{agent}</b>: {desc}</li>'
             elif idx == current_idx:
-                html += f'<li style="color: #d97706; font-weight: bold;">🔄 {step}...</li>'
+                html += f'<li style="color: #d97706; font-weight: bold;">🔄 <b>{agent}</b>: {desc}...</li>'
             else:
-                html += f'<li style="color: #94a3b8;">⏳ {step}</li>'
+                html += f'<li style="color: #94a3b8;">⏳ <b>{agent}</b>: {desc}</li>'
                 
         html += '</ul></div>'
         self.output_area.setHtml(html)
