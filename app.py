@@ -720,6 +720,7 @@ class FounderApp(QMainWindow):
         lines = text.split('\n')
         html_lines = []
         in_steps = False
+        in_priority_action = False
 
         for line in lines:
             stripped = line.strip()
@@ -733,6 +734,17 @@ class FounderApp(QMainWindow):
                     f'{header_text}</h2>'
                 )
                 in_steps = False
+                in_priority_action = ("Priority Action" in header_text or "Priority" in header_text)
+                continue
+
+            if in_priority_action and stripped:
+                # Replace inline bold formatting if any
+                clean_val = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', stripped)
+                html_lines.append(
+                    f'<div style="margin:8px 0; padding:12px 16px; background:#f0fdf4; '
+                    f'border-left:4px solid #1a7a3c; border-radius:6px; font-weight:bold; color:#15803d; font-size:11pt; line-height:1.4;">'
+                    f'🎯 {clean_val}</div>'
+                )
                 continue
 
             # Framework section headers: **Framework: NAME — Role**
