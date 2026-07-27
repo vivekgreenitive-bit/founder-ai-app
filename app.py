@@ -71,6 +71,7 @@ class ClickableCard(QFrame):
 
 class AnalysisWorker(QThread):
     finished = pyqtSignal(str)
+    progress_update = pyqtSignal(str)
     
     def __init__(self, engine, query, document_text):
         super().__init__()
@@ -80,7 +81,9 @@ class AnalysisWorker(QThread):
         
     def run(self):
         try:
-            result = self.engine.analyze_query(self.query, self.document_text)
+            def callback(msg):
+                self.progress_update.emit(msg)
+            result = self.engine.analyze_query(self.query, self.document_text, status_callback=callback)
             self.finished.emit(result)
         except Exception as e:
             self.finished.emit(f"Error: {str(e)}")
@@ -274,14 +277,14 @@ class FounderApp(QMainWindow):
 
         # ── Top Header Bar ────────────────────────────────────────────────────
         header_bar = QFrame()
-        header_bar.setStyleSheet("background: #0f172a; border: none;")
+        header_bar.setStyleSheet("background: #ffffff; border-bottom: 1px solid #e2e8f0;")
         header_bar.setFixedHeight(56)
         header_bar_layout = QHBoxLayout(header_bar)
         header_bar_layout.setContentsMargins(20, 0, 20, 0)
 
         header = QLabel("Founder Frameworks AI")
         header.setFont(QFont("Arial", 17, QFont.Weight.Bold))
-        header.setStyleSheet("color: white; background: transparent;")
+        header.setStyleSheet("color: #0f172a; background: transparent; border: none;")
         header_bar_layout.addWidget(header)
 
         self.status_label = QLabel("Starting up...")
@@ -293,9 +296,9 @@ class FounderApp(QMainWindow):
         self.settings_btn.setToolTip("Set Company Context")
         self.settings_btn.setFixedSize(100, 34)
         self.settings_btn.setStyleSheet(
-            "QPushButton { background: #1e293b; color: #cbd5e1; border: 1px solid #334155; "
+            "QPushButton { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; "
             "border-radius: 8px; font-size: 10pt; }"
-            "QPushButton:hover { background: #334155; color: white; }"
+            "QPushButton:hover { background: #e2e8f0; color: #0f172a; }"
         )
         self.settings_btn.clicked.connect(self.open_settings)
         header_bar_layout.addWidget(self.settings_btn)
@@ -523,22 +526,10 @@ class FounderApp(QMainWindow):
         input_row.addWidget(self.analyze_btn, alignment=Qt.AlignmentFlag.AlignBottom)
         bottom_layout.addLayout(input_row)
 
-        # Toolbar: file label + upload
-        toolbar_row = QHBoxLayout()
-        toolbar_row.setSpacing(8)
-
+        # Toolbar placeholder for compatibility (not added to layout)
         self.file_label = QLabel("")
         self.file_label.setStyleSheet("color: #64748b; font-style: italic; font-size: 9pt;")
-        toolbar_row.addWidget(self.file_label, stretch=1)
 
-        self.upload_btn = QPushButton("📎 Upload a Document")
-        self.upload_btn.setObjectName("SecondaryBtn")
-        self.upload_btn.setFixedHeight(30)
-        self.upload_btn.setMinimumWidth(160)
-        self.upload_btn.clicked.connect(self.upload_file)
-        toolbar_row.addWidget(self.upload_btn)
-
-        bottom_layout.addLayout(toolbar_row)
         right_layout.addWidget(bottom_card)
 
         body_layout.addWidget(right_panel, stretch=1)
@@ -550,7 +541,7 @@ class FounderApp(QMainWindow):
         try:
             self.engine = FounderAIEngine()
             self.status_label.setText("✅  Ready. Describe your challenge and get your diagnosis.")
-            self.status_label.setStyleSheet("color: #1a7a3c; font-size: 13px;")
+            self.status_label.setStyleSheet("color: #10b981; font-weight: bold; font-size: 13px;")
             self.analyze_btn.setEnabled(True)
         except Exception as e:
             self.status_label.setText(f"AI Engine Error: {str(e)}")
@@ -593,7 +584,7 @@ class FounderApp(QMainWindow):
         if text:
             QApplication.clipboard().setText(text)
             self.status_label.setText("✅ Copied to clipboard!")
-            self.status_label.setStyleSheet("color: #1a7a3c; font-size: 12px;")
+            self.status_label.setStyleSheet("color: #10b981; font-weight: bold; font-size: 12px;")
 
     def new_session(self):
         """Clear everything for a fresh diagnosis."""
@@ -665,23 +656,96 @@ class FounderApp(QMainWindow):
         self.analyze_btn.setEnabled(False)
         self.progress.setVisible(True)
         self.output_area.setPlaceholderText("")
-        self.output_area.setPlainText("🔄  Analyzing your challenge...\n\nPlease wait a moment.")
+        self.output_area.setHtml(
+            '<div style="font-family: Arial; font-size: 12pt; padding: 10px; color: #334155;">'
+            '<h3 style="color: #1e293b; margin-top: 0;">🔄 Analyzing Your Business Challenge...</h3>'
+            '<p style="color: #64748b; font-size: 10pt;">Please wait a moment while the local multi-agent pipeline processes your request.</p>'
+            '<ul style="list-style-type: none; padding-left: 0; line-height: 1.8;">'
+            '<li style="color: #d97706; font-weight: bold;">🔄 <b>AssessmentAgent</b>: Understanding your business challenge...</li>'
+            '<li style="color: #94a3b8;">⏳ <b>FrameworkSelectionAgent</b>: Selecting the relevant Founder Framework</li>'
+            '<li style="color: #94a3b8;">⏳ <b>KnowledgeRetrievalAgent</b>: Retrieving framework knowledge</li>'
+            '<li style="color: #94a3b8;">⏳ <b>MemoryAgent</b>: Retrieving memory context</li>'
+            '<li style="color: #94a3b8;">⏳ <b>StrategyAgent</b>: Developing the strategy</li>'
+            '<li style="color: #94a3b8;">⏳ <b>ExecutionCoachAgent</b>: Building the execution plan</li>'
+            '<li style="color: #94a3b8;">⏳ <b>ResponseComposer</b>: Finalizing the recommendation</li>'
+            '</ul></div>'
+        )
         self.copy_btn.setVisible(False)
         self.status_label.setText("Analyzing your business challenge...")
 
         self.worker = AnalysisWorker(self.engine, combined, self.current_document_text)
         self.worker.finished.connect(self.on_analysis_complete)
+        self.worker.progress_update.connect(self.on_progress_update)
         self.worker.start()
+
+    def on_progress_update(self, status):
+        self.status_label.setText(f"⚙️  {status}")
+        self.status_label.setStyleSheet("color: #d97706; font-weight: bold; font-size: 13px;")
         
+        steps = [
+            ("AssessmentAgent", "Understanding your business challenge"),
+            ("FrameworkSelectionAgent", "Selecting the relevant Founder Framework"),
+            ("KnowledgeRetrievalAgent", "Retrieving framework knowledge"),
+            ("MemoryAgent", "Retrieving memory context"),
+            ("StrategyAgent", "Developing the strategy"),
+            ("ExecutionCoachAgent", "Building the execution plan"),
+            ("ResponseComposer", "Finalizing the recommendation")
+        ]
+        
+        current_idx = -1
+        for idx, (agent, desc) in enumerate(steps):
+            if desc in status:
+                current_idx = idx
+                break
+                
+        html = '<div style="font-family: Arial; font-size: 12pt; padding: 10px; color: #334155;">'
+        html += '<h3 style="color: #1e293b; margin-top: 0;">🔄 Analyzing Your Business Challenge...</h3>'
+        html += '<p style="color: #64748b; font-size: 10pt;">Please wait a moment while the local multi-agent pipeline processes your request.</p>'
+        html += '<ul style="list-style-type: none; padding-left: 0; line-height: 1.8;">'
+        
+        for idx, (agent, desc) in enumerate(steps):
+            if idx < current_idx:
+                html += f'<li style="color: #166534; font-weight: bold;">✅ <b>{agent}</b>: {desc}</li>'
+            elif idx == current_idx:
+                html += f'<li style="color: #d97706; font-weight: bold;">🔄 <b>{agent}</b>: {desc}...</li>'
+            else:
+                html += f'<li style="color: #94a3b8;">⏳ <b>{agent}</b>: {desc}</li>'
+                
+        html += '</ul></div>'
+        self.output_area.setHtml(html)
+
     def markdown_to_html(self, text: str) -> str:
         """Convert the AI's markdown output to clean HTML for display."""
         import re
         lines = text.split('\n')
         html_lines = []
         in_steps = False
+        in_priority_action = False
 
         for line in lines:
             stripped = line.strip()
+
+            # Markdown header 2: ## Header
+            if stripped.startswith('## '):
+                header_text = stripped[3:].strip()
+                html_lines.append(
+                    f'<h2 style="margin-top:16px; margin-bottom:6px; '
+                    f'font-size:12pt; font-weight:bold; color:#1a7a3c; border-bottom: 1px solid #e2e8f0; padding-bottom: 3px;">'
+                    f'{header_text}</h2>'
+                )
+                in_steps = False
+                in_priority_action = ("Priority Action" in header_text or "Priority" in header_text)
+                continue
+
+            if in_priority_action and stripped:
+                # Replace inline bold formatting if any
+                clean_val = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', stripped)
+                html_lines.append(
+                    f'<div style="margin:8px 0; padding:12px 16px; background:#f0fdf4; '
+                    f'border-left:4px solid #1a7a3c; border-radius:6px; font-weight:bold; color:#15803d; font-size:11pt; line-height:1.4;">'
+                    f'🎯 {clean_val}</div>'
+                )
+                continue
 
             # Framework section headers: **Framework: NAME — Role**
             if re.match(r'^\*\*(Framework:|Supporting Framework:)', stripped):
@@ -774,7 +838,7 @@ class FounderApp(QMainWindow):
         self.output_area.setHtml(self.markdown_to_html(result))
         self.copy_btn.setVisible(True)
         self.status_label.setText("✅  Analysis complete. Copy or start a new diagnosis.")
-        self.status_label.setStyleSheet("color: #1a7a3c; font-size: 12px;")
+        self.status_label.setStyleSheet("color: #10b981; font-weight: bold; font-size: 12px;")
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
