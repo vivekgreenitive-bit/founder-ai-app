@@ -834,6 +834,20 @@ class FounderApp(QMainWindow):
     def on_analysis_complete(self, result):
         self.progress.setVisible(False)
         self.analyze_btn.setEnabled(True)
+        
+        if result.startswith("Error:"):
+            from PyQt6.QtWidgets import QMessageBox
+            QMessageBox.warning(self, "Analysis Failed", f"The multi-agent pipeline encountered an exception:\n\n{result[6:].strip()}")
+            self.output_area.setHtml(
+                f'<div style="font-family: Arial; padding: 15px; background: #fef2f2; border: 1px solid #fee2e2; border-radius: 6px; color: #991b1b;">'
+                f'<h3 style="margin-top:0; color:#b91c1c;">⚠️ Analysis Failed</h3>'
+                f'<p>{result[6:].strip()}</p></div>'
+            )
+            self.status_label.setText("❌ Analysis failed. Please check logs.")
+            self.status_label.setStyleSheet("color: #ef4444; font-weight: bold; font-size: 12px;")
+            self.copy_btn.setVisible(False)
+            return
+
         self._plain_result = result          # store for clipboard copy
         self.output_area.setHtml(self.markdown_to_html(result))
         self.copy_btn.setVisible(True)

@@ -3,7 +3,7 @@ from agents.memory_agent import MemoryAgent
 
 class TestMemoryBehavior(unittest.TestCase):
     def setUp(self):
-        self.memory = MemoryAgent()
+        self.memory = MemoryAgent(db_path=":memory:")
 
     def test_first_interaction_empty_history(self):
         ctx = self.memory.get_context()

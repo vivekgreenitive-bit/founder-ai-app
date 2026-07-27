@@ -1,6 +1,5 @@
 import os
-from dotenv import load_dotenv
-load_dotenv()
+from config import settings
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import TextLoader
@@ -12,10 +11,10 @@ from langchain.prompts import PromptTemplate
 from huggingface_hub import hf_hub_download
 
 # Define model details — Llama 3.2 3B Instruct (open source, optimized for low-end hardware)
-REPO_ID = os.getenv("LLM_REPO_ID", "bartowski/Llama-3.2-3B-Instruct-GGUF")
-FILENAME = os.getenv("LLM_FILENAME", "Llama-3.2-3B-Instruct-Q4_K_M.gguf")
-MODEL_DIR = os.getenv("MODEL_DIR", "models")
-MODEL_PATH = os.path.join(MODEL_DIR, FILENAME)
+REPO_ID = settings.llm_repo_id
+FILENAME = settings.llm_filename
+MODEL_DIR = settings.model_dir
+MODEL_PATH = settings.model_path
 
 from typing import Any, Optional
 
@@ -30,11 +29,10 @@ class FounderAIEngine:
         self.vectorstore = None
         self.llm = None
         self.qa_chain = None
-        self.db_dir = os.getenv("CHROMA_DB_DIR", "chroma_db")
+        self.db_dir = settings.chroma_db_dir
         
         # We use a fast, lightweight embedding model
-        emb_model = os.getenv("EMBEDDING_MODEL_NAME", "all-MiniLM-L6-v2")
-        self.embeddings = HuggingFaceEmbeddings(model_name=emb_model)
+        self.embeddings = HuggingFaceEmbeddings(model_name=settings.embedding_model_name)
         
         self.init_llm()
         self.init_vectorstore()
@@ -61,9 +59,9 @@ class FounderAIEngine:
                 print("Download complete!")
                 
             print(f"Loading LLM from: {active_model_path}")
-            temp = float(os.getenv("LLM_TEMPERATURE", "0.1"))
-            max_tok = int(os.getenv("LLM_MAX_TOKENS", "1000"))
-            ctx_size = int(os.getenv("LLM_N_CTX", "4096"))
+            temp = settings.llm_temperature
+            max_tok = settings.llm_max_tokens
+            ctx_size = settings.llm_n_ctx
             
             self.llm = LlamaCpp(
                 model_path=active_model_path,
