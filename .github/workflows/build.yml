@@ -50,7 +50,7 @@ jobs:
       with:
         repository: ${{ secrets.RELEASE_REPO_TOKEN && 'vivekgreenitive-bit/founder-app-release' || github.repository }}
         token: ${{ secrets.RELEASE_REPO_TOKEN || secrets.GITHUB_TOKEN }}
-        tag_name: latest
+        tag_name: Latest
         name: Latest Release
         fail_on_unmatched_files: false
         files: |
