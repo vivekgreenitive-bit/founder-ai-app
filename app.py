@@ -656,7 +656,20 @@ class FounderApp(QMainWindow):
         self.analyze_btn.setEnabled(False)
         self.progress.setVisible(True)
         self.output_area.setPlaceholderText("")
-        self.output_area.setPlainText("🔄  Analyzing your challenge...\n\nPlease wait a moment.")
+        self.output_area.setHtml(
+            '<div style="font-family: Arial; font-size: 12pt; padding: 10px; color: #334155;">'
+            '<h3 style="color: #1e293b; margin-top: 0;">🔄 Analyzing Your Business Challenge...</h3>'
+            '<p style="color: #64748b; font-size: 10pt;">Please wait a moment while the local multi-agent pipeline processes your request.</p>'
+            '<ul style="list-style-type: none; padding-left: 0; line-height: 1.6;">'
+            '<li style="color: #d97706; font-weight: bold;">🔄 Understanding your business challenge...</li>'
+            '<li style="color: #94a3b8;">⏳ Selecting the relevant Founder Framework</li>'
+            '<li style="color: #94a3b8;">⏳ Retrieving framework knowledge</li>'
+            '<li style="color: #94a3b8;">⏳ Retrieving memory context</li>'
+            '<li style="color: #94a3b8;">⏳ Developing the strategy</li>'
+            '<li style="color: #94a3b8;">⏳ Building the execution plan</li>'
+            '<li style="color: #94a3b8;">⏳ Finalizing the recommendation</li>'
+            '</ul></div>'
+        )
         self.copy_btn.setVisible(False)
         self.status_label.setText("Analyzing your business challenge...")
 
@@ -668,6 +681,38 @@ class FounderApp(QMainWindow):
     def on_progress_update(self, status):
         self.status_label.setText(f"⚙️  {status}")
         self.status_label.setStyleSheet("color: #d97706; font-weight: bold; font-size: 13px;")
+        
+        steps = [
+            "Understanding your business challenge",
+            "Selecting the relevant Founder Framework",
+            "Retrieving framework knowledge",
+            "Retrieving memory context",
+            "Developing the strategy",
+            "Building the execution plan",
+            "Finalizing the recommendation"
+        ]
+        
+        current_idx = -1
+        for idx, step in enumerate(steps):
+            if step in status:
+                current_idx = idx
+                break
+                
+        html = '<div style="font-family: Arial; font-size: 12pt; padding: 10px; color: #334155;">'
+        html += '<h3 style="color: #1e293b; margin-top: 0;">🔄 Analyzing Your Business Challenge...</h3>'
+        html += '<p style="color: #64748b; font-size: 10pt;">Please wait a moment while the local multi-agent pipeline processes your request.</p>'
+        html += '<ul style="list-style-type: none; padding-left: 0; line-height: 1.6;">'
+        
+        for idx, step in enumerate(steps):
+            if idx < current_idx:
+                html += f'<li style="color: #166534; font-weight: bold;">✅ {step}</li>'
+            elif idx == current_idx:
+                html += f'<li style="color: #d97706; font-weight: bold;">🔄 {step}...</li>'
+            else:
+                html += f'<li style="color: #94a3b8;">⏳ {step}</li>'
+                
+        html += '</ul></div>'
+        self.output_area.setHtml(html)
 
     def markdown_to_html(self, text: str) -> str:
         """Convert the AI's markdown output to clean HTML for display."""
