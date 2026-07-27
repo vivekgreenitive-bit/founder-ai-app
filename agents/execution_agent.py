@@ -10,6 +10,10 @@ Business Scenario: {strategy.get('scenario', '')}
 Framework: {framework_name}
 Applied Sections: {strategy.get('applied_sections', '')}
 
+CRITICAL RULES:
+1. Ground the priority action and athlete actions strictly in the Business Scenario above.
+2. Do NOT copy template examples (e.g. do not mention casual wear, dress brands, sportswear, or real estate unless it is explicitly part of the Business Scenario above).
+
 Generate:
 1. A single high-impact priority action.
 2. Three immediate, concrete actions for the athlete stage.

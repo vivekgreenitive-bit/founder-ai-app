@@ -76,12 +76,30 @@ def main():
         if sc["id"] == 14:
             user_fw = sc["query"] # Query already contains "Apply the framework: MC BEERS..."
             
-        # Run
-        response = engine.analyze_query(
-            query=sc["query"],
-            document_text=sc["document_text"],
-            status_callback=status_callback
-        )
+        # Temporarily back up and overwrite the company_profile.json with specific scenario data
+        profile_path = "company_profile.json"
+        backup_path = "company_profile.json.bak"
+        profile_existed = os.path.exists(profile_path)
+        if profile_existed:
+            if os.path.exists(backup_path):
+                os.remove(backup_path)
+            os.rename(profile_path, backup_path)
+
+        try:
+            with open(profile_path, "w") as f:
+                json.dump(sc["profile_data"], f)
+            
+            # Run
+            response = engine.analyze_query(
+                query=sc["query"],
+                document_text=sc["document_text"],
+                status_callback=status_callback
+            )
+        finally:
+            if os.path.exists(profile_path):
+                os.remove(profile_path)
+            if profile_existed:
+                os.rename(backup_path, profile_path)
         
         duration = time.time() - run_start
         

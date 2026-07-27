@@ -3,12 +3,15 @@ class StrategyAgent:
         self.llm = llm
 
     def run(self, query: str, assessment: dict, framework: dict, retrieved_context: str, memory_context: str) -> dict:
+        stage = assessment.get('stage', 'N/A')
+        business_model = assessment.get('business_model', 'N/A')
+        
         prompt = f"""<|start_header_id|>system<|end_header_id|>
-You are Founder AI, an elite business strategist. Given the business scenario details, analyze the situation and generate the strategic components of the diagnosis.
+You are Founder AI, an elite business strategist. Given the business details, analyze the situation and generate the strategic components of the diagnosis.
 
-Business Scenario Details:
-- Stage: {assessment.get('stage', 'N/A')}
-- Business Model: {assessment.get('business_model', 'N/A')}
+Business Details:
+- Stage: {stage}
+- Business Model: {business_model}
 - Primary Challenge: {query}
 - Framework selected: {framework.get('framework_name', 'N/A')}
 
@@ -18,7 +21,10 @@ Memory Context:
 Framework Reference Text (Context):
 {retrieved_context}
 
-STYLE: Business professional, elite consulting voice. Avoid generic MBA/SWOT advice.
+CRITICAL RULES:
+1. Ground all analysis and examples strictly in the founder's actual Business Model ({business_model}) and Stage ({stage}). 
+2. Do NOT copy the sample examples from the Framework Reference Text (e.g., if the reference contains examples about "casual wear", "formal dresses", "car manufacturing", or "real estate", you MUST ignore those examples and translate the framework steps into specific, actionable points for a {business_model} business).
+3. Under "Applied Sections", explain how the acronym components apply directly to the founder's specific challenge.
 
 Output three distinct sections:
 1. **Business Scenario**: 2-3 sentences.

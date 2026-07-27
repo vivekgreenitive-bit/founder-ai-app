@@ -9,6 +9,8 @@ class AssessmentAgent:
         prompt = f"""<|start_header_id|>system<|end_header_id|>
 You are an expert business analyst. Analyze the following startup details and output a clean JSON object containing the assessment. Do not include any explanation, markdown formatting outside of JSON, or other text.
 
+IMPORTANT: You MUST extract the "stage" and "business_model" (industry) fields directly from the provided "Company Profile Context" below. Do not fabricate or default to SaaS if the profile specifies a different model (like Agency or Retail).
+
 Company Profile Context:
 {json.dumps(profile_data, indent=2)}
 
@@ -20,10 +22,10 @@ Founder's Query:
 
 Respond ONLY with a valid JSON object matching this structure:
 {{
-  "stage": "current stage",
-  "business_model": "business model",
+  "stage": "extract stage from profile context",
+  "business_model": "extract industry/model from profile context",
   "maturity": "maturity level",
-  "primary_challenge": "detected primary challenge",
+  "primary_challenge": "detected primary challenge from query",
   "missing_info": ["info 1", "info 2"],
   "summary": "1 sentence scenario summary"
 }}
