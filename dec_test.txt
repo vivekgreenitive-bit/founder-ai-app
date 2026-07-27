@@ -63,7 +63,7 @@ Sivarajah Ramanathan (Mission Director, Startup TN)
 Nandakumar (Founder, Advi Auto Care)
 Gopinath (IAS Trainer)
 
-
+6 | Introduction
 
 •
 •
@@ -84,7 +84,7 @@ I - Implementation
 S - Simulate
 S - Solution
 
-
+8 | Founder Frameworks
 
 ECG KISS: Overall business
 E – End Goal
@@ -113,7 +113,7 @@ Use flow diagrams or visual workflows to simulate how your implementations
 will lead to the end goal. This gives you a practical preview, identifies gaps
 early, and ensures better planning—saving time and resources.
 
-
+ECG KISS: Overall Business | 9
 
 S – Solution
 With a clear picture of your business landscape, finalize the most suitable
@@ -139,7 +139,7 @@ with focus and precision.
 It transforms planning from an abstract exercise into a powerful diagnostic
 and strategic tool—keeping your business agile, aligned, and future-ready.
 
-
+10 | Founder Frameworks
 
 Framework Applied
 Business Scenario: Global Expansion Strategy for a UK Biscuit
@@ -174,7 +174,7 @@ we’ll move to Canada and then Singapore. This approach helps us
 optimize resource usage, reduce risk, and prepare for local complexities.
 Each phase strengthens the next.”
 
-
+ECG KISS: Overall Business | 11
 
 Doer (Athlete Thinker)
 “We’ll start with virtual research—talk to domain experts, analyze
@@ -222,7 +222,7 @@ Understand local political and regulatory environments
 Upskill internal teams on global operations
 Learn from industry best practices and legal norms
 
-
+12 | Founder Frameworks
 
 I – Implementation Plan
 •
@@ -263,7 +263,7 @@ Machinery Deployment Strategy
 |---> Equipment Shipped in Modular Form
 |---> Local Assembly Coordinated
 
-
+ECG KISS: Overall Business | 13
 
 S – Solution
 •
@@ -281,7 +281,7 @@ Create a detailed budget covering compliance, training, and
 transport
 Track KPIs through a central dashboard for continuous feedback
 
-
+14 | Founder Frameworks
 
 Exercise:
 Your Business Scenario:
@@ -290,7 +290,7 @@ Dreamer (Superhuman Thinker)
 
 Guardian (Military Officer Thinker)
 
-
+ECG KISS: Overall Business | 15
 
 Doer (Athlete Thinker)
 
@@ -298,7 +298,7 @@ Apply the Framework
 
 E – End Goal
 
-
+16 | Founder Frameworks
 
 C – Current Pain Points
 
@@ -306,7 +306,7 @@ G – GAP
 
 K – Knowledge
 
-
+ECG KISS: Overall Business | 17
 
 I – Implementation
 
@@ -327,7 +327,7 @@ R – Review
 A – Actually Visualize
 S – Simulate & Schedule
 
-
+20 | Founder Frameworks
 
 SLR CAMERAS: Yearly Planning
 S – Success Peak
@@ -355,7 +355,7 @@ Be ready to adapt based on evolving business conditions.
 E – Evaluation and Estimation
 Estimate the time and effort required for each milestone.
 
-
+SLR CAMERAS: Yearly Planning | 21
 
 Evaluate past performance from these perspectives:
 •
@@ -388,7 +388,7 @@ done on a yearly basis.
 The SLR CAMERAS framework is designed to bring structure, clarity, and
 direction to this crucial annual planning process.
 
-
+22 | Founder Frameworks
 
 It guides you from defining your vision, listing milestones, identifying
 resources, and categorizing goals, to building a mitigation plan that
@@ -402,7 +402,7 @@ When applied consistently, SLR CAMERAS transforms your yearly
 planning into a powerful, outcome-driven strategy—moving you closer to
 your vision with confidence and control.
 
-
+SLR CAMERAS: Yearly Planning | 23
 
 Framework Applied
 Business Scenario: Strategic Expansion for a Construction Company
@@ -431,7 +431,7 @@ a structured plan for 30% growth. Leverage technology (CRM,
 automation tools, digital marketing) and perform competitor research.
 Build a dedicated team to execute commercial strategy step-by-step.
 
-
+24 | Founder Frameworks
 
 SLR CAMERAS Framework Applied
 S – Success Peak
@@ -483,7 +483,7 @@ Vendors for training and hiring
 Sales and marketing professionals
 Content and PR teams for publishing success
 
-SLR CAMERAS: Yearly Planning
+SLR CAMERAS: Yearly Planning | 25
 
 C – Categorization
 Sales:
@@ -535,7 +535,7 @@ Begin employee training
 Launch sales process
 Complete commercial business acquisition
 
-
+26 | Founder Frameworks
 
 Q2:
 •
@@ -596,7 +596,7 @@ Time Estimations:
 Q1: 3 months
 Q2: 5 months
 
-
+SLR CAMERAS: Yearly Planning | 27
 
 •
 •
@@ -631,7 +631,7 @@ Commercial Market Expansion – Top 50 Goal
 |---> Drive consistent progress to secure industry awards
 Now schedule in your calendar
 
-
+28 | Founder Frameworks
 
 Exercise
 Your Business Scenario
@@ -642,7 +642,7 @@ Guardian (Military Officer Thinker):
 
 Doer (Athlete Thinker):
 
-
+SLR CAMERAS: Yearly Planning | 29
 
 S – Success Peak
 
@@ -652,7 +652,7 @@ R – Resources Required
 
 C – Categorization
 
-
+30 | Founder Frameworks
 
 A – Assigning Milestones
 Quarter 1:
@@ -665,7 +665,7 @@ Quarter 4:
 
 M – Mitigation Plan
 
-
+SLR CAMERAS: Yearly Planning | 31
 
 E – Evaluation and Estimation
 
@@ -685,7 +685,7 @@ E – Evaluate
 R – Review
 S – Simulate & Schedule
 
-
+34 | Founder Frameworks
 
 MC BEERS: Quarterly Planning
 M – Milestones
@@ -721,7 +721,7 @@ How did your team contribute?
 How did customers respond?
 How did your finances perform?
 
-
+MC BEERS: Quarterly Planning | 35
 
 Use a percentage or rating scale to quantify progress and identify gaps.
 R – Review
@@ -757,7 +757,7 @@ Stay focused with clear task breakdowns
 Adapt with data-driven evaluations
 Maintain momentum through continuous improvement
 
-
+36 | Founder Frameworks
 
 This rhythm of quarterly planning isn’t just a business tactic — it’s a
 mindset. When applied consistently, MC BEERS keeps your team aligned,
@@ -766,7 +766,7 @@ confidence.
 It helps you stay connected to your long-term vision—while making
 tangible, measurable progress every single quarter.
 
-
+MC BEERS: Quarterly Planning | 37
 
 Framework Applied
 Business Scenario: Global Logistics Optimization for an International
@@ -802,7 +802,7 @@ Guardian (Military Officer Thinker)
 “Let’s stabilize before we scale.
 First, shut down the two non-performing offices.
 
-
+38 | Founder Frameworks
 
 Limit expansion to three countries initially.
 Maintain existing vendors while analyzing risks, setting contingency
@@ -850,7 +850,7 @@ Pricing Strategy
 
 1.5% price hike rollout
 
-
+MC BEERS: Quarterly Planning | 39
 
 B – Breakdown of Key Tasks
 1. Logistics Company Acquisition
@@ -900,7 +900,8 @@ Pilot test with select customers
 Analyze customer feedback
 Gradually expand pricing changes to all markets
 
-
+40 | Founder Frameworks
+
 E – Estimate Efforts
 Task
 
@@ -963,7 +964,7 @@ Acquiring & Transitioning
 |---> Start small
 |---> Scale fully
 
-
+MC BEERS: Quarterly Planning | 41
 
 Operational Reduction
 |---> Reduce costs by 30%
@@ -992,7 +993,7 @@ Mar
 
 Finalize deals, close offices, complete pricing rollout
 
-
+42 | Founder Frameworks
 
 Exercise
 Your Business Scenario
@@ -1001,7 +1002,7 @@ Dreamer (Superhuman Thinker):
 
 Guardian (Military Officer Thinker):
 
-
+MC BEERS: Quarterly Planning | 43
 
 Doer (Athlete Thinker):
 
@@ -1012,7 +1013,7 @@ C – Categorize
 
 B – Breakdown into Multiple Tasks
 
-
+44 | Founder Frameworks
 
 E – Estimate Efforts
 
@@ -1032,7 +1033,7 @@ E – Evaluate
 R – Review
 S – Simulate & Schedule
 
-
+46 | Founder Frameworks
 
 PC PEERS: Monthly Planning
 P – Planning
@@ -1066,7 +1067,7 @@ Review the previous month to capture learnings and identify areas for
 improvement. Apply percentages to understand how much of the plan was
 completed and what adjustments are needed.
 
-
+PC PEERS: Monthly Planning | 47
 
 S – Simulate & Schedule
 Simulate the tasks identified using this framework to save time and
@@ -1101,7 +1102,7 @@ This monthly rhythm ensures that you are not just reacting to what’s
 happening, but proactively shaping your outcomes with clarity and
 confidence.
 
-
+48 | Founder Frameworks
 
 Framework Applied
 Business Scenario: Strategic Franchise Growth for a Shoe Brand
@@ -1139,7 +1140,7 @@ externally.
 A clear ROI plan for the exhibition, including budgeting and
 measurable KPIs.”
 
-
+PC PEERS: Monthly Planning | 49
 
 Doer (Athlete Thinker)
 “Execution starts now:
@@ -1171,7 +1172,7 @@ Acquire 7 new franchises in the metro city
 Hire a digital marketing agency
 Participate in a targeted franchise exhibition
 
-
+50 | Founder Frameworks
 
 C - Categorizing
 Category
@@ -1254,7 +1255,7 @@ Customer Response
 
 85%
 
-
+PC PEERS: Monthly Planning | 51
 
 R - Review
 Learnings:
@@ -1290,7 +1291,7 @@ Franchise Promotion & Engagement
 |---> Train internal team
 |---> Explore more tools & lead channels
 
-
+52 | Founder Frameworks
 
 Monthly Calendar View
 Week
@@ -1319,7 +1320,7 @@ Week 4
 
 Every Week - Franchise relationship nurturing (calls, visits, updates)
 
-
+PC PEERS: Monthly Planning | 53
 
 Exercise
 Your Business Scenario
@@ -1330,7 +1331,7 @@ Guardian (Military Officer Thinker):
 
 Doer (Athlete Thinker):
 
-
+54 | Founder Frameworks
 
 Apply Framework
 P – Planning
@@ -1339,7 +1340,7 @@ C – Categorizing
 
 P – Prioritizing
 
-
+PC PEERS: Monthly Planning | 55
 
 E – Estimating
 
@@ -1357,7 +1358,7 @@ E – Estimating
 R – Review
 P – Percentage / Progress
 
-
+58 | Founder Frameworks
 
 PS ERP: Weekly Planning
 P – Planning
@@ -1387,14 +1388,14 @@ just reactive but purposeful.
 When you plan each week with clarity—choosing the right tasks, estimating
 efforts, scheduling smartly, and reviewing progress—you create a flow of
 
-
+PS ERP: Weekly Planning | 59
 
 consistent momentum. This cadence prevents burnout, avoids distractions,
 and delivers results that stack up toward your quarterly and yearly vision.
 The PS ERP framework gives you the discipline and agility to stay aligned,
 adjust fast, and keep building—one powerful week at a time.
 
-
+60 | Founder Frameworks
 
 Framework Applied
 Business Scenario: Mobile Manufacturing – Festival Surge Planning
@@ -1427,7 +1428,7 @@ sales demand. Evaluate if we truly need external logistics vendors or if
 internal resources can handle it. Ensure the gifting plan is logistically
 sound and not rushed. Quality and execution must remain intact.”
 
-
+PS ERP: Weekly Planning | 61
 
 Doer (Athlete Thinker):
 “Let’s execute fast. Complete the production ramp-up within 3 days.
@@ -1494,7 +1495,7 @@ Deliver gifts to employees
 
 Friday
 
-
+62 | Founder Frameworks
 
 E – Estimating
 Task
@@ -1566,7 +1567,7 @@ Employee Gift Delivery
 
 Completed
 
-
+PS ERP: Weekly Planning | 63
 
 Exercise
 Your Business Scenario
@@ -1577,7 +1578,7 @@ Guardian (Military Officer Thinker):
 
 Doer (Athlete Thinker):
 
-
+64 | Founder Frameworks
 
 Apply Framework
 P – Planning
@@ -1588,7 +1589,7 @@ E – Estimating
 
 R – Review
 
-
+PS ERP: Weekly Planning | 65
 
 P – Percentage / Progress
 
@@ -1601,7 +1602,7 @@ R – Review
 P – Prioritize
 S – Schedule
 
-
+68 | Founder Frameworks
 
 DC ERPRS: Daily Planning
 D – Daily Task List
@@ -1644,7 +1645,7 @@ Areas of improvement
 
 Assign a percentage against each task to track its completion.
 
-
+DC ERPRS: Daily Planning | 69
 
 P – Prioritize
 Prioritize tasks as High, Medium, or Low to focus on what matters most.
@@ -1670,7 +1671,8 @@ Similarly, each day in a year—those 365 days—acts as a building block for
 your business mission.
 DC ERPRS helps you do the basics right, one day at a time.
 
-
+70 | Founder Frameworks
+
 Framework Applied
 Business Scenario: Strategic Deployment for E-Commerce Growth
 An e-commerce product company is preparing for a major production
@@ -1697,7 +1699,7 @@ deploy as scheduled. Post-deployment, conduct smoke tests and validate
 stability. If issues arise, act immediately with the backup plan. Execute
 without delay.”
 
-
+DC ERPRS: Daily Planning | 71
 
 DC ERPRS: Daily Planning Breakdown
 D – Daily Task List
@@ -1758,7 +1760,7 @@ Onboarding new distributors
 
 2 hours
 
-
+72 | Founder Frameworks
 
 R – Review (Previous Day Reflection)
 •
@@ -1822,7 +1824,7 @@ Sales team outreach
 
 Marketing campaign planning
 
-
+DC ERPRS: Daily Planning | 73
 
 Exercise
 Your Business Scenario
@@ -1833,7 +1835,7 @@ Guardian (Military Officer Thinker):
 
 Doer (Athlete Thinker):
 
-
+74 | Founder Frameworks
 
 Apply Framework
 D – Daily Task List
@@ -1844,7 +1846,7 @@ E – Estimate
 
 R – Review
 
-
+DC ERPRS: Daily Planning | 75
 
 P – Prioritize
 
@@ -1862,7 +1864,7 @@ S – Simulate
 M – Monitor & Measure
 E – Evaluate & Evolve
 
-
+78 | Founder Frameworks
 
 OKS REC SME: System
 O – Outcome
@@ -1892,7 +1894,7 @@ Use flow diagrams and various business scenarios to simulate how your
 system will operate. This gives clarity, direction, and helps save time and
 resources.
 
-
+OKS REC SME: System | 79
 
 M – Monitor & Measure
 Monitor the performance of each subsystem. Rate it on a scale of 1 to 10.
@@ -1914,7 +1916,7 @@ Each subsystem must be structured effectively and placed within an
 operating system to function efficiently. This framework helps you establish
 that structure and make continual improvements.
 
-
+80 | Founder Frameworks
 
 Framework Applied
 Business Scenario: Global System Scalability for a Formal Dress
@@ -1947,7 +1949,7 @@ Start with countries where we already have logistics or partial
 presence. Ensure we have sufficient tech, talent, and tools before
 scaling further.”
 
-
+OKS REC SME: System | 81
 
 Doer (Athlete Thinker)
 “Let’s take action.
@@ -1983,7 +1985,7 @@ S – Subsystems Required
 Existing Systems: HR, Finance, Production, Distribution, Marketing,
 Sales
 
-
+82 | Founder Frameworks
 
 Require Major Changes:
 •
@@ -2036,7 +2038,7 @@ Productive: 8
 Scalable: 7
 Delegatable: 9
 
-
+OKS REC SME: System | 83
 
 C – Cross-Functional Integration
 Subsystem
@@ -2111,7 +2113,7 @@ Festival Season Surge
 |---> Sales & marketing tailor campaigns to traditions
 |---> Production scales up accordingly
 
-
+84 | Founder Frameworks
 
 Scenario 2:
 Cultural & Language Barriers
@@ -2162,7 +2164,7 @@ Upgrade tools for cultural forecasting
 Hire regional advisors
 Pilot one country at a time, measure impact, and replicate
 
-
+OKS REC SME: System | 85
 
 Exercise
 Your Business Scenario
@@ -2173,7 +2175,7 @@ Guardian (Military Officer Thinker):
 
 Doer (Athlete Thinker):
 
-
+86 | Founder Frameworks
 
 Apply Framework
 O – Outcome
@@ -2184,7 +2186,7 @@ S – Subsystems Required
 
 R – Resources
 
-
+OKS REC SME: System | 87
 
 E – Efficient
 
@@ -2194,7 +2196,7 @@ S – Simulate
 
 M – Monitor & Measure
 
-
+88 | Founder Frameworks
 
 E – Evaluate & Evolve
 
@@ -2211,7 +2213,7 @@ S – Simulate
 M – Monitor & Measure
 E – Evaluate & Evolve
 
-
+90 | Founder Frameworks
 
 PFA SAAS SME: Process
 P – Process List
@@ -2240,7 +2242,7 @@ S – Simulate
 Simulate with the flow diagram. Run through real use cases. This gives you
 a clear picture of the process. If needed, pilot test the process.
 
-
+PFA SAAS SME: Process | 91
 
 M – Monitor & Measure
 Monitor the process and rate it on a scale of 1 to 10. Track the metrics for
@@ -2268,7 +2270,7 @@ must be done right.
 That’s why following the PFA SAAS SME process ensures anyone can
 execute it smoothly—helping you streamline your business processes.
 
-
+92 | Founder Frameworks
 
 Framework Applied
 Business Scenario: Structuring End-to-End Processes for Car
@@ -2300,7 +2302,7 @@ Ensure continuity for current operations while aligning with future
 goals.
 Every department must be synchronized before we scale.”
 
-
+PFA SAAS SME: Process | 93
 
 Doer (Athlete Thinker)
 “Start with what matters most—raw material and warehouse
@@ -2336,7 +2338,7 @@ Customer Delivery
 |---> Move to the warehouse
 |---> To the distributors
 
-
+94 | Founder Frameworks
 
 A – All Tasks
 Raw Material
@@ -2382,7 +2384,7 @@ Customer Delivery
 Move to dispatch warehouse
 Deliver to distribution channels
 
-
+PFA SAAS SME: Process | 95
 
 S – Sequencing
 Task
@@ -2496,7 +2498,7 @@ Compliance Sign-off → QA Head
 Warehouse Dispatch → Warehouse Head
 Final Distribution → Distribution Head
 
-
+96 | Founder Frameworks
 
 A – Accountable
 Department
@@ -2550,7 +2552,7 @@ Coordinator
 Distribution Head
 _________________________________________________
 
-
+PFA SAAS SME: Process | 97
 
 S – Simulate
 Scenario: Deliver 100 Cars to Headquarters
@@ -2600,7 +2602,7 @@ Inventory turnaround time
 Production cycle time
 On-time delivery %
 
-
+98 | Founder Frameworks
 
 E – Evaluate & Evolve
 Overall Process Readiness: 90%
@@ -2617,7 +2619,7 @@ Needs Improvement:
 → Use tech tools for visibility & tracking
 → Get ongoing feedback from department leads via surveys
 
-
+PFA SAAS SME: Process | 99
 
 Exercise
 Your Business Scenario
@@ -2628,7 +2630,7 @@ Guardian (Military Officer Thinker):
 
 Doer (Athlete Thinker):
 
-
+100 | Founder Frameworks
 
 Apply Framework
 P – Process List
@@ -2639,7 +2641,7 @@ A – All Tasks
 
 S – Sequencing
 
-
+PFA SAAS SME: Process | 101
 
 A – Approval Required
 
@@ -2649,7 +2651,7 @@ S – Swimlane
 
 S – Simulate
 
-
+102 | Founder Frameworks
 
 M – Monitor & Measure
 
@@ -2668,7 +2670,7 @@ S – Simulate
 M – Monitor & Measure
 E – Evaluate & Evolve
 
-
+104 | Founder Frameworks
 
 RSS FEED SME: SOP
 R – Routine Repeated Task
@@ -2693,7 +2695,7 @@ S – Simulate
 Simulate the SOP with flow diagrams and use cases to help validate the
 practical output of the SOP.
 
-
+RSS FEED SME: SOP | 105
 
 M – Monitor & Measure
 Monitor your SOP and apply a rating scale to evaluate how well it works.
@@ -2717,7 +2719,7 @@ could be in trouble and dissatisfied.
 So, RSS FEED SME helps structure each step involved in your SOP so
 that the business can handle operations effectively and with high efficiency.
 
-
+106 | Founder Frameworks
 
 Framework Applied
 Business Scenario: SOP Streamlining for International Patient
@@ -2752,7 +2754,7 @@ and assess why they were overlooked earlier.
 Ensure new SOPs are future-proof and account for past gaps in
 execution.”
 
-
+RSS FEED SME: SOP | 107
 
 Doer (Athlete Thinker)
 “Gather all existing SOP documents and analyze immediately.
@@ -2799,7 +2801,7 @@ Check doctor availability
 Block slots and confirm with the patient
 Notify patient upon successful scheduling
 
-
+108 | Founder Frameworks
 
 3. International Patient Onboarding
 •
@@ -2858,7 +2860,7 @@ Videos
 Video 1: Overview of international patient journey
 Video 2: Walkthrough of the SOP in action
 
-
+RSS FEED SME: SOP | 109
 
 Examples
 •
@@ -2920,7 +2922,7 @@ department heads
 Simulation run-through with team leads
 Access to SOP manuals and quick reference sheets
 
-
+110 | Founder Frameworks
 
 E – Embedded
 •
@@ -2973,7 +2975,7 @@ Accommodation Support
 
 9
 
-
+RSS FEED SME: SOP | 111
 
 E – Evaluate & Evolve
 Overall SOP Effectiveness: 85%
@@ -3000,7 +3002,7 @@ Updated SOP steps based on staff feedback
 Added flexibility and escalation steps for delays or changes
 Plan to review again after next international patient cycle
 
-
+112 | Founder Frameworks
 
 Exercise
 Your Business Scenario
@@ -3013,7 +3015,7 @@ Doer (Athlete Thinker):
 
 Apply Framework
 
-
+RSS FEED SME: SOP | 113
 
 R – Routine Repeated Task
 
@@ -3023,7 +3025,7 @@ S – Screenshots / Videos / Examples
 
 F – Format (Template)
 
-
+114 | Founder Frameworks
 
 E – Educate
 
@@ -3033,7 +3035,7 @@ D – Delegatable
 
 S – Simulate
 
-
+RSS FEED SME: SOP | 115
 
 M – Monitor & Measure
 
@@ -3051,7 +3053,7 @@ P – Plan Practices
 E – Execute
 R – Review & Re-execute
 
-
+118 | Founder Frameworks
 
 RPM REAP ER: Execution
 R – Result-oriented Action List
@@ -3088,7 +3090,7 @@ Plan for the resources and expertise required for your execution—
 like people, contacts, vendors, partners, tools, funds, sequencing, and
 dependencies.
 
-
+RPM REAP ER: Execution | 119
 
 E – Execute Strategy
 Choose and execute your strategy to test the depth of the water. This helps
@@ -3138,7 +3140,7 @@ Review your complete execution.
 Use metrics like percentage achieved of the end goal.
 Measure efficiency of team, sequence, parallelism, and dependencies.
 
-
+120 | Founder Frameworks
 
 •
 •
@@ -3164,7 +3166,7 @@ The RPM REAP ER framework helps with pre-execution planning and
 practice—so when it’s time to run, you’ll win the trophy in your business
 execution.
 
-
+RPM REAP ER: Execution | 121
 
 Framework Applied
 Business Scenario: Expanding into Mobile Development
@@ -3200,7 +3202,7 @@ Hire required roles: mobile developer, team lead, project manager
 Create a pilot plan for current customers
 Define deliverables, timelines, and quality standards
 
-
+122 | Founder Frameworks
 
 P – Pick Strategy
 The company selects the 1-3-5 Strategy:
@@ -3255,7 +3257,7 @@ Analyze technical and operational performance
 Use results to optimize for future rollouts
 Transition execution to internal team after knowledge transfer
 
-
+RPM REAP ER: Execution | 123
 
 A – Analyse
 •
@@ -3342,7 +3344,7 @@ Execution status:
 • Onboarding new clients – In progress
 Weekly tracking ensures on-time delivery and issue resolution.
 
-
+124 | Founder Frameworks
 
 R – Review & Re-execute
 Execution Review:
@@ -3405,7 +3407,7 @@ Client satisfaction is strong
 Resource limitations delayed full rollout
 Recruitment and onboarding are prioritized in the next cycle
 
-
+RPM REAP ER: Execution | 125
 
 Exercise
 Your Business Scenario
@@ -3416,7 +3418,7 @@ Guardian (Military Officer Thinker):
 
 Doer (Athlete Thinker):
 
-
+126 | Founder Frameworks
 
 Apply Framework
 R – Result-oriented Action List
@@ -3427,7 +3429,7 @@ M – Milestones
 
 R – Resources
 
-
+RPM REAP ER: Execution | 127
 
 E – Execute Strategy
 
@@ -3437,7 +3439,7 @@ P – Plan Practices
 
 E – Execute
 
-
+128 | Founder Frameworks
 
 R – Review & Re-execute
 
@@ -3453,7 +3455,7 @@ S – Strategize & Simulate
 E – Execute
 R – Review & Re-execute
 
-
+130 | Founder Frameworks
 
 RUN DCMS ER: Revenue
 Revenue Generating Activities
@@ -3487,7 +3489,7 @@ Unit economics
 Balance sheet
 Break-even point
 
-
+RUN DCMS ER: Revenue | 131
 
 •
 •
@@ -3521,7 +3523,7 @@ Every business operates on a budget. Look around—everything from a
 pen, paper, electricity, laptops, clothes, food, or water relates to revenue
 and economics.
 
-
+132 | Founder Frameworks
 
 In business, from employee onboarding to office space, production units,
 and maintenance, fixed and variable costs are everywhere.
@@ -3533,7 +3535,7 @@ Obviously, you need to understand and plan for all these variables to fuel
 your business.
 The RUN DCMS ER framework helps you identify those key revenuedriving factors, structure your plan, and execute it effectively.
 
-
+RUN DCMS ER: Revenue | 133
 
 Framework Applied
 Business Scenario: Bike Brand Enters the EV Market
@@ -3561,7 +3563,7 @@ terms of pricing, performance, and brand strength?
 We must ensure we’re operationally and strategically ready before making
 large investments.”
 
-
+134 | Founder Frameworks
 
 Doer (Athlete Thinker)
 “Develop one electric vehicle prototype first and assess all costs
@@ -3610,7 +3612,7 @@ Distribution and service logistics
 Target: Ensure sustainable profit margins through lean manufacturing,
 local sourcing, and battery lifecycle optimization.
 
-
+RUN DCMS ER: Revenue | 135
 
 N – Networking
 Strategic networking actions include:
@@ -3670,7 +3672,7 @@ Tech appeal: Smart dashboards, mobile tracking, app integration
 
 These motivators guide both messaging and feature design.
 
-
+136 | Founder Frameworks
 
 M – Metrics & Measure
 Internal ratings out of 10 based on current readiness:
@@ -3733,7 +3735,7 @@ Marketing Plan:
 Performance marketing + community building
 Localized influencer programs
 
-
+RUN DCMS ER: Revenue | 137
 
 •
 •
@@ -3792,7 +3794,7 @@ Marketing Strategy
 
 Underperformed in partnerships
 
-
+138 | Founder Frameworks
 
 Insights:
 •
@@ -3818,7 +3820,8 @@ Improve partner onboarding flows and incentives
 Expand B2B outreach beyond metro regions
 Reallocate marketing budget to high-converting channels
 
-
+RUN DCMS ER: Revenue | 139
+
 Exercise
 Your Business Scenario
 
@@ -3828,7 +3831,7 @@ Guardian (Military Officer Thinker):
 
 Doer (Athlete Thinker):
 
-
+140 | Founder Frameworks
 
 Apply Framework
 R – Revenue Generating Activities
@@ -3839,7 +3842,7 @@ N – Networking
 
 D – Distribution Channel
 
-
+RUN DCMS ER: Revenue | 141
 
 C – Customer Catalyst
 
@@ -3849,7 +3852,7 @@ S – Strategize & Simulate
 
 E – Execute
 
-
+142 | Founder Frameworks
 
 R – Review & Re-execute
 
@@ -3865,7 +3868,7 @@ S – Strategize & Simulate
 E – Execute
 R – Review & Re-execute
 
-
+144 | Founder Frameworks
 
 ERM FABS ER: Evaluation
 End Goals
@@ -3917,7 +3920,7 @@ Market metrics
 MRR (Monthly Recurring Revenue)
 ARR (Annual Recurring Revenue)
 
-
+ERM FABS ER: Evaluation | 145
 
 Feedback
 Collect feedback and suggestions through surveys from teams, customers,
@@ -3953,7 +3956,7 @@ Review the execution and measure the progress through percentage
 completion or scale. Identify what worked and what needs improvement.
 List all the improvements needed, update your action plan, and re-execute.
 
-
+146 | Founder Frameworks
 
 Why ERM FABS ER Works for Evaluation
 In colleges and universities, students are evaluated based on their grades in
@@ -3982,7 +3985,7 @@ benefit customers, employees, investors, and generate profit.
 ERM FABS ER helps founders conduct comprehensive business evaluations
 with structure and clarity.
 
-
+ERM FABS ER: Evaluation | 147
 
 Framework Applied
 Business Scenario: International Food Franchise – Strategic
@@ -4016,7 +4019,7 @@ Increase sales and customer satisfaction in all operating regions
 Gain deeper understanding of regional market dynamics
 Drive strategic improvements and operational optimization
 
-
+148 | Founder Frameworks
 
 R – Review Performance (Rating out of 10)
 Evaluation Area
@@ -4104,7 +4107,7 @@ ARR
 
 70%
 
-
+ERM FABS ER: Evaluation | 149
 
 F – Feedback
 Collected through:
@@ -4158,7 +4161,7 @@ S – Strategize & Simulate
 Get a market consultant for market penetration. Also for sales channels
 benchmarking.
 
-
+150 | Founder Frameworks
 
 Increase Sales and Customer Satisfaction
 |---> Team & public surveys
@@ -4208,7 +4211,7 @@ Operational Optimization
 
 60%
 
-
+ERM FABS ER: Evaluation | 151
 
 Insights:
 •
@@ -4221,7 +4224,8 @@ delay noticed in UK and Netherlands
 A new training module + SOP simplification will be rolled out
 to boost operational consistency
 
-
+152 | Founder Frameworks
+
 Exercise
 Your Business Scenario
 
@@ -4231,7 +4235,7 @@ Guardian (Military Officer Thinker):
 
 Doer (Athlete Thinker):
 
-
+ERM FABS ER: Evaluation | 153
 
 Apply Framework
 E – End Goals
@@ -4242,7 +4246,7 @@ M – Metrics & Measure
 
 F – Feedback
 
-
+154 | Founder Frameworks
 
 A – Assess Risk
 
@@ -4252,7 +4256,7 @@ S – Strategize & Simulate
 
 E – Execute
 
-
+ERM FABS ER: Evaluation | 155
 
 R – Review & Re-execute
 
@@ -4267,7 +4271,7 @@ S – Simulate
 E – Execute
 R – Review & Re-execute
 
-
+158 | Founder Frameworks
 
 ADMINS ER: Crisis
 Acknowledge Area
@@ -4295,7 +4299,7 @@ Review & Re-execute
 Track the progress of both short-term and long-term fixes. Identify changes
 needed and adjust the plan or strategy. Then, re-execute with improvements.
 
-
+ADMINS ER: Crisis | 159
 
 Why ADMINS ER Works for Crisis
 Crises can occur unexpectedly in business. Recessions can delay or cancel
@@ -4311,7 +4315,7 @@ The primary reason for the ADMINS ER framework is to help businesses
 stay prepared in times of crisis—by identifying, addressing, and resolving
 issues systematically.
 
-
+160 | Founder Frameworks
 
 Framework Applied
 Crisis Management Using ADMINS ER
@@ -4343,7 +4347,7 @@ Identify factual areas impacted:
 Sales: Property bookings have declined significantly.
 Finance: Rising costs and payment delays are straining cash flow.
 
-
+ADMINS ER: Crisis | 161
 
 •
 •
@@ -4408,7 +4412,7 @@ Begin immediate action on high-priority items:
 Started recovery of dues from past sales
 Adjusted operations to minimal viable functioning
 
-
+162 | Founder Frameworks
 
 S – Strategize & Simulate
 Long-Term Resilience Plan:
@@ -4453,7 +4457,7 @@ Cost reduction initiatives
 
 70%
 
-
+ADMINS ER: Crisis | 163
 
 Insight:
 Dues recovery helped stabilize short-term cash flow. Market research
@@ -4461,7 +4465,7 @@ revealed promising opportunities in mid-income housing and rental
 properties. Plans are being re-executed with updated learnings for
 improved resilience.
 
-
+164 | Founder Frameworks
 
 Exercise
 Your Business Scenario
@@ -4472,7 +4476,7 @@ Guardian (Military Officer Thinker):
 
 Doer (Athlete Thinker):
 
-
+ADMINS ER: Crisis | 165
 
 Apply Framework
 A – Acknowledge Area
@@ -4483,7 +4487,7 @@ M – Mitigation Plan
 
 I – Implementation Steps
 
-
+166 | Founder Frameworks
 
 N – Next Steps
 

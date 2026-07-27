@@ -1,0 +1,213 @@
+[
+  {
+    "id": 1,
+    "description": "Idea-stage founder without customers",
+    "query": "I have an idea for a platform that connects local bakers with customers, but I don't have any customers or product built yet. How do I start?",
+    "profile_data": {
+      "name": "BakerConnect",
+      "industry": "SaaS / Software",
+      "stage": "Pre-revenue / Idea",
+      "team": "Solo Founder",
+      "challenge": "Founder is the Bottleneck"
+    },
+    "document_text": "",
+    "expected_framework": "ECG KISS"
+  },
+  {
+    "id": 2,
+    "description": "Founder validating product-market fit",
+    "query": "We built a prototype for developer API monitoring and have 5 beta testers, but we're struggling to understand if they really want it or if we are building the right features for PMF validation.",
+    "profile_data": {
+      "name": "MonitorDev",
+      "industry": "SaaS / Software",
+      "stage": "Early Stage ($0 - $1M)",
+      "team": "2 - 10 Employees",
+      "challenge": "Stagnant Revenue Growth"
+    },
+    "document_text": "",
+    "expected_framework": "ECG KISS"
+  },
+  {
+    "id": 3,
+    "description": "Founder with low sales",
+    "query": "Our inbound pipeline has dried up and we are not closing enough sales. We need a way to debug our revenue pipeline and boost sales numbers this quarter.",
+    "profile_data": {
+      "name": "SalesBoost",
+      "industry": "Agency / Services",
+      "stage": "Early Stage ($0 - $1M)",
+      "team": "2 - 10 Employees",
+      "challenge": "Unpredictable Cash Flow"
+    },
+    "document_text": "",
+    "expected_framework": "RUN DCMS ER"
+  },
+  {
+    "id": 4,
+    "description": "Founder with weak execution discipline",
+    "query": "My team and I keep missing our deadlines. Tasks fall through the cracks and we lack execution discipline to hit our targets consistently.",
+    "profile_data": {
+      "name": "FastTrack",
+      "industry": "SaaS / Software",
+      "stage": "Early Stage ($0 - $1M)",
+      "team": "2 - 10 Employees",
+      "challenge": "Team Execution Errors / Lack of SOPs"
+    },
+    "document_text": "",
+    "expected_framework": "RPM REAP ER"
+  },
+  {
+    "id": 5,
+    "description": "Founder struggling with delegation",
+    "query": "I am working 80 hours a week and cannot delegate tasks. Every decision has to go through me, and I've become a massive bottleneck.",
+    "profile_data": {
+      "name": "OwnerLed",
+      "industry": "Retail",
+      "stage": "Growth ($1M - $10M)",
+      "team": "11 - 50 Employees",
+      "challenge": "Founder is the Bottleneck"
+    },
+    "document_text": "",
+    "expected_framework": "OKS REC SME"
+  },
+  {
+    "id": 6,
+    "description": "Founder facing operational bottlenecks",
+    "query": "Our operations are messy. Delivery takes too long, error rates are high, and we have bottlenecks in our order-to-delivery mapping flow.",
+    "profile_data": {
+      "name": "LogisticsFlow",
+      "industry": "E-commerce",
+      "stage": "Growth ($1M - $10M)",
+      "team": "11 - 50 Employees",
+      "challenge": "Team Execution Errors / Lack of SOPs"
+    },
+    "document_text": "",
+    "expected_framework": "PFA SAAS SME"
+  },
+  {
+    "id": 7,
+    "description": "Founder needing a go-to-market strategy",
+    "query": "We want to launch our enterprise HR SaaS but don't have a structured go-to-market strategy to find our first 10 corporate accounts.",
+    "profile_data": {
+      "name": "HRGenie",
+      "industry": "SaaS / Software",
+      "stage": "Early Stage ($0 - $1M)",
+      "team": "2 - 10 Employees",
+      "challenge": "Stagnant Revenue Growth"
+    },
+    "document_text": "",
+    "expected_framework": "ECG KISS"
+  },
+  {
+    "id": 8,
+    "description": "Founder experiencing cash-flow pressure",
+    "query": "We are running out of cash in 3 months. Receivables are delayed, and overhead is too high. I need a plan to survive this cash-flow pressure.",
+    "profile_data": {
+      "name": "SurvivalCo",
+      "industry": "Healthcare",
+      "stage": "Early Stage ($0 - $1M)",
+      "team": "2 - 10 Employees",
+      "challenge": "Unpredictable Cash Flow"
+    },
+    "document_text": "",
+    "expected_framework": "ADMINS ER"
+  },
+  {
+    "id": 9,
+    "description": "Founder with unclear positioning",
+    "query": "Customers compare us to cheap generic tools. We need a way to establish premium positioning and communicate value clearly.",
+    "profile_data": {
+      "name": "BrandElite",
+      "industry": "Agency / Services",
+      "stage": "Growth ($1M - $10M)",
+      "team": "2 - 10 Employees",
+      "challenge": "Stagnant Revenue Growth"
+    },
+    "document_text": "",
+    "expected_framework": "ECG KISS"
+  },
+  {
+    "id": 10,
+    "description": "Founder trying to scale a team",
+    "query": "We want to hire 5 new engineers and onboard them. However, our onboarding is ad-hoc, and we lack clear Standard Operating Procedures.",
+    "profile_data": {
+      "name": "TechScale",
+      "industry": "SaaS / Software",
+      "stage": "Growth ($1M - $10M)",
+      "team": "11 - 50 Employees",
+      "challenge": "Team Execution Errors / Lack of SOPs"
+    },
+    "document_text": "",
+    "expected_framework": "RSS FEED SME"
+  },
+  {
+    "id": 11,
+    "description": "Founder with multiple competing priorities",
+    "query": "I have 20 different items on my plate today. I am overwhelmed and need to structure my daily planning so I can focus on high-impact work.",
+    "profile_data": {
+      "name": "SoloCorp",
+      "industry": "Other",
+      "stage": "Pre-revenue / Idea",
+      "team": "Solo Founder",
+      "challenge": "Founder is the Bottleneck"
+    },
+    "document_text": "",
+    "expected_framework": "DC ERPRS"
+  },
+  {
+    "id": 12,
+    "description": "Founder uploading a business plan",
+    "query": "Analyze my attached business plan and tell me if we have operational gaps.",
+    "profile_data": {
+      "name": "BizPlanMaker",
+      "industry": "SaaS / Software",
+      "stage": "Pre-revenue / Idea",
+      "team": "Solo Founder",
+      "challenge": "Founder is the Bottleneck"
+    },
+    "document_text": "Business Plan:\nWe plan to launch a grocery delivery service that uses autonomous drones. Target market is high-density urban areas. Competitor mapping shows high entry barriers but large margin potential. Funding required: $2M. Current team size: 1.",
+    "expected_framework": "ECG KISS"
+  },
+  {
+    "id": 13,
+    "description": "Founder uploading financial or spreadsheet data",
+    "query": "Diagnose our performance using the raw financial summary context attached.",
+    "profile_data": {
+      "name": "FinCheck",
+      "industry": "Agency / Services",
+      "stage": "Growth ($1M - $10M)",
+      "team": "2 - 10 Employees",
+      "challenge": "Unpredictable Cash Flow"
+    },
+    "document_text": "Financial Summary:\nMRR: $45,000\nChurn Rate: 12% (target: < 3%)\nLTV: $1,200\nCAC: $950\nBurn Rate: $52,000\nRunway: 4.5 months",
+    "expected_framework": "ERM FABS ER"
+  },
+  {
+    "id": 14,
+    "description": "Founder manually selecting a framework",
+    "query": "Apply the framework: MC BEERS (Quarterly Planning) to help me structure the next 90 days.",
+    "profile_data": {
+      "name": "SprintProd",
+      "industry": "SaaS / Software",
+      "stage": "Growth ($1M - $10M)",
+      "team": "2 - 10 Employees",
+      "challenge": "Founder is the Bottleneck"
+    },
+    "document_text": "",
+    "expected_framework": "MC BEERS"
+  },
+  {
+    "id": 15,
+    "description": "Founder asking a follow-up question using session memory",
+    "query": "Based on that, what should be the first step in implementing the athletic actions this week?",
+    "profile_data": {
+      "name": "FastTrack",
+      "industry": "SaaS / Software",
+      "stage": "Early Stage ($0 - $1M)",
+      "team": "2 - 10 Employees",
+      "challenge": "Team Execution Errors / Lack of SOPs"
+    },
+    "document_text": "",
+    "expected_framework": "ECG KISS",
+    "is_follow_up": true
+  }
+]

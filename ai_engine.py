@@ -28,16 +28,29 @@ class FounderAIEngine:
         self.init_vectorstore()
         
     def init_llm(self):
-        """Initializes the local LLM using llama-cpp-python, downloading it if needed."""
+        """Initializes the local LLM using llama-cpp-python, checking for custom models first."""
         try:
-            if not os.path.exists(MODEL_PATH):
-                print(f"Model not found locally. Downloading {FILENAME} from Hugging Face...")
-                os.makedirs(MODEL_DIR, exist_ok=True)
+            os.makedirs(MODEL_DIR, exist_ok=True)
+            
+            # Prioritize custom fine-tuned models if present in the models directory
+            custom_models = ["unsloth.Q8_0.gguf", "unsloth.Q4_K_M.gguf", "founder-ai-3b-q8.gguf"]
+            active_model_path = MODEL_PATH
+            
+            for custom_name in custom_models:
+                p = os.path.join(MODEL_DIR, custom_name)
+                if os.path.exists(p):
+                    active_model_path = p
+                    print(f"Found custom fine-tuned model: {custom_name}")
+                    break
+            
+            if active_model_path == MODEL_PATH and not os.path.exists(MODEL_PATH):
+                print(f"Model not found locally. Downloading default {FILENAME} from Hugging Face...")
                 hf_hub_download(repo_id=REPO_ID, filename=FILENAME, local_dir=MODEL_DIR)
                 print("Download complete!")
                 
+            print(f"Loading LLM from: {active_model_path}")
             self.llm = LlamaCpp(
-                model_path=MODEL_PATH,
+                model_path=active_model_path,
                 temperature=0.1,
                 max_tokens=1000,
                 n_ctx=4096,
@@ -82,108 +95,38 @@ class FounderAIEngine:
         if not self.llm or not self.vectorstore:
             return
             
-        # Streamlined Elite Consultant Prompt
-        prompt_template = """You are Founder AI, an elite business consultant trained exclusively on the Founder Frameworks. Solve founder problems using the 13 frameworks below SILENTLY as your internal reasoning tools.
+        from agents.orchestrator import OrchestratorAgent
+        self.orchestrator = OrchestratorAgent(self.llm, self.vectorstore)
 
-## THE 13 FRAMEWORKS (PRIMARY SOURCE)
-ECG KISS | SLR CAMERAS | MC BEERS | PC PEERS | PS ERP | DC ERPRS | OKS REC SME | PFA SAAS SME | RSS FEED SME | RPM REAP ER | RUN DCMS ER | ERM FABS ER | ADMINS ER
-
-## STRICT RULES
-1. **ONLY ONE**: Select and apply exactly one (1) relevant framework from the list above.
-2. **SOLVE ONLY**: Do not explain frameworks. Use them to generate the 6-part response below.
-3. **NO HALLUCINATION**: Forbidden from using generic advice (Lean Startup, SWOT, etc.).
-4. **STYLE**: Simple language, short paragraphs, bullet points. Max 300 words.
-
-## FINAL AI OUTPUT STRUCTURE (FOLLOW EXACTLY)
-
-## 1. Business Scenario
-[2-3 sentences translating the founder's problem into business language.]
-
-## 2. Framework Name
-[The exact name of the SINGLE framework used for reasoning.]
-
-## 3. Relevant Framework Sections Applied
-*Applying only the high-impact acronym components from the source text:*
-- [Acronym Letter] – [Name]: [Specific real-time application]
-  → Example: [Concrete real-world example]
-
-- [Acronym Letter] – [Name]: [Specific real-time application]
-  → Example: [Concrete real-world example]
-
-## 4. Dreamer Perspective
-- [Possibilities, innovation, and long-term vision.]
-
-## 5. Guardian Perspective
-- [Risks, sustainability, and operational stability.]
-
-## 6. Athlete Perspective
-- [Execution, momentum, and 3 measurable outcomes.]
-
-## #1 Priority This Week
-[One specific action with the highest impact.]
-
-Context: {context}
-
-Question: {question}
-
-Response:"""
-        
-        PROMPT = PromptTemplate(
-            template=prompt_template, input_variables=["context", "question"]
-        )
-        
-        self.qa_chain = RetrievalQA.from_chain_type(
-            llm=self.llm,
-            chain_type="stuff",
-            retriever=self.vectorstore.as_retriever(search_kwargs={"k": 6}),
-            chain_type_kwargs={"prompt": PROMPT}
-        )
-
-    def analyze_query(self, query: str, document_text: str = "") -> str:
-        if not self.qa_chain:
+    def analyze_query(self, query: str, document_text: str = "", status_callback=None) -> str:
+        if not self.orchestrator:
             return "Error: AI Engine is not fully initialized. Please ensure the model file exists."
 
-        # ── Build the query with the actual problem FIRST and prominent ──────
-        # Company profile is background context ONLY — never substitute it for
-        # the real question the founder is asking right now.
-        background = ""
+        # Extract manual framework choice if combined in query string
+        user_framework = None
+        if "Please apply the framework: " in query:
+            parts = query.split("Please apply the framework: ")
+            query = parts[0].strip()
+            user_framework = parts[1].strip()
+
+        profile_data = {}
         try:
             import json
             profile_path = "company_profile.json"
             if os.path.exists(profile_path):
                 with open(profile_path, 'r') as f:
-                    data = json.load(f)
-                    name     = data.get("name", "")
-                    industry = data.get("industry", "")
-                    stage    = data.get("stage", "")
-                    team     = data.get("team", "")
-                    # NOTE: we intentionally exclude the profile's "challenge" field
-                    # so it does not override the founder's actual question below.
-                    parts = []
-                    if name:     parts.append(f"Company: {name}")
-                    if industry: parts.append(f"Industry: {industry}")
-                    if stage:    parts.append(f"Stage: {stage}")
-                    if team:     parts.append(f"Team: {team}")
-                    if parts:
-                        background = "[Background — use for personalisation only, do NOT use as the problem to solve: " \
-                                     + ", ".join(parts) + "]"
+                    profile_data = json.load(f)
         except Exception as e:
             print("Could not load company context:", e)
 
-        if document_text:
-            background += (
-                f"\n\n[Uploaded document — analyse this in context of the problem below]:\n"
-                f"{document_text}\n"
-            )
-
-        # The founder's ACTUAL problem is the primary focus — always solve THIS
-        full_query = (
-            f"SOLVE THIS SPECIFIC PROBLEM (ignore any other challenges): {query}\n\n"
-            f"{background}"
-        )
-
         try:
-            response = self.qa_chain.invoke(full_query)
-            return response['result']
+            response = self.orchestrator.run(
+                query=query,
+                document_text=document_text,
+                profile_data=profile_data,
+                user_framework=user_framework,
+                status_callback=status_callback
+            )
+            return response
         except Exception as e:
             return f"Error during analysis: {str(e)}"
