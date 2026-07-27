@@ -32,6 +32,42 @@ The desktop application is built using a modern, high-performance local AI stack
 ## 🏗️ Architecture Overview
 The application utilizes a **multi-agent pipeline** orchestrating local large language models (LLM) and a RAG search database:
 
+```mermaid
+graph TD
+    classDef agent fill:#f9f5ff,stroke:#7f56d9,stroke-width:2px;
+    classDef storage fill:#f2f4f7,stroke:#475467,stroke-width:2px;
+    classDef client fill:#eff8ff,stroke:#175cd3,stroke-width:2px;
+    
+    User([User Challenge]) --> UI[PyQt6 UI Client]:::client
+    Profile[Company Profile] --> UI
+    
+    UI -->|Start Thread| Orchestrator{Orchestrator Agent}
+    
+    Orchestrator --> Assessment[AssessmentAgent]:::agent
+    Assessment -->|Analyze Profile| FrameworkSelect[FrameworkSelectionAgent]:::agent
+    
+    FrameworkSelect --> Retrieval[KnowledgeRetrievalAgent]:::agent
+    Retrieval -->|Query Embeddings| Chroma[(ChromaDB Vector Store)]:::storage
+    Chroma -.->|Load Playbook| Playbook[FounderFrameworks_clean.txt]
+    
+    FrameworkSelect --> Memory[MemoryAgent]:::agent
+    Memory -->|Query/Save Logs| SQLite[(SQLite Conversation DB)]:::storage
+    
+    Orchestrator --> Strategy[StrategyAgent]:::agent
+    Strategy -->|Inference| Llama[Local Llama.cpp 3B Model]:::storage
+    
+    Orchestrator --> Execution[ExecutionCoachAgent]:::agent
+    Execution --> Composer[ResponseComposer]:::agent
+    
+    Composer --> Validator{Deterministic Validator}
+    Validator -->|Validation Failure| Retry[Single Local Retry]
+    Retry --> Strategy
+    
+    Validator -->|Success| UI
+    UI -->|Format Output| Output[Locked 7-Part Output Contract]
+    UI -->|Exception Handler| Alert[Error Dialog QMessageBox]
+```
+
 1. **Local RAG Pipeline**: The proprietary `FounderFrameworks_clean.txt` playbook is embedded into a local vector database via ChromaDB.
 2. **Multi-Agent Orchestration Sequence**: When a user submits a challenge, a structured pipeline manages the diagnosis:
     - **AssessmentAgent**: Analyzes the startup stage, business model, and primary challenge using the company profile and query context.
