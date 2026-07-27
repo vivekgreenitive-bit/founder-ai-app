@@ -81,6 +81,9 @@ python scripts/run_competition_audit.py
   docker-compose run --rm audit-runner
   ```
 
+### 📦 Looking for Compiled Installers?
+If you just want to run the pre-compiled desktop application without setting up Python, navigate to the **[Releases Page on the Release Repository](https://github.com/vivekgreenitive-bit/founder-app-release/releases)** to download the latest macOS and Windows installers.
+
 ---
 
 ## 🧠 Discover The 13 Frameworks
