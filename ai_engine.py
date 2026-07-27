@@ -104,10 +104,12 @@ class FounderAIEngine:
 
         # Extract manual framework choice if combined in query string
         user_framework = None
-        if "Please apply the framework: " in query:
-            parts = query.split("Please apply the framework: ")
-            query = parts[0].strip()
-            user_framework = parts[1].strip()
+        for trigger in ["Please apply the framework:", "Apply the framework:"]:
+            if trigger in query:
+                parts = query.split(trigger)
+                query = parts[0].strip()
+                user_framework = parts[1].strip()
+                break
 
         profile_data = {}
         try:

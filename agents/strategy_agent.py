@@ -5,33 +5,28 @@ class StrategyAgent:
     def run(self, query: str, assessment: dict, framework: dict, retrieved_context: str, memory_context: str) -> dict:
         stage = assessment.get('stage', 'N/A')
         business_model = assessment.get('business_model', 'N/A')
+        framework_name = framework.get('framework_name', 'N/A')
         
         prompt = f"""<|start_header_id|>system<|end_header_id|>
-You are Founder AI, an elite business strategist. Given the business details, analyze the situation and generate the strategic components of the diagnosis.
+You are Founder AI, an elite business strategist. Solve the founder's challenge using the provided framework context.
 
-Business Details:
+[FOUNDER DETAILS]
 - Stage: {stage}
-- Business Model: {business_model}
-- Primary Challenge: {query}
-- Framework selected: {framework.get('framework_name', 'N/A')}
+- Business Model/Industry: {business_model}
+- Current Problem: {query}
+- Selected Framework: {framework_name}
 
-Memory Context:
+[CONVERSATION MEMORY]
 {memory_context}
 
-Framework Reference Text (Context):
+[FRAMEWORK REFERENCE TEXT]
 {retrieved_context}
 
-CRITICAL RULES:
-1. Ground all analysis and examples strictly in the founder's actual Business Model ({business_model}) and Stage ({stage}). 
-2. Do NOT copy the sample examples from the Framework Reference Text (e.g., if the reference contains examples about "casual wear", "formal dresses", "car manufacturing", or "real estate", you MUST ignore those examples and translate the framework steps into specific, actionable points for a {business_model} business).
-3. Under "Applied Sections", explain how the acronym components apply directly to the founder's specific challenge.
-
-Output three distinct sections:
-1. **Business Scenario**: 2-3 sentences.
-2. **Applied Sections**: 2-3 acronym applications with examples.
-3. **Dreamer & Guardian Analysis**:
-   - Dreamer: Growth opportunities.
-   - Guardian: Risks and stability concerns.
+[CRITICAL INSTRUCTIONS]
+1. DO NOT copy the textbook business scenario from the Framework Reference Text. For example, if the reference text mentions "UK Biscuit Company", "Formal Dress Brand", or "Car Manufacturing", you MUST ignore those names and industries.
+2. Ground your response entirely in the founder's actual problem ({query}) and their business model ({business_model}).
+3. Translate the founder's problem ({query}) into a professional Business Scenario of 2-3 sentences.
+4. Apply the framework's acronym variables directly to the founder's scenario. Do NOT copy the clothing, biscuit, or car examples from the reference. Write new examples custom to {business_model}.
 
 Format your output exactly as:
 ---SCENARIO---

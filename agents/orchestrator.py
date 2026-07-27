@@ -97,7 +97,7 @@ class OrchestratorAgent:
         leak_patterns = [
             r"---SCENARIO---", r"---APPLIED---", r"---DREAMER---", r"---GUARDIAN---",
             r"---PRIORITY---", r"---ATHLETE---", r"<\|start_header_id\|>",
-            r"<\|end_header_id\|>", r"<\|eot_id\|>", r"assistant", r"system"
+            r"<\|end_header_id\|>", r"<\|eot_id\|>"
         ]
         for pattern in leak_patterns:
             if re.search(pattern, response):
