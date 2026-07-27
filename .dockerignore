@@ -1,0 +1,18 @@
+# Exclude virtual environments
+venv/
+.venv/
+env/
+__pycache__/
+*.pyc
+
+# Exclude large local models and vector DBs
+models/
+chroma_db/
+*.log
+
+# Exclude Git files
+.git/
+.github/
+
+# Exclude macOS files
+.DS_Store

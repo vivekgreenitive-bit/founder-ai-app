@@ -1,10 +1,11 @@
 import re
+from typing import Any, Dict, Optional
 
 class FrameworkSelectionAgent:
-    def __init__(self, llm):
-        self.llm = llm
+    def __init__(self, llm: Any) -> None:
+        self.llm: Any = llm
 
-    def run(self, assessment: dict, user_selected_framework: str = None) -> dict:
+    def run(self, assessment: Dict[str, Any], user_selected_framework: Optional[str] = None) -> Dict[str, Any]:
         # If the user has selected a framework in the UI, use that as primary
         if user_selected_framework:
             match = re.search(r'(ECG KISS|SLR CAMERAS|MC BEERS|PC PEERS|PS ERP|DC ERPRS|OKS REC SME|PFA SAAS SME|RSS FEED SME|RPM REAP ER|RUN DCMS ER|ERM FABS ER|ADMINS ER)', user_selected_framework)

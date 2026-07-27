@@ -1,8 +1,10 @@
-class ExecutionCoachAgent:
-    def __init__(self, llm):
-        self.llm = llm
+from typing import Any, Dict
 
-    def run(self, query: str, framework_name: str, strategy: dict) -> dict:
+class ExecutionCoachAgent:
+    def __init__(self, llm: Any) -> None:
+        self.llm: Any = llm
+
+    def run(self, query: str, framework_name: str, strategy: Dict[str, Any]) -> Dict[str, Any]:
         prompt = f"""<|start_header_id|>system<|end_header_id|>
 You are Founder AI, an elite business execution coach. Given the business strategy analysis, generate the execution details.
 

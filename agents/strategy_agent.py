@@ -1,8 +1,10 @@
-class StrategyAgent:
-    def __init__(self, llm):
-        self.llm = llm
+from typing import Any, Dict
 
-    def run(self, query: str, assessment: dict, framework: dict, retrieved_context: str, memory_context: str) -> dict:
+class StrategyAgent:
+    def __init__(self, llm: Any) -> None:
+        self.llm: Any = llm
+
+    def run(self, query: str, assessment: Dict[str, Any], framework: Dict[str, Any], retrieved_context: str, memory_context: str) -> Dict[str, Any]:
         stage = assessment.get('stage', 'N/A')
         business_model = assessment.get('business_model', 'N/A')
         framework_name = framework.get('framework_name', 'N/A')

@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  # Service to run automated unit and integration tests
+  test-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./models:/app/models
+      - ./chroma_db:/app/chroma_db
+    environment:
+      - MODEL_DIR=models
+      - CHROMA_DB_DIR=chroma_db
+      - EMBEDDING_MODEL_NAME=all-MiniLM-L6-v2
+
+  # Service to run full regression and competition readiness audits
+  audit-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./models:/app/models
+      - ./chroma_db:/app/chroma_db
+      - ./orchestrator.log:/app/orchestrator.log
+    environment:
+      - MODEL_DIR=models
+      - CHROMA_DB_DIR=chroma_db
+      - EMBEDDING_MODEL_NAME=all-MiniLM-L6-v2
+    command: python scripts/run_competition_audit.py

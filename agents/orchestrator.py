@@ -4,6 +4,7 @@ import uuid
 import re
 import os
 from datetime import datetime
+from typing import Any, Dict, Optional, Tuple, Callable
 
 from agents.assessment_agent import AssessmentAgent
 from agents.framework_agent import FrameworkSelectionAgent
@@ -20,9 +21,9 @@ KNOWN_FRAMEWORKS = {
 }
 
 class OrchestratorAgent:
-    def __init__(self, llm, vectorstore):
-        self.llm = llm
-        self.vectorstore = vectorstore
+    def __init__(self, llm: Any, vectorstore: Any) -> None:
+        self.llm: Any = llm
+        self.vectorstore: Any = vectorstore
         
         # Instantiate specialized agents
         self.assessment_agent = AssessmentAgent(llm)
@@ -111,7 +112,7 @@ class OrchestratorAgent:
 
         return True, "Valid"
 
-    def run(self, query: str, document_text: str, profile_data: dict, user_framework: str = None, status_callback=None) -> str:
+    def run(self, query: str, document_text: str, profile_data: Dict[str, Any], user_framework: Optional[str] = None, status_callback: Optional[Callable[[str], None]] = None) -> str:
         run_id = str(uuid.uuid4())
         start_time = time.time()
         

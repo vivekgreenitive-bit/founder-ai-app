@@ -1,11 +1,12 @@
 import json
 import re
+from typing import Any, Dict
 
 class AssessmentAgent:
-    def __init__(self, llm):
-        self.llm = llm
+    def __init__(self, llm: Any) -> None:
+        self.llm: Any = llm
 
-    def run(self, query: str, document_text: str, profile_data: dict) -> dict:
+    def run(self, query: str, document_text: str, profile_data: Dict[str, Any]) -> Dict[str, Any]:
         prompt = f"""<|start_header_id|>system<|end_header_id|>
 You are an expert business analyst. Analyze the following startup details and output a clean JSON object containing the assessment. Do not include any explanation, markdown formatting outside of JSON, or other text.
 
