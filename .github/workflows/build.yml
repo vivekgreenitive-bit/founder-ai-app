@@ -48,6 +48,8 @@ jobs:
     - name: Create Release and Upload Assets
       uses: softprops/action-gh-release@v2
       with:
+        repository: vivekgreenitive-bit/founder-app-release
+        token: ${{ secrets.RELEASE_REPO_TOKEN }}
         tag_name: latest
         name: Latest Release
         files: |
