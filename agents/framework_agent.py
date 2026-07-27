@@ -2,8 +2,10 @@ import re
 from typing import Any, Dict, Optional
 
 class FrameworkSelectionAgent:
+    llm: Any
+
     def __init__(self, llm: Any) -> None:
-        self.llm: Any = llm
+        self.llm = llm
 
     def run(self, assessment: Dict[str, Any], user_selected_framework: Optional[str] = None) -> Dict[str, Any]:
         # If the user has selected a framework in the UI, use that as primary

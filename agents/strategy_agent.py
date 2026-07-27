@@ -1,8 +1,10 @@
 from typing import Any, Dict
 
 class StrategyAgent:
+    llm: Any
+
     def __init__(self, llm: Any) -> None:
-        self.llm: Any = llm
+        self.llm = llm
 
     def run(self, query: str, assessment: Dict[str, Any], framework: Dict[str, Any], retrieved_context: str, memory_context: str) -> Dict[str, Any]:
         stage = assessment.get('stage', 'N/A')

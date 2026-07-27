@@ -1,8 +1,10 @@
 from typing import Any, Dict
 
 class ExecutionCoachAgent:
+    llm: Any
+
     def __init__(self, llm: Any) -> None:
-        self.llm: Any = llm
+        self.llm = llm
 
     def run(self, query: str, framework_name: str, strategy: Dict[str, Any]) -> Dict[str, Any]:
         prompt = f"""<|start_header_id|>system<|end_header_id|>

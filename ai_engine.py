@@ -17,8 +17,16 @@ FILENAME = os.getenv("LLM_FILENAME", "Llama-3.2-3B-Instruct-Q4_K_M.gguf")
 MODEL_DIR = os.getenv("MODEL_DIR", "models")
 MODEL_PATH = os.path.join(MODEL_DIR, FILENAME)
 
+from typing import Any, Optional
+
 class FounderAIEngine:
-    def __init__(self):
+    vectorstore: Optional[Any]
+    llm: Optional[Any]
+    qa_chain: Optional[Any]
+    db_dir: str
+    embeddings: HuggingFaceEmbeddings
+
+    def __init__(self) -> None:
         self.vectorstore = None
         self.llm = None
         self.qa_chain = None

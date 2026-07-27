@@ -21,9 +21,20 @@ KNOWN_FRAMEWORKS = {
 }
 
 class OrchestratorAgent:
+    llm: Any
+    vectorstore: Any
+    assessment_agent: AssessmentAgent
+    framework_agent: FrameworkSelectionAgent
+    retrieval_agent: KnowledgeRetrievalAgent
+    strategy_agent: StrategyAgent
+    execution_agent: ExecutionCoachAgent
+    memory_agent: MemoryAgent
+    response_composer: ResponseComposer
+    log_file: str
+
     def __init__(self, llm: Any, vectorstore: Any) -> None:
-        self.llm: Any = llm
-        self.vectorstore: Any = vectorstore
+        self.llm = llm
+        self.vectorstore = vectorstore
         
         # Instantiate specialized agents
         self.assessment_agent = AssessmentAgent(llm)
