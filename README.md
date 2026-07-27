@@ -1,174 +1,116 @@
-# Founder Frameworks AI Consultant
+# Founder AI & Founder Frameworks Lab
 
-Founder Frameworks AI Consultant is a local, privacy-first desktop application designed to provide founders with personalized diagnostic assessments, strategy advice, and actionable execution plans based on proprietary business frameworks.
+<p align="center">
+  <img src="https://www.founderframeworkslab.com/founder-frameworks-cover.jpg" width="300" alt="Founder Frameworks Cover" style="border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" />
+</p>
 
-Unlike generic cloud-based chatbots that offer boilerplate MBA responses, Founder AI acts as a dedicated business diagnostic system. It orchestrates a local **multi-agent pipeline** using local large language models (LLM), vector search databases (ChromaDB), and structural validations entirely offline to protect proprietary business metrics.
+Welcome to the official source repository for the **Founder AI Desktop App**, part of the [Founder Frameworks Lab](https://www.founderframeworkslab.com) ecosystem. 
 
----
-
-## Key Differentiators & Product Value
-* **100% Local & Private:** No external API calls are made during diagnostics. Your business strategy, financial health data, and client metrics remain on your local machine.
-* **Context-Grounded Strategy:** Employs RAG (Retrieval-Augmented Generation) against a curated database of 13 proprietary founder frameworks to translate challenges into structured actions.
-* **Multi-Agent Diagnostics:** Splits analysis across dedicated cognitive roles (Assessment, Framework Selection, Strategy, and Execution) to yield deeper, more actionable recommendations.
-* **Strict Quality Safeguards:** Validates strategy outputs using a deterministic composer contract parser to prevent instruction leaks, format bugs, and cloud fallback dependencies.
+This repository hosts the multi-agent orchestration code, RAG embeddings engine, PyQt6 user interface layout, and local compilation setups.
 
 ---
 
-## Architecture Overview
+## 🚀 What is Founder Frameworks Lab?
+Founder Frameworks Lab is an integrated business operating system consisting of 13 proprietary frameworks that bridge **Strategy, Planning, Operations, and Execution**. It is designed to help founders build scalable business systems, make data-driven decisions, and execute without friction.
 
-The system architecture cleanly decouples the user interface, RAG context matching, and the multi-agent pipeline:
+The **Founder AI Desktop App** is a private, offline artificial intelligence assistant trained exclusively on this playbook. It acts as an elite operational advisor that lives directly on your computer.
 
-```mermaid
-graph TD
-    %% User Interface Layer
-    subgraph UI ["Desktop Application (PyQt6 UI Layer)"]
-        MainWindow["FounderApp (Main Window)"]
-        Sidebar["Framework Navigator (Planning, Operations, Execution)"]
-        Profile["ProfileDialog (company_profile.json)"]
-        Output["Output Workspace (HTML Rendering)"]
-        Worker["AnalysisWorker (QThread Async Run)"]
-    end
+## ✨ Key Features
+- **100% Offline & Private:** Your business questions never leave your computer. 
+- **Framework-Grounded Answers:** Answers are strictly generated using the 13 Founder Frameworks, avoiding generic AI hallucinations.
+- **Cross-Platform:** Native compiled applications for both macOS (Apple Silicon) and Windows.
+- **Zero-Setup Execution:** No complex cloud deployments required. Just download, install, and run.
 
-    %% AI Orchestration Layer
-    subgraph Engine ["AI Engine & Agent Pipeline (LangChain / Local LLM)"]
-        EngineCore["FounderAIEngine (ai_engine.py)"]
-        Orchestrator["OrchestratorAgent (agents/orchestrator.py)"]
-        
-        %% Agents
-        Assessment["AssessmentAgent"]
-        FrameworkSel["FrameworkSelectionAgent"]
-        Retrieval["KnowledgeRetrievalAgent"]
-        Memory["MemoryAgent"]
-        Strategy["StrategyAgent"]
-        Execution["ExecutionCoachAgent"]
-        Composer["ResponseComposer"]
-    end
+## 🛠️ Technology Stack
+The desktop application is built using a modern, high-performance local AI stack:
+- **UI Framework:** PyQt6 for native, cross-platform desktop interfaces.
+- **AI Core:** Llama.cpp for highly optimized, on-device local LLM inference.
+- **Orchestration:** LangChain for Retrieval-Augmented Generation (RAG) pipelines.
+- **Vector Database:** ChromaDB for local semantic search and knowledge retrieval.
+- **Build System:** PyInstaller & GitHub Actions for automated cross-platform compilation.
 
-    %% Data & Knowledge Storage Layer
-    subgraph Storage ["Knowledge Base & Local Storage"]
-        VectorDB["Chroma Vector Database"]
-        CleanTXT["FounderFrameworks_clean.txt"]
-        Embeddings["HuggingFace Embeddings (all-MiniLM-L6-v2)"]
-        LocalModel["Local LLM (Llama 3.2 3B Instruct GGUF / Fine-tuned GGUFs)"]
-        Config["company_profile.json"]
-    end
+## 🏗️ Architecture Overview
+The application utilizes a **multi-agent pipeline** orchestrating local large language models (LLM) and a RAG search database:
 
-    %% Data Flows
-    MainWindow -->|1. Setup Context| Profile
-    Profile -->|Saves Profile| Config
-    MainWindow -->|2. Select Framework / Input Challenge| Worker
-    Worker -->|3. Call async run| EngineCore
-    
-    EngineCore -->|Reads Profile| Config
-    EngineCore -->|Initializes / Invokes LLM| LocalModel
-    EngineCore -->|Initializes / Query Vector DB| VectorDB
-    CleanTXT -->|Chunked & Embedded| VectorDB
-    Embeddings -->|Generate Vectors| VectorDB
+1. **Local RAG Pipeline**: The proprietary `FounderFrameworks_clean.txt` playbook is embedded into a local vector database via ChromaDB.
+2. **Multi-Agent Orchestration Sequence**: When a user submits a challenge, a structured pipeline manages the diagnosis:
+    - **AssessmentAgent**: Analyzes the startup stage, business model, and primary challenge using the company profile and query context.
+    - **FrameworkSelectionAgent**: Selects the single best Founder Framework from the list of 13 proprietary frameworks (or honors manual user selection).
+    - **KnowledgeRetrievalAgent**: Dynamically retrieves matching framework segments from ChromaDB.
+    - **MemoryAgent**: Integrates conversational session history context.
+    - **StrategyAgent**: Formulates core business scenario analysis and Dreamer/Guardian perspective details.
+    - **ExecutionCoachAgent**: Generates priority actions and concrete athlete-stage recommendations.
+    - **ResponseComposer**: Assembles all components into the final layout.
+3. **Deterministic Validator & Retry Logic**: Analyzes the generated advice to verify structural integrity and prevent leaks of agent formatting tags, running a single local retry block if any validation failure is detected.
+4. **Locked 7-Part Output Contract**: Every output is formatted in a strict 7-part sequence for absolute execution clarity:
+    - `Business Scenario` ➔ `Framework Name` ➔ `Applied Sections` ➔ `Priority Action` ➔ `Dreamer` ➔ `Guardian` ➔ `Athlete`.
+5. **Absolute Privacy**: All processing occurs locally via Llama.cpp, ensuring 100% data privacy for your business strategy.
 
-    EngineCore -->|4. Orchestrate pipeline| Orchestrator
-    Orchestrator --> Assessment
-    Orchestrator --> FrameworkSel
-    Orchestrator --> Retrieval
-    Orchestrator --> Memory
-    Orchestrator --> Strategy
-    Orchestrator --> Execution
-    Orchestrator --> Composer
-
-    Retrieval -->|Queries| VectorDB
-    Composer -->|5. Compiled Markdown| Worker
-    Worker -->|6. Render HTML| Output
-```
-
-### Cognitive Agent Roles
-1. **AssessmentAgent:** Extracts startup stage and industry context directly from the company profile, grounding the model in the specific domain.
-2. **FrameworkSelectionAgent:** Selects the best proprietary framework to solve the query (with UI manual overrides preserved).
-3. **KnowledgeRetrievalAgent:** Queries ChromaDB for the relevant framework definitions and rules.
-4. **MemoryAgent:** Recovers short-term conversational context from previous queries in the session.
-5. **StrategyAgent:** Applies framework rules to the founder's challenge, translating textbook examples (like clothes or retail) into custom strategy mindsets.
-6. **ExecutionCoachAgent:** Formulates a single high-impact priority action and three specific task lists for the team.
-7. **ResponseComposer:** Reassembles outputs into the strict 7-part output contract.
-
----
-
-## Directory Structure
-```
-├── agents/                  # Cognitive Agent implementations
-│   ├── assessment_agent.py  # Stage/Industry grounding agent
-│   ├── execution_agent.py   # Task planning coach
-│   ├── framework_agent.py   # Automated framework matcher
-│   ├── memory_agent.py      # Conversation context retriever
-│   ├── orchestrator.py      # Pipeline controller and output validator
-│   ├── response_composer.py # Output formatter
-│   └── strategy_agent.py    # Framework-grounded diagnostic agent
-├── models/                  # Local GGUF models path (ignored in git)
-├── scripts/
-│   └── run_competition_audit.py # Performance and regression evaluation suite
-├── tests/                   # Automated unit and contract integration tests
-├── .env.example             # Configuration settings template
-├── ai_engine.py             # Core vector database and LLM initializer
-├── app.py                   # PyQt6 Graphical Desktop interface
-├── Dockerfile               # Containerization build blueprint
-└── docker-compose.yml       # Docker environment compose services
-```
-
----
-
-## Production Readiness & DevOps
-
-### 1. Privacy & Security Model
-All data processing happens offline. Model inference runs inside a local `llama-cpp-python` session, and embeddings are computed locally via `sentence-transformers`. No external network requests are made, protecting your IP and client metrics.
-
-### 2. Error Handling & Auto-Retry
-If an LLM output fails to conform to the strict markdown structural contract, the `OrchestratorAgent` intercepts the output, logs the failure, and triggers a single, low-latency retry. If the retry fails, it falls back to a safe formatted template rather than crashing the UI thread.
-
-### 3. Local Configuration Management
-System configurations are externalized into `.env`. Copy the template to configure directories, models, and hyperparameters:
-```bash
-cp .env.example .env
-```
-Key configuration parameters:
-* `LLM_REPO_ID` / `LLM_FILENAME`: Hugging Face repository and model to load.
-* `CHROMA_DB_DIR`: Directory where vector databases are persistent.
-* `LLM_TEMPERATURE` / `LLM_MAX_TOKENS`: Hyperparameters governing generation quality.
-
----
-
-## Setup & Running the Application
-
-### Local Setup
-Ensure Python 3.11+ is installed.
-1. Install dependencies:
+## 📦 Local Setup Instructions
+If you want to run the application from source code:
+1. Clone the repository and install requirements:
    ```bash
    pip install -r requirements.txt
    ```
-2. Place your local GGUF model in the `models/` directory (or let the app automatically download the default Llama 3.2 3B model at launch).
-3. Run the desktop app:
+2. Copy the config template to create your `.env` settings:
+   ```bash
+   cp .env.example .env
+   ```
+3. Run the PyQt6 desktop app:
    ```bash
    python app.py
    ```
 
-### Docker Containerization (DevOps & CI/CD)
-To compile dependencies and execute automated testing without PyQt6 X11 GUI overhead, you can run the test suite and audit script inside Docker:
+### Running unit and integration tests:
+```bash
+python -m unittest discover -s tests -p "test_*.py"
+```
 
-* **Run unit and contract tests in Docker:**
+### Running regression audit:
+```bash
+python scripts/run_competition_audit.py
+```
+
+### Running inside Docker:
+* Test runner:
   ```bash
   docker-compose run --rm test-runner
   ```
-* **Run full regression and performance audit in Docker:**
+* Audit runner:
   ```bash
   docker-compose run --rm audit-runner
   ```
 
 ---
 
-## Functional Verification & Testing
-We include a comprehensive offline test suite of 18 test cases and 5 representative scenario models:
-* **Run tests locally:**
-  ```bash
-  python -m unittest discover -s tests -p "test_*.py"
-  ```
-* **Run local audit benchmarking:**
-  ```bash
-  python scripts/run_competition_audit.py
-  ```
-This generates a detailed `COMPETITION_READINESS_AUDIT.md` report showing initialization latencies, agent execution times, and pipeline validations.
+## 🧠 Discover The 13 Frameworks
+The AI is powered by our proprietary 13-framework business operating system. 
+
+### 📅 Planning Frameworks
+* **[Overall Business Diagnostic (ECG KISS)](https://www.founderframeworkslab.com/frameworks/overall-business-diagnostic-ecg-kiss)**: Define your end goal and simulate solutions.
+* **[Yearly Planning Framework (SLR CAMERAS)](https://www.founderframeworkslab.com/frameworks/yearly-planning-framework-slr-cameras)**: Plan yearly milestones and allocate resources.
+* **[Quarterly Planning Framework (MC BEERS)](https://www.founderframeworkslab.com/frameworks/quarterly-planning-framework-mc-beers)**: Break down yearly goals into manageable tasks.
+* **[Monthly Planning Strategy (PC PEERS)](https://www.founderframeworkslab.com/frameworks/monthly-planning-strategy-pc-peers)**: Maintain momentum month over month.
+* **[Weekly Sprint Planning (PS ERP)](https://www.founderframeworkslab.com/frameworks/weekly-sprint-planning-ps-erp)**: Translate monthly goals into actionable sprints.
+* **[Daily Standup Protocol (DC ERPRS)](https://www.founderframeworkslab.com/frameworks/daily-standup-planning-dc-erprs)**: Maximize output with daily task management.
+
+### ⚙️ Operations Frameworks
+* **[Business System Architecture (OKS REC SME)](https://www.founderframeworkslab.com/frameworks/business-system-architecture-oks-rec-sme)**: Architect robust business systems.
+* **[Business Process Mapping (PFA SAAS SME)](https://www.founderframeworkslab.com/frameworks/business-process-mapping-pfa-saas-sme)**: Streamline your processes.
+* **[Standard Operating Procedure Design (RSS FEED SME)](https://www.founderframeworkslab.com/frameworks/standard-operating-procedure-design-rss-feed-sme)**: Write, store, and enforce SOPs.
+
+### ⚡ Execution Frameworks
+* **[Business Execution Strategy (RPM REAP ER)](https://www.founderframeworkslab.com/frameworks/business-execution-strategy-rpm-reap-er)**: Overcome team inertia and execute plans.
+* **[Revenue Generation Framework (RUN DCMS ER)](https://www.founderframeworkslab.com/frameworks/revenue-generation-framework-run-dcms-er)**: Focus entirely on revenue-generating activities.
+* **[Performance Evaluation Metrics (ERM FABS ER)](https://www.founderframeworkslab.com/frameworks/performance-evaluation-metrics-erm-fabs-er)**: Evaluate the success of your executions.
+* **[Crisis Management Protocol (ADMINS ER)](https://www.founderframeworkslab.com/frameworks/crisis-management-protocol-admins-er)**: Mitigate damage and resolve administrative bottlenecks.
+
+---
+
+### 📚 Get the Book
+Want the full breakdown of all 13 frameworks?  
+**[Get the Founder Frameworks Book here.](https://www.founderframeworkslab.com/books/founder-frameworks)**
+
+## License
+**All Rights Reserved.** 
+The proprietary frameworks and the source code are the intellectual property of Vivek Ananth and Founder Frameworks Lab. Redistribution, reverse-engineering, or commercial resale of the binaries is strictly prohibited.
