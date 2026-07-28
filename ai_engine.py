@@ -12,7 +12,10 @@ from langchain_community.document_loaders import TextLoader
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.llms import LlamaCpp
-from langchain_classic.chains import RetrievalQA
+try:
+    from langchain_classic.chains import RetrievalQA
+except ImportError:
+    from langchain.chains import RetrievalQA
 from langchain_core.prompts import PromptTemplate
 from huggingface_hub import hf_hub_download
 
