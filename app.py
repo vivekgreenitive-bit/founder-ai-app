@@ -1,6 +1,9 @@
 import sys
 import os
 import json
+import numpy as np
+np.float_ = np.float64
+
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                              QHBoxLayout, QPushButton, QTextEdit, QLabel, 
                              QFileDialog, QProgressBar, QMessageBox,

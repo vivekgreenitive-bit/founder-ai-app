@@ -1,4 +1,7 @@
 import os
+import numpy as np
+np.float_ = np.float64
+
 from config import settings
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
