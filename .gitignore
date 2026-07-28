@@ -18,5 +18,7 @@ __pycache__/
 # Local runtime log and config
 orchestrator.log
 company_profile.json
+*.db
+conversation_history.db
 
 
