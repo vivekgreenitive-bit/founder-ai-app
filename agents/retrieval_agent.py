@@ -5,7 +5,7 @@ class KnowledgeRetrievalAgent:
     def run(self, query: str, framework_name: str) -> str:
         search_query = f"{framework_name} framework context to solve: {query}"
         try:
-            docs = self.vectorstore.similarity_search(search_query, k=6)
+            docs = self.vectorstore.similarity_search(search_query, k=3)
             context = "\n\n".join([doc.page_content for doc in docs])
             return context
         except Exception as e:
