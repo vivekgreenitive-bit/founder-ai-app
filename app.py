@@ -88,6 +88,17 @@ class AnalysisWorker(QThread):
         except Exception as e:
             self.finished.emit(f"Error: {str(e)}")
 
+class EngineInitWorker(QThread):
+    finished = pyqtSignal(object)
+    failed = pyqtSignal(str)
+    
+    def run(self):
+        try:
+            engine = FounderAIEngine()
+            self.finished.emit(engine)
+        except Exception as e:
+            self.failed.emit(str(e))
+
 class ProfileDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -536,17 +547,26 @@ class FounderApp(QMainWindow):
         root.addWidget(body, stretch=1)
 
     def init_ai(self):
-        # We will initialize it synchronously for now, but in a real app 
-        # this should be in a thread to not block the UI
-        try:
-            self.engine = FounderAIEngine()
-            self.status_label.setText("✅  Ready. Describe your challenge and get your diagnosis.")
-            self.status_label.setStyleSheet("color: #10b981; font-weight: bold; font-size: 13px;")
-            self.analyze_btn.setEnabled(True)
-        except Exception as e:
-            self.status_label.setText(f"AI Engine Error: {str(e)}")
-            self.status_label.setStyleSheet("color: red;")
-            
+        self.status_label.setText("⏳  Initializing AI & Checking Local Model (Downloading if needed, 2.2GB)...")
+        self.status_label.setStyleSheet("color: #2563eb; font-weight: bold; font-size: 13px;")
+        self.analyze_btn.setEnabled(False)
+        
+        self.init_worker = EngineInitWorker()
+        self.init_worker.finished.connect(self.on_engine_initialized)
+        self.init_worker.failed.connect(self.on_engine_failed)
+        self.init_worker.start()
+
+    def on_engine_initialized(self, engine):
+        self.engine = engine
+        self.status_label.setText("✅  Ready. Describe your challenge and get your diagnosis.")
+        self.status_label.setStyleSheet("color: #10b981; font-weight: bold; font-size: 13px;")
+        self.analyze_btn.setEnabled(True)
+
+    def on_engine_failed(self, err_msg):
+        self.status_label.setText(f"❌ AI Engine Error: {err_msg}")
+        self.status_label.setStyleSheet("color: #ef4444; font-weight: bold; font-size: 13px;")
+        self.analyze_btn.setEnabled(False)
+        
     def open_settings(self):
         dialog = ProfileDialog(self)
         dialog.exec()
