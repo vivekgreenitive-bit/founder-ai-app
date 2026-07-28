@@ -8,41 +8,45 @@ class TestResponseContract(unittest.TestCase):
 
     def test_valid_response_format(self):
         valid_response = (
-            "## 1. Business Scenario\n"
-            "This is a description of the startup scenario.\n\n"
-            "## 2. Framework Name\n"
-            "ECG KISS\n\n"
-            "## 3. Applied Sections\n"
-            "Applying E, C, and G variables with details.\n\n"
-            "## 4. Priority Action\n"
-            "Implement primary metric tracking.\n\n"
-            "## 5. Dreamer\n"
-            "Expansion options and high growth details.\n\n"
-            "## 6. Guardian\n"
-            "Risk profiles and operations monitoring.\n\n"
-            "## 7. Athlete\n"
-            "1. Task one\n"
-            "2. Task two\n"
-            "3. Task three"
+            "## 1. Framework Selected\n"
+            "ECG KISS\n"
+            "This framework fits because we need to define the end goal.\n\n"
+            "## 2. Executive Summary\n"
+            "This is a high level business summary of 120 words directly answering the question.\n\n"
+            "## 3. Framework Analysis\n"
+            "Detailed analysis of variables.\n\n"
+            "## 4. Recommendation\n"
+            "Key strategic recommendations and alternatives.\n\n"
+            "## 5. Priority Actions\n"
+            "Implement tracking immediately.\n\n"
+            "## 6. Next 24 Hours\n"
+            "Schedule a call to document processes.\n\n"
+            "## 7. Risks and Missing Information\n"
+            "Keep the monitoring scope focused.\n\n"
+            "## 8. Suggested Follow-up Questions\n"
+            "1. Question one?\n"
+            "2. Question two?"
         )
         is_valid, reason = self.orchestrator.validate_response(valid_response)
         self.assertTrue(is_valid, f"Expected valid, got: {reason}")
 
     def test_missing_header(self):
         invalid_response = (
-            "## 1. Business Scenario\n"
-            "Scenario info.\n\n"
-            "## 2. Framework Name\n"
+            "## 1. Framework Selected\n"
             "ECG KISS\n\n"
-            # Missing Applied Sections
-            "## 4. Priority Action\n"
-            "Action item.\n\n"
-            "## 5. Dreamer\n"
-            "Dreamer info.\n\n"
-            "## 6. Guardian\n"
-            "Guardian info.\n\n"
-            "## 7. Athlete\n"
-            "Athlete info."
+            "## 2. Executive Summary\n"
+            "This is a high level business summary.\n\n"
+            # Missing 3. Framework Analysis
+            "## 4. Recommendation\n"
+            "Key strategic recommendations.\n\n"
+            "## 5. Priority Actions\n"
+            "Implement tracking immediately.\n\n"
+            "## 6. Next 24 Hours\n"
+            "Schedule a call.\n\n"
+            "## 7. Risks and Missing Information\n"
+            "Keep the monitoring scope focused.\n\n"
+            "## 8. Suggested Follow-up Questions\n"
+            "1. Question one?"
         )
         is_valid, reason = self.orchestrator.validate_response(invalid_response)
         self.assertFalse(is_valid)
@@ -50,20 +54,22 @@ class TestResponseContract(unittest.TestCase):
 
     def test_invalid_framework_name(self):
         invalid_response = (
-            "## 1. Business Scenario\n"
-            "Scenario info.\n\n"
-            "## 2. Framework Name\n"
+            "## 1. Framework Selected\n"
             "MY MADE UP FRAMEWORK\n\n"
-            "## 3. Applied Sections\n"
-            "Applied sections info.\n\n"
-            "## 4. Priority Action\n"
-            "Action item.\n\n"
-            "## 5. Dreamer\n"
-            "Dreamer info.\n\n"
-            "## 6. Guardian\n"
-            "Guardian info.\n\n"
-            "## 7. Athlete\n"
-            "Athlete info."
+            "## 2. Executive Summary\n"
+            "This is a high level business summary.\n\n"
+            "## 3. Framework Analysis\n"
+            "Detailed analysis of variables.\n\n"
+            "## 4. Recommendation\n"
+            "Key strategic recommendations.\n\n"
+            "## 5. Priority Actions\n"
+            "Implement tracking immediately.\n\n"
+            "## 6. Next 24 Hours\n"
+            "Schedule a call.\n\n"
+            "## 7. Risks and Missing Information\n"
+            "Keep the monitoring scope focused.\n\n"
+            "## 8. Suggested Follow-up Questions\n"
+            "1. Question one?"
         )
         is_valid, reason = self.orchestrator.validate_response(invalid_response)
         self.assertFalse(is_valid)
@@ -71,20 +77,22 @@ class TestResponseContract(unittest.TestCase):
 
     def test_empty_section(self):
         invalid_response = (
-            "## 1. Business Scenario\n"
-            "Scenario info.\n\n"
-            "## 2. Framework Name\n"
+            "## 1. Framework Selected\n"
             "ECG KISS\n\n"
-            "## 3. Applied Sections\n"
+            "## 2. Executive Summary\n"
             "\n\n"  # Empty section
-            "## 4. Priority Action\n"
-            "Action item.\n\n"
-            "## 5. Dreamer\n"
-            "Dreamer info.\n\n"
-            "## 6. Guardian\n"
-            "Guardian info.\n\n"
-            "## 7. Athlete\n"
-            "Athlete info."
+            "## 3. Framework Analysis\n"
+            "Detailed analysis of variables.\n\n"
+            "## 4. Recommendation\n"
+            "Key strategic recommendations.\n\n"
+            "## 5. Priority Actions\n"
+            "Implement tracking immediately.\n\n"
+            "## 6. Next 24 Hours\n"
+            "Schedule a call.\n\n"
+            "## 7. Risks and Missing Information\n"
+            "Keep the monitoring scope focused.\n\n"
+            "## 8. Suggested Follow-up Questions\n"
+            "1. Question one?"
         )
         is_valid, reason = self.orchestrator.validate_response(invalid_response)
         self.assertFalse(is_valid)
@@ -92,21 +100,23 @@ class TestResponseContract(unittest.TestCase):
 
     def test_instruction_leak(self):
         invalid_response = (
-            "## 1. Business Scenario\n"
-            "Scenario info.\n\n"
-            "## 2. Framework Name\n"
+            "## 1. Framework Selected\n"
             "ECG KISS\n\n"
-            "## 3. Applied Sections\n"
-            "Applied info.\n\n"
-            "## 4. Priority Action\n"
-            "Action info.\n\n"
-            "## 5. Dreamer\n"
-            "Dreamer info.\n\n"
-            "## 6. Guardian\n"
+            "## 2. Executive Summary\n"
+            "Summary.\n\n"
+            "## 3. Framework Analysis\n"
+            "Detailed analysis of variables.\n\n"
+            "## 4. Recommendation\n"
             "---DREAMER---\n"  # Leaked instruction label
-            "Guardian info.\n\n"
-            "## 7. Athlete\n"
-            "Athlete info."
+            "Key strategic recommendations.\n\n"
+            "## 5. Priority Actions\n"
+            "Implement tracking immediately.\n\n"
+            "## 6. Next 24 Hours\n"
+            "Schedule a call.\n\n"
+            "## 7. Risks and Missing Information\n"
+            "Keep the monitoring scope focused.\n\n"
+            "## 8. Suggested Follow-up Questions\n"
+            "1. Question one?"
         )
         is_valid, reason = self.orchestrator.validate_response(invalid_response)
         self.assertFalse(is_valid)
@@ -114,20 +124,22 @@ class TestResponseContract(unittest.TestCase):
 
     def test_cloud_api_leak(self):
         invalid_response = (
-            "## 1. Business Scenario\n"
-            "Scenario info.\n\n"
-            "## 2. Framework Name\n"
+            "## 1. Framework Selected\n"
             "ECG KISS\n\n"
-            "## 3. Applied Sections\n"
+            "## 2. Executive Summary\n"
+            "Summary.\n\n"
+            "## 3. Framework Analysis\n"
             "We integrated OpenAI APIs into the product.\n\n"
-            "## 4. Priority Action\n"
-            "Action info.\n\n"
-            "## 5. Dreamer\n"
-            "Dreamer info.\n\n"
-            "## 6. Guardian\n"
-            "Guardian info.\n\n"
-            "## 7. Athlete\n"
-            "Athlete info."
+            "## 4. Recommendation\n"
+            "Key strategic recommendations.\n\n"
+            "## 5. Priority Actions\n"
+            "Implement tracking immediately.\n\n"
+            "## 6. Next 24 Hours\n"
+            "Schedule a call.\n\n"
+            "## 7. Risks and Missing Information\n"
+            "Keep the monitoring scope focused.\n\n"
+            "## 8. Suggested Follow-up Questions\n"
+            "1. Question one?"
         )
         is_valid, reason = self.orchestrator.validate_response(invalid_response)
         self.assertFalse(is_valid)

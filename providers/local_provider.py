@@ -19,11 +19,15 @@ class LocalProvider(BaseLLMProvider):
         if not os.path.exists(self.model_path):
             raise FileNotFoundError(f"Local model not found at: {self.model_path}")
         
+        import multiprocessing
+        threads = max(1, multiprocessing.cpu_count() // 2)
+        
         self.llm = LlamaCpp(
             model_path=self.model_path,
             temperature=self.temperature,
             max_tokens=self.max_tokens,
             n_ctx=self.n_ctx,
+            n_threads=threads,
             stop=["<|eot_id|>", "Context:", "Question:"],
             verbose=False
         )

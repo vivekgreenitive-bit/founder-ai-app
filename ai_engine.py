@@ -68,7 +68,7 @@ class FounderAIEngine:
             
             # Instantiate provider
             self.provider = ProviderFactory.create(config)
-            self.llm = self.provider.llm
+            self.llm = self.provider
             print(f"Loaded LLM Provider: {self.provider.provider_name()}")
         except Exception as e:
             print(f"Error initializing LLM Provider: {e}")

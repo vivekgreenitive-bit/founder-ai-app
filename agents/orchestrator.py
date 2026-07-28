@@ -43,7 +43,7 @@ class OrchestratorAgent:
         self.strategy_agent = StrategyAgent(llm)
         self.execution_agent = ExecutionCoachAgent(llm)
         self.memory_agent = MemoryAgent()
-        self.response_composer = ResponseComposer()
+        self.response_composer = ResponseComposer(llm)
         
         self.log_file = "orchestrator.log"
 
@@ -56,17 +56,18 @@ class OrchestratorAgent:
 
     def validate_response(self, response: str) -> tuple[bool, str]:
         """
-        Validates the output against the 7-part contract.
+        Validates the output against the 8-part contract.
         Returns (is_valid, reason).
         """
         required_headers = [
-            r"## 1\.\s+Business\s+Scenario",
-            r"## 2\.\s+Framework\s+Name",
-            r"## 3\.\s+Applied\s+Sections",
-            r"## 4\.\s+Priority\s+Action",
-            r"## 5\.\s+Dreamer",
-            r"## 6\.\s+Guardian",
-            r"## 7\.\s+Athlete"
+            r"## 1\.\s+Framework\s+Selected",
+            r"## 2\.\s+Executive\s+Summary",
+            r"## 3\.\s+Framework\s+Analysis",
+            r"## 4\.\s+Recommendation",
+            r"## 5\.\s+Priority\s+Actions",
+            r"## 6\.\s+Next\s+24\s+Hours",
+            r"## 7\.\s+Risks\s+and\s+Missing\s+Information",
+            r"## 8\.\s+Suggested\s+Follow-up\s+Questions"
         ]
         
         for pattern in required_headers:
@@ -74,31 +75,33 @@ class OrchestratorAgent:
                 return False, f"Missing header pattern: {pattern}"
 
         # Extract Framework Name section
-        fw_match = re.search(r"## 2\.\s+Framework\s+Name\s*\n+([^\n#]+)", response, re.IGNORECASE)
+        fw_match = re.search(r"## 1\.\s+Framework\s+Selected\s*\n+([^\n#]+)", response, re.IGNORECASE)
         if not fw_match:
             return False, "Could not extract framework name."
         
         fw_name = fw_match.group(1).strip()
         # Clean up any potential markdown formatting around the framework name
         fw_name = re.sub(r"[\*\_`]", "", fw_name)
+        # If there are sub-bullets/descriptions in the first line, just take the framework name (e.g. up to the first newline or hyphen)
+        fw_name = re.split(r'[\n\-]', fw_name)[0].strip()
         if fw_name not in KNOWN_FRAMEWORKS:
             return False, f"Invalid framework name: '{fw_name}'"
 
         # Check section contents are non-empty
         # Let's split by the markdown headers to check each block
         parts = re.split(r"## \d\.\s+[^\n]+", response)
-        # parts[0] is before the first header, parts[1] is Scenario, etc.
-        if len(parts) < 8:
-            return False, f"Expected 7 sections, found {len(parts)-1}"
+        if len(parts) < 9:
+            return False, f"Expected 8 sections, found {len(parts)-1}"
 
         sections_to_check = {
-            "Scenario": parts[1],
-            "Framework Name": parts[2],
-            "Applied Sections": parts[3],
-            "Priority Action": parts[4],
-            "Dreamer": parts[5],
-            "Guardian": parts[6],
-            "Athlete": parts[7]
+            "Framework Selected": parts[1],
+            "Executive Summary": parts[2],
+            "Framework Analysis": parts[3],
+            "Recommendation": parts[4],
+            "Priority Actions": parts[5],
+            "Next 24 Hours": parts[6],
+            "Risks and Missing Information": parts[7],
+            "Suggested Follow-up Questions": parts[8]
         }
 
         for sec_name, sec_content in sections_to_check.items():
@@ -107,8 +110,7 @@ class OrchestratorAgent:
 
         # Check for leaks/internal structures
         leak_patterns = [
-            r"---SCENARIO---", r"---APPLIED---", r"---DREAMER---", r"---GUARDIAN---",
-            r"---PRIORITY---", r"---ATHLETE---", r"<\|start_header_id\|>",
+            r"---", r"<\|start_header_id\|>",
             r"<\|end_header_id\|>", r"<\|eot_id\|>"
         ]
         for pattern in leak_patterns:

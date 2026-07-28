@@ -24,13 +24,13 @@ The **Founder AI Desktop App** is a private, offline artificial intelligence ass
 ## 🛠️ Technology Stack
 The desktop application is built using a modern, high-performance local AI stack:
 - **UI Framework:** PyQt6 for native, cross-platform desktop interfaces.
-- **AI Core:** Llama.cpp for highly optimized, on-device local LLM inference.
+- **AI Core:** Pluggable LLM Provider architecture supporting local offline inference (Llama.cpp) and cloud-based models (OpenAI Chat, Gemini Generative AI).
 - **Orchestration:** LangChain for Retrieval-Augmented Generation (RAG) pipelines.
 - **Vector Database:** ChromaDB for local semantic search and knowledge retrieval.
 - **Build System:** PyInstaller & GitHub Actions for automated cross-platform compilation.
 
 ## 🏗️ Architecture Overview
-The application utilizes a **multi-agent pipeline** orchestrating local large language models (LLM) and a RAG search database:
+The application utilizes a **multi-agent pipeline** orchestrating local or cloud large language models (LLM) and a RAG search database:
 
 ```mermaid
 graph TD
@@ -54,7 +54,9 @@ graph TD
     Memory -->|Query/Save Logs| SQLite[(SQLite Conversation DB)]:::storage
     
     Orchestrator --> Strategy[StrategyAgent]:::agent
-    Strategy -->|Inference| Llama[Local Llama.cpp 3B Model]:::storage
+    Strategy -->|Inference| Provider[Pluggable Provider Factory]:::storage
+    Provider -.->|Local| Llama[Llama.cpp 3B LLM]
+    Provider -.->|Cloud| APIs[OpenAI / Gemini APIs]
     
     Orchestrator --> Execution[ExecutionCoachAgent]:::agent
     Execution --> Composer[ResponseComposer]:::agent
@@ -64,7 +66,7 @@ graph TD
     Retry --> Strategy
     
     Validator -->|Success| UI
-    UI -->|Format Output| Output[Locked 7-Part Output Contract]
+    UI -->|Format Output| Output[Usability-Enhanced 8-Part Contract]
     UI -->|Exception Handler| Alert[Error Dialog QMessageBox]
 ```
 
@@ -76,11 +78,11 @@ graph TD
     - **MemoryAgent**: Integrates conversational session history context.
     - **StrategyAgent**: Formulates core business scenario analysis and Dreamer/Guardian perspective details.
     - **ExecutionCoachAgent**: Generates priority actions and concrete athlete-stage recommendations.
-    - **ResponseComposer**: Assembles all components into the final layout.
+    - **ResponseComposer**: Assembles all components and synthesizes readability layers using the active LLM.
 3. **Deterministic Validator & Retry Logic**: Analyzes the generated advice to verify structural integrity and prevent leaks of agent formatting tags, running a single local retry block if any validation failure is detected.
-4. **Locked 7-Part Output Contract**: Every output is formatted in a strict 7-part sequence for absolute execution clarity:
-    - `Business Scenario` ➔ `Framework Name` ➔ `Applied Sections` ➔ `Priority Action` ➔ `Dreamer` ➔ `Guardian` ➔ `Athlete`.
-5. **Absolute Privacy**: All processing occurs locally via Llama.cpp, ensuring 100% data privacy for your business strategy.
+4. **Usability-Enhanced 8-Part Output Contract**: Every output is formatted in a strict 8-part sequence for absolute execution clarity:
+    - `Framework Selected` ➔ `Executive Summary` ➔ `Framework Analysis` ➔ `Recommendation` ➔ `Priority Actions` ➔ `Next 24 Hours` ➔ `Risks and Missing Information` ➔ `Suggested Follow-up Questions`.
+5. **Absolute Privacy by Default**: Local processing runs completely on-device via Llama.cpp, with options to securely connect to cloud LLMs (OpenAI, Gemini) via user-provided API keys stored in settings.
 
 ## 📦 Local Setup Instructions
 If you want to run the application from source code:
