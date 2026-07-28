@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
                              QHBoxLayout, QPushButton, QTextEdit, QLabel, 
                              QFileDialog, QProgressBar, QMessageBox,
                              QDialog, QFormLayout, QLineEdit, QDialogButtonBox,
-                             QFrame, QComboBox, QScrollArea, QSizePolicy)
+                             QFrame, QComboBox, QScrollArea, QSizePolicy, QTabWidget)
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, QEvent
 from PyQt6.QtGui import QFont, QKeyEvent, QKeySequence
 
@@ -1087,6 +1087,7 @@ class FounderApp(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    app.setApplicationName("Founder AI Assistant")
     
     # Custom StyleSheet based on founderframeworkslab.com theme
     style_sheet = """
