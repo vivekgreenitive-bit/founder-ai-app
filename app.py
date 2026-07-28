@@ -293,7 +293,7 @@ class FounderApp(QMainWindow):
         header_bar_layout = QHBoxLayout(header_bar)
         header_bar_layout.setContentsMargins(20, 0, 20, 0)
 
-        header = QLabel("Founder Frameworks AI")
+        header = QLabel("Founder AI Assistant")
         header.setFont(QFont("Arial", 17, QFont.Weight.Bold))
         header.setStyleSheet("color: #0f172a; background: transparent; border: none;")
         header_bar_layout.addWidget(header)
