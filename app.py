@@ -243,7 +243,7 @@ class ProfileDialog(QDialog):
 class FounderApp(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Founder Frameworks AI Consultant")
+        self.setWindowTitle("Founder AI Assistant")
         self.setMinimumSize(960, 640)
 
         # Size the window to fit the screen naturally — desktop app feel
