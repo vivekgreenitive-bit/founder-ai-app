@@ -21,3 +21,7 @@ class BaseLLMProvider(ABC):
     def provider_name(self) -> str:
         """Return the provider identifier."""
         pass
+
+    def invoke(self, prompt: Any, stop: Any = None, **kwargs: Any) -> str:
+        """Compatibility wrapper for LangChain Runnable interface."""
+        return self.generate(str(prompt))

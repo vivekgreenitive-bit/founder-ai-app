@@ -52,13 +52,15 @@ class TestAgentPipeline(unittest.TestCase):
         
         mock_composer_instance = MockResponseComposer.return_value
         mock_composer_instance.run.return_value = (
-            "## 1. Business Scenario\nSome scenario details\n\n"
-            "## 2. Framework Name\nECG KISS\n\n"
-            "## 3. Applied Sections\nSome applied sections details\n\n"
-            "## 4. Priority Action\nDo this first\n\n"
-            "## 5. Dreamer\nSome dreamer details\n\n"
-            "## 6. Guardian\nSome guardian details\n\n"
-            "## 7. Athlete\n1. Step A\n2. Step B\n3. Step C"
+            "## 1. Framework Selected\nECG KISS\n\n"
+            "## 2. Executive Summary\nExecutive Summary.\n\n"
+            "## 3. Why This Framework\nWhy This Framework.\n\n"
+            "## 4. Framework Analysis\nSome applied sections details\n\n"
+            "## 5. Strategic Recommendation\nSome dreamer and guardian details\n\n"
+            "## 6. Priority Actions\nDo this first\n\n"
+            "## 7. Your Next 24 Hours\nYour Next 24 Hours.\n\n"
+            "## 8. Risks and Watchouts\nRisks and Watchouts.\n\n"
+            "## 9. Suggested Follow-Up Questions\nSuggested Questions."
         )
         
         # Instantiate orchestrator with mocks loaded
@@ -103,7 +105,7 @@ class TestAgentPipeline(unittest.TestCase):
         self.assertIn("Finalizing the recommendation", status_updates)
         
         # Verify validator passed
-        self.assertTrue(result.startswith("## 1. Business Scenario"))
+        self.assertTrue(result.startswith("## 1. Framework Selected"))
 
 if __name__ == '__main__':
     unittest.main()

@@ -43,7 +43,7 @@ class OrchestratorAgent:
         self.strategy_agent = StrategyAgent(llm)
         self.execution_agent = ExecutionCoachAgent(llm)
         self.memory_agent = MemoryAgent()
-        self.response_composer = ResponseComposer()
+        self.response_composer = ResponseComposer(llm)
         
         self.log_file = "orchestrator.log"
 
@@ -56,17 +56,19 @@ class OrchestratorAgent:
 
     def validate_response(self, response: str) -> tuple[bool, str]:
         """
-        Validates the output against the 7-part contract.
+        Validates the output against the 9-part contract.
         Returns (is_valid, reason).
         """
         required_headers = [
-            r"## 1\.\s+Business\s+Scenario",
-            r"## 2\.\s+Framework\s+Name",
-            r"## 3\.\s+Applied\s+Sections",
-            r"## 4\.\s+Priority\s+Action",
-            r"## 5\.\s+Dreamer",
-            r"## 6\.\s+Guardian",
-            r"## 7\.\s+Athlete"
+            r"## 1\.\s+Framework\s+Selected",
+            r"## 2\.\s+Executive\s+Summary",
+            r"## 3\.\s+Why\s+This\s+Framework",
+            r"## 4\.\s+Framework\s+Analysis",
+            r"## 5\.\s+Strategic\s+Recommendation",
+            r"## 6\.\s+Priority\s+Actions",
+            r"## 7\.\s+Your\s+Next\s+24\s+Hours",
+            r"## 8\.\s+Risks\s+and\s+Watchouts",
+            r"## 9\.\s+Suggested\s+Follow-Up\s+Questions"
         ]
         
         for pattern in required_headers:
@@ -74,7 +76,7 @@ class OrchestratorAgent:
                 return False, f"Missing header pattern: {pattern}"
 
         # Extract Framework Name section
-        fw_match = re.search(r"## 2\.\s+Framework\s+Name\s*\n+([^\n#]+)", response, re.IGNORECASE)
+        fw_match = re.search(r"## 1\.\s+Framework\s+Selected\s*\n+([^\n#]+)", response, re.IGNORECASE)
         if not fw_match:
             return False, "Could not extract framework name."
         
@@ -87,18 +89,19 @@ class OrchestratorAgent:
         # Check section contents are non-empty
         # Let's split by the markdown headers to check each block
         parts = re.split(r"## \d\.\s+[^\n]+", response)
-        # parts[0] is before the first header, parts[1] is Scenario, etc.
-        if len(parts) < 8:
-            return False, f"Expected 7 sections, found {len(parts)-1}"
+        if len(parts) < 10:
+            return False, f"Expected 9 sections, found {len(parts)-1}"
 
         sections_to_check = {
-            "Scenario": parts[1],
-            "Framework Name": parts[2],
-            "Applied Sections": parts[3],
-            "Priority Action": parts[4],
-            "Dreamer": parts[5],
-            "Guardian": parts[6],
-            "Athlete": parts[7]
+            "Framework Selected": parts[1],
+            "Executive Summary": parts[2],
+            "Why This Framework": parts[3],
+            "Framework Analysis": parts[4],
+            "Strategic Recommendation": parts[5],
+            "Priority Actions": parts[6],
+            "Your Next 24 Hours": parts[7],
+            "Risks and Watchouts": parts[8],
+            "Suggested Follow-Up Questions": parts[9]
         }
 
         for sec_name, sec_content in sections_to_check.items():
