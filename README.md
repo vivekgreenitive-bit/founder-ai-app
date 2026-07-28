@@ -66,7 +66,7 @@ graph TD
     Retry --> Strategy
     
     Validator -->|Success| UI
-    UI -->|Format Output| Output[Usability-Enhanced 9-Part Contract]
+    UI -->|Format Output| Output[Usability-Enhanced 8-Part Contract]
     UI -->|Exception Handler| Alert[Error Dialog QMessageBox]
 ```
 
@@ -80,8 +80,8 @@ graph TD
     - **ExecutionCoachAgent**: Generates priority actions and concrete athlete-stage recommendations.
     - **ResponseComposer**: Assembles all components and synthesizes readability layers using the active LLM.
 3. **Deterministic Validator & Retry Logic**: Analyzes the generated advice to verify structural integrity and prevent leaks of agent formatting tags, running a single local retry block if any validation failure is detected.
-4. **Usability-Enhanced 9-Part Output Contract**: Every output is formatted in a strict 9-part sequence for absolute execution clarity:
-    - `Framework Selected` ➔ `Executive Summary` ➔ `Why This Framework` ➔ `Framework Analysis` ➔ `Strategic Recommendation` ➔ `Priority Actions` ➔ `Your Next 24 Hours` ➔ `Risks and Watchouts` ➔ `Suggested Follow-Up Questions`.
+4. **Usability-Enhanced 8-Part Output Contract**: Every output is formatted in a strict 8-part sequence for absolute execution clarity:
+    - `Framework Selected` ➔ `Executive Summary` ➔ `Framework Analysis` ➔ `Recommendation` ➔ `Priority Actions` ➔ `Next 24 Hours` ➔ `Risks and Missing Information` ➔ `Suggested Follow-up Questions`.
 5. **Absolute Privacy by Default**: Local processing runs completely on-device via Llama.cpp, with options to securely connect to cloud LLMs (OpenAI, Gemini) via user-provided API keys stored in settings.
 
 ## 📦 Local Setup Instructions

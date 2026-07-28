@@ -13,31 +13,34 @@ You are Founder AI, an elite business execution coach. Given the business strate
 Business Scenario: {strategy.get('scenario', '')}
 Framework: {framework_name}
 Applied Sections: {strategy.get('applied_sections', '')}
+Dreamer Focus: {strategy.get('dreamer', '')}
+Guardian Focus: {strategy.get('guardian', '')}
 
 CRITICAL RULES:
-1. Ground the priority action and athlete actions strictly in the Business Scenario above.
-2. Do NOT copy template examples (e.g. do not mention casual wear, dress brands, sportswear, or real estate unless it is explicitly part of the Business Scenario above).
-
-Generate:
-1. A single high-impact priority action.
-2. Three immediate, concrete actions for the athlete stage.
+1. State the recommended decision clearly, explain why, and mention one alternative and why it is not preferred.
+2. Provide maximum three concrete, measurable priority actions.
+3. Provide exactly one action for the next 24 hours that takes less than two hours to complete.
+4. Do NOT copy template examples verbatim from instructions or database reference.
+5. Do NOT invent revenue, costs, percentages, or ROI.
 
 Format your output exactly as:
+---RECOMMENDATION---
+[Recommended decision, why, alternative, and why not preferred]
 ---PRIORITY---
-[One high-impact action]
----ATHLETE---
-[3 immediate execution actions, formatted as a numbered or bulleted list]
+[Maximum three concrete, measurable actions]
+---NEXT24H---
+[Exactly one action taking less than 2 hours]
 <|eot_id|><|start_header_id|>assistant<|end_header_id|>
----PRIORITY---
+---RECOMMENDATION---
 """
         try:
             response = self.llm.invoke(prompt)
-            full_text = "---PRIORITY---\n" + response
+            full_text = "---RECOMMENDATION---\n" + response
             
             def clean_text(val):
                 cleaned_lines = []
                 for line in val.split("\n"):
-                    if "---" in line and any(h in line.upper() for h in ["SCENARIO", "APPLIED", "DREAMER", "GUARDIAN", "PRIORITY", "ATHLETE"]):
+                    if "---" in line and any(h in line.upper() for h in ["SCENARIO", "APPLIED", "DREAMER", "GUARDIAN", "RECOMMENDATION", "PRIORITY", "NEXT24H"]):
                         continue
                     cleaned_lines.append(line)
                 return "\n".join(cleaned_lines).strip()
@@ -64,16 +67,19 @@ Format your output exactly as:
                     print(f"Error extracting section {header}: {e}")
                     return ""
 
-            priority = extract_section(full_text, "PRIORITY", ["ATHLETE"])
-            athlete = extract_section(full_text, "ATHLETE", [])
+            recommendation = extract_section(full_text, "RECOMMENDATION", ["PRIORITY", "NEXT24H"])
+            priority = extract_section(full_text, "PRIORITY", ["NEXT24H"])
+            next24 = extract_section(full_text, "NEXT24H", [])
             
             return {
+                "recommendation": recommendation,
                 "priority_action": priority,
-                "athlete": athlete
+                "athlete": next24
             }
         except Exception as e:
             print(f"Error in ExecutionCoachAgent: {e}")
             return {
-                "priority_action": "Execute immediate review of the process bottlenecks.",
-                "athlete": "1. Schedule team meeting.\n2. Draft process map.\n3. Implement quick wins."
+                "recommendation": "We recommend focus on standardizing primary workflows before committing capital to expansion. Alternative of immediate expansion carries high overhead.",
+                "priority_action": "1. Audit current capacity bottleneck.\n2. Document team role limits.\n3. Implement target KPI tracking.",
+                "athlete": "Record a 5-minute screencast documenting your core delivery process today."
             }

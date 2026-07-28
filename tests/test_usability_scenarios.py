@@ -5,8 +5,6 @@ from agents.orchestrator import OrchestratorAgent
 
 class TestUsabilityScenarios(unittest.TestCase):
     def setUp(self):
-        # We can test the composer directly. Since the LLM is mocked or None,
-        # it tests the robust fallback formatting which satisfies the same contract.
         self.composer = ResponseComposer()
         self.orchestrator = OrchestratorAgent(MagicMock(), MagicMock())
 
@@ -19,8 +17,9 @@ class TestUsabilityScenarios(unittest.TestCase):
             "guardian": "Avoid building backend code before securing pre-signups."
         }
         execution = {
+            "recommendation": "We recommend launching a landing page first before writing backend code.",
             "priority_action": "Build and launch a landing page with a waitlist form.",
-            "athlete": "1. Set up Webflow landing page.\n2. Add email capture.\n3. Share with 50 prospects."
+            "athlete": "Share landing page with 50 targeted B2B prospects."
         }
         
         result = self.composer.run("ECG KISS", strategy, execution)
@@ -36,8 +35,9 @@ class TestUsabilityScenarios(unittest.TestCase):
             "guardian": "Ensure inventory is not over-purchased before scaling ad spend."
         }
         execution = {
+            "recommendation": "Focus marketing on existing workout wear audience instead of general sports wear.",
             "priority_action": "Design and launch one email flow for abandoned carts.",
-            "athlete": "1. Write 3 cart recovery emails.\n2. Set delay triggers in Klaviyo.\n3. Test the flow."
+            "athlete": "Draft copy for 3 cart recovery emails."
         }
         
         result = self.composer.run("SLR CAMERAS", strategy, execution)
@@ -53,8 +53,9 @@ class TestUsabilityScenarios(unittest.TestCase):
             "guardian": "Set clear boundaries on client revisions to prevent scope creep."
         }
         execution = {
+            "recommendation": "Offer standard fixed-price SEO packages rather than custom scopes.",
             "priority_action": "Draft a single-page scope of work for the productized offer.",
-            "athlete": "1. List inclusions.\n2. Define exclusion list.\n3. Put on landing page."
+            "athlete": "List key inclusions and exclusions on a single page."
         }
         
         result = self.composer.run("PC PEERS", strategy, execution)
@@ -70,8 +71,9 @@ class TestUsabilityScenarios(unittest.TestCase):
             "guardian": "Keep hardware manufacturing lead times under 90 days."
         }
         execution = {
+            "recommendation": "Secure pre-orders from local farms before initiating pitch decks.",
             "priority_action": "Draft a 10-slide pitch deck highlighting unit economics.",
-            "athlete": "1. Calculate unit costs.\n2. Design deck layout.\n3. Run a mock pitch."
+            "athlete": "Calculate detailed manufacturing costs for 100 units."
         }
         
         result = self.composer.run("MC BEERS", strategy, execution)
@@ -87,8 +89,9 @@ class TestUsabilityScenarios(unittest.TestCase):
             "guardian": "Manually QA the first 5 associate reports before client delivery."
         }
         execution = {
+            "recommendation": "Delegate task auditing via recorded screen tutorials.",
             "priority_action": "Create a Loom recording of a standard client audit process.",
-            "athlete": "1. Perform a mock audit.\n2. Record screen.\n3. Save link to team wiki."
+            "athlete": "Record screen performing a mock client audit."
         }
         
         result = self.composer.run("RSS FEED SME", strategy, execution)

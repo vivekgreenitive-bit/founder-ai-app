@@ -56,19 +56,18 @@ class OrchestratorAgent:
 
     def validate_response(self, response: str) -> tuple[bool, str]:
         """
-        Validates the output against the 9-part contract.
+        Validates the output against the 8-part contract.
         Returns (is_valid, reason).
         """
         required_headers = [
             r"## 1\.\s+Framework\s+Selected",
             r"## 2\.\s+Executive\s+Summary",
-            r"## 3\.\s+Why\s+This\s+Framework",
-            r"## 4\.\s+Framework\s+Analysis",
-            r"## 5\.\s+Strategic\s+Recommendation",
-            r"## 6\.\s+Priority\s+Actions",
-            r"## 7\.\s+Your\s+Next\s+24\s+Hours",
-            r"## 8\.\s+Risks\s+and\s+Watchouts",
-            r"## 9\.\s+Suggested\s+Follow-Up\s+Questions"
+            r"## 3\.\s+Framework\s+Analysis",
+            r"## 4\.\s+Recommendation",
+            r"## 5\.\s+Priority\s+Actions",
+            r"## 6\.\s+Next\s+24\s+Hours",
+            r"## 7\.\s+Risks\s+and\s+Missing\s+Information",
+            r"## 8\.\s+Suggested\s+Follow-up\s+Questions"
         ]
         
         for pattern in required_headers:
@@ -83,25 +82,26 @@ class OrchestratorAgent:
         fw_name = fw_match.group(1).strip()
         # Clean up any potential markdown formatting around the framework name
         fw_name = re.sub(r"[\*\_`]", "", fw_name)
+        # If there are sub-bullets/descriptions in the first line, just take the framework name (e.g. up to the first newline or hyphen)
+        fw_name = re.split(r'[\n\-]', fw_name)[0].strip()
         if fw_name not in KNOWN_FRAMEWORKS:
             return False, f"Invalid framework name: '{fw_name}'"
 
         # Check section contents are non-empty
         # Let's split by the markdown headers to check each block
         parts = re.split(r"## \d\.\s+[^\n]+", response)
-        if len(parts) < 10:
-            return False, f"Expected 9 sections, found {len(parts)-1}"
+        if len(parts) < 9:
+            return False, f"Expected 8 sections, found {len(parts)-1}"
 
         sections_to_check = {
             "Framework Selected": parts[1],
             "Executive Summary": parts[2],
-            "Why This Framework": parts[3],
-            "Framework Analysis": parts[4],
-            "Strategic Recommendation": parts[5],
-            "Priority Actions": parts[6],
-            "Your Next 24 Hours": parts[7],
-            "Risks and Watchouts": parts[8],
-            "Suggested Follow-Up Questions": parts[9]
+            "Framework Analysis": parts[3],
+            "Recommendation": parts[4],
+            "Priority Actions": parts[5],
+            "Next 24 Hours": parts[6],
+            "Risks and Missing Information": parts[7],
+            "Suggested Follow-up Questions": parts[8]
         }
 
         for sec_name, sec_content in sections_to_check.items():
