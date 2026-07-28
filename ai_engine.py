@@ -1,13 +1,13 @@
 import os
 from config import settings
 
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import TextLoader
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.llms import LlamaCpp
-from langchain.chains import RetrievalQA
-from langchain.prompts import PromptTemplate
+from langchain_classic.chains import RetrievalQA
+from langchain_core.prompts import PromptTemplate
 from huggingface_hub import hf_hub_download
 
 # Define model details — Llama 3.2 3B Instruct (open source, optimized for low-end hardware)
@@ -38,41 +38,37 @@ class FounderAIEngine:
         self.init_vectorstore()
         
     def init_llm(self):
-        """Initializes the local LLM using llama-cpp-python, checking for custom models first."""
+        """Initializes the active LLM provider (local or cloud)."""
         try:
-            os.makedirs(MODEL_DIR, exist_ok=True)
+            from providers.provider_factory import ProviderFactory
             
-            # Prioritize custom fine-tuned models if present in the models directory
-            custom_models = ["unsloth.Q8_0.gguf", "unsloth.Q4_K_M.gguf", "founder-ai-3b-q8.gguf"]
-            active_model_path = MODEL_PATH
+            # Load active configuration
+            config = ProviderFactory.load_config()
+            provider_type = config.get("provider", "local").lower()
             
-            for custom_name in custom_models:
-                p = os.path.join(MODEL_DIR, custom_name)
-                if os.path.exists(p):
-                    active_model_path = p
-                    print(f"Found custom fine-tuned model: {custom_name}")
-                    break
-            
-            if active_model_path == MODEL_PATH and not os.path.exists(MODEL_PATH):
-                print(f"Model not found locally. Downloading default {FILENAME} from Hugging Face...")
-                hf_hub_download(repo_id=REPO_ID, filename=FILENAME, local_dir=MODEL_DIR)
-                print("Download complete!")
+            # If local provider, check and download the model first
+            if provider_type == "local":
+                os.makedirs(MODEL_DIR, exist_ok=True)
+                custom_models = ["unsloth.Q8_0.gguf", "unsloth.Q4_K_M.gguf", "founder-ai-3b-q8.gguf"]
+                active_model_path = MODEL_PATH
                 
-            print(f"Loading LLM from: {active_model_path}")
-            temp = settings.llm_temperature
-            max_tok = settings.llm_max_tokens
-            ctx_size = settings.llm_n_ctx
+                for custom_name in custom_models:
+                    p = os.path.join(MODEL_DIR, custom_name)
+                    if os.path.exists(p):
+                        active_model_path = p
+                        break
+                
+                if active_model_path == MODEL_PATH and not os.path.exists(MODEL_PATH):
+                    print(f"Model not found locally. Downloading default {FILENAME} from Hugging Face...")
+                    hf_hub_download(repo_id=REPO_ID, filename=FILENAME, local_dir=MODEL_DIR)
+                    print("Download complete!")
             
-            self.llm = LlamaCpp(
-                model_path=active_model_path,
-                temperature=temp,
-                max_tokens=max_tok,
-                n_ctx=ctx_size,
-                stop=["<|eot_id|>", "Context:", "Question:"],
-                verbose=False
-            )
+            # Instantiate provider
+            self.provider = ProviderFactory.create(config)
+            self.llm = self.provider.llm
+            print(f"Loaded LLM Provider: {self.provider.provider_name()}")
         except Exception as e:
-            print(f"Error initializing LLM: {e}")
+            print(f"Error initializing LLM Provider: {e}")
             
     def init_vectorstore(self):
         """Loads FounderFrameworks_clean.txt and creates a persistent Chroma vector database."""

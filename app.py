@@ -102,26 +102,52 @@ class EngineInitWorker(QThread):
 class ProfileDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("Company Profile Setup")
-        self.setMinimumWidth(550)
+        self.setWindowTitle("Settings & Profile Configuration")
+        self.setMinimumWidth(600)
+        self.setMinimumHeight(550)
         
         main_layout = QVBoxLayout(self)
-        main_layout.setContentsMargins(30, 30, 30, 30)
-        main_layout.setSpacing(20)
+        main_layout.setContentsMargins(20, 20, 20, 20)
+        main_layout.setSpacing(15)
         
-        # Header
-        title = QLabel("Company Profile Setup")
-        title.setFont(QFont("Arial", 20, QFont.Weight.Bold))
-        title.setStyleSheet("color: #1f2937;")
-        main_layout.addWidget(title)
+        self.tabs = QTabWidget()
+        self.tabs.setStyleSheet("""
+            QTabWidget::pane {
+                border: 1px solid #cbd5e1;
+                border-radius: 6px;
+                background: #f8fafc;
+            }
+            QTabBar::tab {
+                background: #e2e8f0;
+                color: #475467;
+                padding: 10px 20px;
+                border-top-left-radius: 4px;
+                border-top-right-radius: 4px;
+                font-weight: bold;
+                font-size: 11pt;
+            }
+            QTabBar::tab:selected {
+                background: #ffffff;
+                color: #0f172a;
+                border-bottom: 2px solid #2563eb;
+            }
+        """)
         
-        subtitle = QLabel("To provide personalized, actionable advice based on the Founder Frameworks, the AI needs to understand your current business landscape.")
+        # ----------------------------------------------------
+        # Tab 1: Company Profile
+        # ----------------------------------------------------
+        self.profile_tab = QWidget()
+        profile_layout = QVBoxLayout(self.profile_tab)
+        profile_layout.setContentsMargins(20, 20, 20, 20)
+        profile_layout.setSpacing(15)
+        
+        subtitle = QLabel("The AI needs to understand your current business landscape to tailor its frameworks.")
         subtitle.setWordWrap(True)
-        subtitle.setStyleSheet("color: #64748b; font-size: 13pt; margin-bottom: 10px;")
-        main_layout.addWidget(subtitle)
+        subtitle.setStyleSheet("color: #64748b; font-size: 11pt;")
+        profile_layout.addWidget(subtitle)
         
         self.form_layout = QFormLayout()
-        self.form_layout.setSpacing(15)
+        self.form_layout.setSpacing(12)
         self.form_layout.setLabelAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
         
         # Inputs
@@ -140,18 +166,14 @@ class ProfileDialog(QDialog):
         self.challenge_input = QComboBox()
         self.challenge_input.addItems(["Founder is the Bottleneck", "Unpredictable Cash Flow", "Team Execution Errors / Lack of SOPs", "Stagnant Revenue Growth", "Other"])
         
-        # Style all inputs
         input_style = """
             QLineEdit, QComboBox {
-                padding: 10px;
+                padding: 8px;
                 border: 1px solid #cbd5e1;
                 border-radius: 6px;
                 background: #ffffff;
-                font-size: 13pt;
+                font-size: 11pt;
                 color: #334155;
-            }
-            QComboBox::drop-down {
-                border: none;
             }
         """
         self.name_input.setStyleSheet(input_style)
@@ -160,8 +182,7 @@ class ProfileDialog(QDialog):
         self.team_input.setStyleSheet(input_style)
         self.challenge_input.setStyleSheet(input_style)
         
-        # Label Styling
-        label_font = QFont("Arial", 12, QFont.Weight.Bold)
+        label_font = QFont("Arial", 11, QFont.Weight.Bold)
         
         def add_styled_row(label_text, widget):
             lbl = QLabel(label_text)
@@ -170,29 +191,120 @@ class ProfileDialog(QDialog):
             self.form_layout.addRow(lbl, widget)
             
         add_styled_row("Business Name:", self.name_input)
-        add_styled_row("Industry Segment:", self.industry_input)
+        add_styled_row("Industry:", self.industry_input)
         add_styled_row("Business Stage:", self.stage_input)
         add_styled_row("Team Size:", self.team_input)
         add_styled_row("Primary Challenge:", self.challenge_input)
         
-        main_layout.addLayout(self.form_layout)
+        profile_layout.addLayout(self.form_layout)
+        profile_layout.addStretch()
         
-        # Load existing data
+        # ----------------------------------------------------
+        # Tab 2: Model Configuration
+        # ----------------------------------------------------
+        self.model_tab = QWidget()
+        model_layout = QVBoxLayout(self.model_tab)
+        model_layout.setContentsMargins(20, 20, 20, 20)
+        model_layout.setSpacing(15)
+        
+        model_subtitle = QLabel("Select whether to run the AI completely offline or connect to cloud API engines.")
+        model_subtitle.setWordWrap(True)
+        model_subtitle.setStyleSheet("color: #64748b; font-size: 11pt;")
+        model_layout.addWidget(model_subtitle)
+        
+        self.model_form_layout = QFormLayout()
+        self.model_form_layout.setSpacing(12)
+        self.model_form_layout.setLabelAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+        
+        self.provider_select = QComboBox()
+        self.provider_select.addItems(["Local (Default)", "OpenAI", "Gemini"])
+        self.provider_select.setStyleSheet(input_style)
+        
+        self.model_select = QComboBox()
+        self.model_select.setStyleSheet(input_style)
+        
+        self.api_key_input = QLineEdit()
+        self.api_key_input.setEchoMode(QLineEdit.EchoMode.Password)
+        self.api_key_input.setPlaceholderText("Enter your API Key")
+        self.api_key_input.setStyleSheet(input_style)
+        
+        # Add rows
+        lbl_prov = QLabel("AI Provider:")
+        lbl_prov.setFont(label_font)
+        lbl_prov.setStyleSheet("color: #334155;")
+        self.model_form_layout.addRow(lbl_prov, self.provider_select)
+        
+        self.lbl_model = QLabel("Model Name:")
+        self.lbl_model.setFont(label_font)
+        self.lbl_model.setStyleSheet("color: #334155;")
+        self.model_form_layout.addRow(self.lbl_model, self.model_select)
+        
+        self.lbl_key = QLabel("API Key:")
+        self.lbl_key.setFont(label_font)
+        self.lbl_key.setStyleSheet("color: #334155;")
+        self.model_form_layout.addRow(self.lbl_key, self.api_key_input)
+        
+        model_layout.addLayout(self.model_form_layout)
+        
+        # Test Connection button
+        self.test_conn_btn = QPushButton("🔌 Test Connection")
+        self.test_conn_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #f1f5f9;
+                color: #334155;
+                font-weight: bold;
+                padding: 10px;
+                border: 1px solid #cbd5e1;
+                border-radius: 6px;
+            }
+            QPushButton:hover {
+                background-color: #e2e8f0;
+            }
+        """)
+        self.test_conn_btn.clicked.connect(self.test_model_connection)
+        model_layout.addWidget(self.test_conn_btn)
+        
+        # Privacy Notice panel
+        self.privacy_panel = QLabel()
+        self.privacy_panel.setWordWrap(True)
+        self.privacy_panel.setStyleSheet("""
+            padding: 12px;
+            background: #eff8ff;
+            border: 1px solid #d1e9ff;
+            border-radius: 6px;
+            color: #1e3a8a;
+            font-size: 10pt;
+        """)
+        model_layout.addWidget(self.privacy_panel)
+        model_layout.addStretch()
+        
+        # Add tabs
+        self.tabs.addTab(self.profile_tab, "🏢 Company Profile")
+        self.tabs.addTab(self.model_tab, "🤖 Model Configuration")
+        main_layout.addWidget(self.tabs)
+        
+        # Load configs
         self.profile_path = "company_profile.json"
         self.load_profile()
+        from providers.provider_factory import ProviderFactory
+        self.model_config = ProviderFactory.load_config()
+        self.load_model_config()
+        
+        # Connect changes
+        self.provider_select.currentIndexChanged.connect(self.on_provider_changed)
+        self.update_model_dropdown_and_inputs()
         
         # Save Button
-        self.save_btn = QPushButton("Save Company Profile")
+        self.save_btn = QPushButton("Save Settings & Apply Changes")
         self.save_btn.setStyleSheet("""
             QPushButton {
                 background-color: #1a7a3c;
                 color: white;
                 font-weight: bold;
-                font-size: 14pt;
-                padding: 15px;
+                font-size: 13pt;
+                padding: 12px;
                 border: none;
                 border-radius: 8px;
-                margin-top: 15px;
             }
             QPushButton:hover {
                 background-color: #145c2d;
@@ -201,11 +313,88 @@ class ProfileDialog(QDialog):
         self.save_btn.clicked.connect(self.accept)
         main_layout.addWidget(self.save_btn)
         
-        # Add stretch to push everything to the top and prevent weird huge gaps
-        main_layout.addStretch()
-        
         self.setStyleSheet("QDialog { background-color: #f8fafc; }")
         
+    def load_model_config(self):
+        prov = self.model_config.get("provider", "local").capitalize()
+        self.set_combo_text(self.provider_select, "Local (Default)" if prov == "Local" else prov)
+        
+    def on_provider_changed(self):
+        self.update_model_dropdown_and_inputs()
+        
+    def update_model_dropdown_and_inputs(self):
+        provider = self.provider_select.currentText()
+        self.model_select.clear()
+        
+        if provider == "Local (Default)":
+            self.model_select.addItems(["Llama-3.2-3B"])
+            self.model_select.setEnabled(False)
+            self.api_key_input.setEnabled(False)
+            self.api_key_input.setText("")
+            self.api_key_input.setVisible(False)
+            self.lbl_key.setVisible(False)
+            self.test_conn_btn.setVisible(False)
+            self.privacy_panel.setText("🔒 <b>Privacy Status: 100% Offline Mode</b><br>All queries are processed entirely on your local machine. No data ever leaves your computer.")
+            self.privacy_panel.setStyleSheet("padding: 12px; background: #ecfdf5; border: 1px solid #d1fae5; border-radius: 6px; color: #065f46; font-size: 10pt;")
+        
+        elif provider == "OpenAI":
+            self.model_select.addItems(["gpt-4o-mini", "gpt-4o"])
+            self.model_select.setEnabled(True)
+            self.api_key_input.setEnabled(True)
+            self.api_key_input.setText(self.model_config.get("openai", {}).get("api_key", ""))
+            self.api_key_input.setVisible(True)
+            self.lbl_key.setVisible(True)
+            self.test_conn_btn.setVisible(True)
+            self.set_combo_text(self.model_select, self.model_config.get("openai", {}).get("model", "gpt-4o-mini"))
+            self.privacy_panel.setText("🌐 <b>Privacy Status: Cloud Processing</b><br>Your strategy queries are sent securely to OpenAI for processing. Please ensure your API key has sufficient balance.")
+            self.privacy_panel.setStyleSheet("padding: 12px; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 6px; color: #92400e; font-size: 10pt;")
+            
+        elif provider == "Gemini":
+            self.model_select.addItems(["gemini-1.5-flash", "gemini-1.5-pro"])
+            self.model_select.setEnabled(True)
+            self.api_key_input.setEnabled(True)
+            self.api_key_input.setText(self.model_config.get("gemini", {}).get("api_key", ""))
+            self.api_key_input.setVisible(True)
+            self.lbl_key.setVisible(True)
+            self.test_conn_btn.setVisible(True)
+            self.set_combo_text(self.model_select, self.model_config.get("gemini", {}).get("model", "gemini-1.5-flash"))
+            self.privacy_panel.setText("🌐 <b>Privacy Status: Cloud Processing</b><br>Your strategy queries are sent securely to Google Gemini for processing. Please ensure your API key is configured correctly.")
+            self.privacy_panel.setStyleSheet("padding: 12px; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 6px; color: #92400e; font-size: 10pt;")
+
+    def test_model_connection(self):
+        provider = self.provider_select.currentText()
+        api_key = self.api_key_input.text().strip()
+        model = self.model_select.currentText()
+        
+        if not api_key:
+            QMessageBox.warning(self, "API Key Missing", "Please enter a valid API key to test connection.")
+            return
+            
+        self.test_conn_btn.setText("⏳ Testing Connection...")
+        self.test_conn_btn.setEnabled(False)
+        QApplication.processEvents()
+        
+        success = False
+        try:
+            if provider == "OpenAI":
+                from providers.openai_provider import OpenAIProvider
+                prov_obj = OpenAIProvider(api_key, model)
+                success = prov_obj.health_check()
+            elif provider == "Gemini":
+                from providers.gemini_provider import GeminiProvider
+                prov_obj = GeminiProvider(api_key, model)
+                success = prov_obj.health_check()
+        except Exception as e:
+            print("Test connection exception:", e)
+            
+        self.test_conn_btn.setText("🔌 Test Connection")
+        self.test_conn_btn.setEnabled(True)
+        
+        if success:
+            QMessageBox.information(self, "Success", f"Connection test passed! The {provider} service is online and active.")
+        else:
+            QMessageBox.critical(self, "Failure", f"Connection test failed. Please verify your API key and check if the chosen model is active on your API billing plan.")
+
     def set_combo_text(self, combo, text):
         index = combo.findText(text)
         if index >= 0:
@@ -225,7 +414,8 @@ class ProfileDialog(QDialog):
                 pass
                 
     def accept(self):
-        data = {
+        # Save Profile
+        profile_data = {
             "name": self.name_input.text(),
             "industry": self.industry_input.currentText(),
             "stage": self.stage_input.currentText(),
@@ -234,9 +424,30 @@ class ProfileDialog(QDialog):
         }
         try:
             with open(self.profile_path, 'w') as f:
-                json.dump(data, f)
+                json.dump(profile_data, f)
         except Exception as e:
             print("Failed to save profile:", e)
+            
+        # Save Model Config
+        from providers.provider_factory import ProviderFactory
+        provider = self.provider_select.currentText()
+        if provider == "Local (Default)":
+            self.model_config["provider"] = "local"
+        elif provider == "OpenAI":
+            self.model_config["provider"] = "openai"
+            self.model_config["openai"]["api_key"] = self.api_key_input.text().strip()
+            self.model_config["openai"]["model"] = self.model_select.currentText()
+        elif provider == "Gemini":
+            self.model_config["provider"] = "gemini"
+            self.model_config["gemini"]["api_key"] = self.api_key_input.text().strip()
+            self.model_config["gemini"]["model"] = self.model_select.currentText()
+            
+        ProviderFactory.save_config(self.model_config)
+        
+        # Trigger reload of LLM in active application parent
+        if self.parent() and hasattr(self.parent(), "init_ai"):
+            self.parent().init_ai()
+            
         super().accept()
 
 
