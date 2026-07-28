@@ -971,6 +971,17 @@ class FounderApp(QMainWindow):
                 in_priority_action = ("Priority Action" in header_text or "Priority" in header_text)
                 continue
 
+            # Markdown header 3: ### Header
+            if stripped.startswith('### '):
+                header_text = stripped[4:].strip()
+                html_lines.append(
+                    f'<h3 style="margin-top:10px; margin-bottom:4px; '
+                    f'font-size:11pt; font-weight:bold; color:#1e293b;">'
+                    f'{header_text}</h3>'
+                )
+                in_steps = False
+                continue
+
             if in_priority_action and stripped:
                 # Replace inline bold formatting if any
                 clean_val = re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', stripped)
