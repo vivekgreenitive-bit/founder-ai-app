@@ -38,7 +38,7 @@ class OrchestratorAgent:
         
         # Instantiate specialized agents
         self.assessment_agent = AssessmentAgent(llm)
-        self.framework_agent = FrameworkSelectionAgent(llm)
+        self.framework_agent = FrameworkSelectionAgent(llm, vectorstore)
         self.retrieval_agent = KnowledgeRetrievalAgent(vectorstore)
         self.strategy_agent = StrategyAgent(llm)
         self.execution_agent = ExecutionCoachAgent(llm)
