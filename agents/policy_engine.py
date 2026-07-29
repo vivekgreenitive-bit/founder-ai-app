@@ -7,12 +7,30 @@ class PolicyEngine:
 
     def evaluate(self, amount: float, merchant: str, category: str) -> Tuple[bool, str]:
         """
-        Evaluates a proposed payment against the active policies.
+        Evaluates a proposed payment against the active signed policies.
         Returns (is_allowed, reason).
         """
         policy = self.db.get_active_policy()
         if not policy:
             return True, "No active policy restrictions found."
+
+        # Verify Cryptographic Signature
+        expected_sig = self.db.calculate_policy_signature(
+            policy["max_transaction_limit"],
+            policy["daily_spending_limit"],
+            policy["monthly_budget"],
+            policy["emergency_stop"]
+        )
+        if policy.get("signature") != expected_sig:
+            self.db.add_audit_log("POLICY_TAMPERED", "ALERT: Policy signature verification failed! Tampering detected.")
+            # Automatically trigger Emergency Stop to protect the wallet
+            self.db.update_policy(
+                policy["max_transaction_limit"],
+                policy["daily_spending_limit"],
+                policy["monthly_budget"],
+                1 # Enable Emergency Stop
+            )
+            return False, "Security Violation: Spending policies have been tampered with. Transactions frozen."
 
         # 1. Emergency Stop check
         if policy.get("emergency_stop", 0) == 1:

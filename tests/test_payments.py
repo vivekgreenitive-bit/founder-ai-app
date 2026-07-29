@@ -60,6 +60,25 @@ class TestPaymentSystem(unittest.TestCase):
         self.assertFalse(allowed)
         self.assertIn("Daily limit exceeded", reason)
 
+    def test_policy_engine_tampered_signature(self):
+        # Retrieve active policy
+        policy = self.db.get_active_policy()
+        self.assertIsNotNone(policy)
+        
+        # Manually alter the policy in the SQLite table without regenerating signature
+        cursor = self.db.conn.cursor()
+        cursor.execute("UPDATE policies SET max_transaction_limit = 9999.0 WHERE id = (SELECT max(id) FROM policies)")
+        self.db.conn.commit()
+        
+        # Verify Policy Engine blocks it and triggers the emergency stop
+        allowed, reason = self.policy_engine.evaluate(50.0, "Gartner", "Research")
+        self.assertFalse(allowed)
+        self.assertIn("Security Violation", reason)
+        
+        # Check that emergency stop was automatically set to 1
+        updated_policy = self.db.get_active_policy()
+        self.assertEqual(updated_policy["emergency_stop"], 1)
+
     def test_payment_agent_insufficient_funds(self):
         # Set wallet balance to $10
         self.db.update_wallet_balance("primary_usdc_wallet", 10.00)

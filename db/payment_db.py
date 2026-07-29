@@ -1,5 +1,7 @@
 import sqlite3
 import json
+import hmac
+import hashlib
 from typing import Any, Dict, List, Optional
 from datetime import datetime
 
@@ -8,6 +10,10 @@ class PaymentDBManager:
         self.db_path = db_path
         self.conn = sqlite3.connect(self.db_path, check_same_thread=False)
         self._init_db()
+
+    def calculate_policy_signature(self, max_limit: float, daily_limit: float, monthly_budget: float, emergency_stop: int) -> str:
+        msg = f"{max_limit}:{daily_limit}:{monthly_budget}:{emergency_stop}".encode("utf-8")
+        return hmac.new(b"founder_ai_super_secret_signing_key_xprize", msg, hashlib.sha256).hexdigest()
 
     def _init_db(self) -> None:
         cursor = self.conn.cursor()
@@ -39,7 +45,7 @@ class PaymentDBManager:
             )
         """)
         
-        # Policies
+        # Policies (includes signature column)
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS policies (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -48,7 +54,8 @@ class PaymentDBManager:
                 monthly_budget REAL NOT NULL,
                 emergency_stop INTEGER DEFAULT 0,
                 approved_merchants TEXT,
-                approved_categories TEXT
+                approved_categories TEXT,
+                signature TEXT
             )
         """)
         
@@ -104,9 +111,10 @@ class PaymentDBManager:
         # Seed default policy if not exists
         cursor.execute("SELECT COUNT(*) FROM policies")
         if cursor.fetchone()[0] == 0:
+            sig = self.calculate_policy_signature(200.0, 500.0, 2000.0, 0)
             cursor.execute(
-                "INSERT INTO policies (max_transaction_limit, daily_spending_limit, monthly_budget, emergency_stop, approved_merchants, approved_categories) VALUES (?, ?, ?, ?, ?, ?)",
-                (200.0, 500.0, 2000.0, 0, json.dumps(["Gartner", "AWS", "Google Cloud", "Zoom", "Freelancer"]), json.dumps(["Research", "Infrastructure", "Subscriptions", "Services"]))
+                "INSERT INTO policies (max_transaction_limit, daily_spending_limit, monthly_budget, emergency_stop, approved_merchants, approved_categories, signature) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (200.0, 500.0, 2000.0, 0, json.dumps(["Gartner", "AWS", "Google Cloud", "Zoom", "Freelancer"]), json.dumps(["Research", "Infrastructure", "Subscriptions", "Services"]), sig)
             )
 
         # Seed default subscriptions if empty
@@ -164,7 +172,7 @@ class PaymentDBManager:
     def get_active_policy(self) -> Optional[Dict[str, Any]]:
         cursor = self.conn.cursor()
         cursor.execute("""
-            SELECT max_transaction_limit, daily_spending_limit, monthly_budget, emergency_stop, approved_merchants, approved_categories 
+            SELECT max_transaction_limit, daily_spending_limit, monthly_budget, emergency_stop, approved_merchants, approved_categories, signature 
             FROM policies ORDER BY id DESC LIMIT 1
         """)
         row = cursor.fetchone()
@@ -175,16 +183,18 @@ class PaymentDBManager:
                 "monthly_budget": row[2],
                 "emergency_stop": row[3],
                 "approved_merchants": json.loads(row[4] or "[]"),
-                "approved_categories": json.loads(row[5] or "[]")
+                "approved_categories": json.loads(row[5] or "[]"),
+                "signature": row[6]
             }
         return None
 
     def update_policy(self, max_limit: float, daily_limit: float, monthly_budget: float, emergency_stop: int) -> None:
+        sig = self.calculate_policy_signature(max_limit, daily_limit, monthly_budget, emergency_stop)
         cursor = self.conn.cursor()
         cursor.execute("""
-            INSERT INTO policies (max_transaction_limit, daily_spending_limit, monthly_budget, emergency_stop, approved_merchants, approved_categories)
-            VALUES (?, ?, ?, ?, ?, ?)
-        """, (max_limit, daily_limit, monthly_budget, emergency_stop, json.dumps(["Gartner", "AWS", "Google Cloud", "Zoom", "Freelancer"]), json.dumps(["Research", "Infrastructure", "Subscriptions", "Services"])))
+            INSERT INTO policies (max_transaction_limit, daily_spending_limit, monthly_budget, emergency_stop, approved_merchants, approved_categories, signature)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (max_limit, daily_limit, monthly_budget, emergency_stop, json.dumps(["Gartner", "AWS", "Google Cloud", "Zoom", "Freelancer"]), json.dumps(["Research", "Infrastructure", "Subscriptions", "Services"]), sig))
         self.conn.commit()
 
     def get_all_transactions(self) -> List[Dict[str, Any]]:
