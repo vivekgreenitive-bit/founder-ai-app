@@ -18,71 +18,86 @@ The **Founder AI Desktop App** is a private, offline artificial intelligence ass
 ## ✨ Key Features
 - **100% Offline & Private:** Your business questions never leave your computer. 
 - **Framework-Grounded Answers:** Answers are strictly generated using the 13 Founder Frameworks, avoiding generic AI hallucinations.
+- **Agentic Payments Core:** Leverages Circle Dev Testnets for USDC wallet management, SaaS subscription auto-renewals, invoice handling, and freelancer payouts.
+- **Signed Policy Governance:** Safe executing via a local cryptographically-signed Policy Engine preventing LLM hallucinations or prompt injections from triggering unauthorized funds transfers.
 - **Cross-Platform:** Native compiled applications for both macOS (Apple Silicon) and Windows.
-- **Zero-Setup Execution:** No complex cloud deployments required. Just download, install, and run.
 
 ## 🛠️ Technology Stack
 The desktop application is built using a modern, high-performance local AI stack:
-- **UI Framework:** PyQt6 for native, cross-platform desktop interfaces.
+- **UI Framework:** PyQt6 for native, cross-platform desktop interfaces with real-time wallet balance widgets.
 - **AI Core:** Pluggable LLM Provider architecture supporting local offline inference (Llama.cpp) and cloud-based models (OpenAI Chat, Gemini Generative AI).
-- **Orchestration:** LangChain for Retrieval-Augmented Generation (RAG) pipelines.
+- **Payment Providers:** Pluggable gateway adapter interface (`BasePaymentProvider`) backing implementations for Circle (USDC Web3), Stripe, and Coinbase.
+- **Orchestration:** LangChain for Retrieval-Augmented Generation (RAG) pipelines and query interceptors.
 - **Vector Database:** ChromaDB for local semantic search and knowledge retrieval.
 - **Build System:** PyInstaller & GitHub Actions for automated cross-platform compilation.
 
 ## 🏗️ Architecture Overview
-The application utilizes a **multi-agent pipeline** orchestrating local or cloud large language models (LLM) and a RAG search database:
+The application utilizes a **multi-agent pipeline** orchestrating local or cloud large language models (LLM), a RAG search database, and an agentic payments secure execution boundary:
 
 ```mermaid
 graph TD
-    classDef agent fill:#f9f5ff,stroke:#7f56d9,stroke-width:2px;
-    classDef storage fill:#f2f4f7,stroke:#475467,stroke-width:2px;
-    classDef client fill:#eff8ff,stroke:#175cd3,stroke-width:2px;
+    classDef agent fill:#eff6ff,stroke:#1d4ed8,stroke-width:2px;
+    classDef secure fill:#fef2f2,stroke:#b91c1c,stroke-width:2px;
+    classDef storage fill:#ecfdf5,stroke:#059669,stroke-width:2px;
+    classDef interface fill:#fffbeb,stroke:#d97706,stroke-width:2px;
+
+    UI[PyQt6 Desktop Client UI]:::interface
+    Orch[OrchestratorAgent]:::agent
     
-    User([User Challenge]) --> UI[PyQt6 UI Client]:::client
-    Profile[Company Profile] --> UI
+    subgraph RAG Strategy Advisor
+        Assess[AssessmentAgent]:::agent
+        Select[FrameworkSelectionAgent]:::agent
+        Chroma[(ChromaDB VectorStore)]:::storage
+        Retr[KnowledgeRetrievalAgent]:::agent
+        Strat[StrategyAgent]:::agent
+        Coach[ExecutionCoachAgent]:::agent
+        Compose[ResponseComposer]:::agent
+    end
+
+    subgraph Secure Agentic Payments Envelope
+        Policy[PolicyEngine]:::secure
+        PayAgent[PaymentAgent]:::agent
+        HMAC[HMAC-SHA256 Signatures]:::secure
+        DB[(SQLite Payment DB)]:::storage
+    end
+
+    subgraph Gateway Integration Adapters
+        BaseProvider[BasePaymentProvider]:::interface
+        Circle[Circle USDC Provider]:::interface
+        Stripe[Stripe Provider Stub]:::interface
+        Coinbase[Coinbase Commerce Stub]:::interface
+    end
+
+    UI -->|Submit Query| Orch
+    Orch -->|Standard Query| Assess
+    Assess --> Select --> Retr --> Strat --> Coach --> Compose --> Orch
+    Chroma -.->|Embeddings| Retr
     
-    UI -->|Start Thread| Orchestrator{Orchestrator Agent}
+    Orch -->|Payment Intent Detected| Policy
+    Policy -->|Validate Signatures| HMAC
+    HMAC -.->|Read/Verify| DB
+    Policy -->|If Authorized| PayAgent
+    PayAgent -->|Call API| BaseProvider
     
-    Orchestrator --> Assessment[AssessmentAgent]:::agent
-    Assessment -->|Analyze Profile| FrameworkSelect[FrameworkSelectionAgent]:::agent
+    BaseProvider -.-> Circle
+    BaseProvider -.-> Stripe
+    BaseProvider -.-> Coinbase
     
-    FrameworkSelect --> Retrieval[KnowledgeRetrievalAgent]:::agent
-    Retrieval -->|Query Embeddings| Chroma[(ChromaDB Vector Store)]:::storage
-    Chroma -.->|Load Playbook| Playbook[FounderFrameworks_clean.txt]
-    
-    FrameworkSelect --> Memory[MemoryAgent]:::agent
-    Memory -->|Query/Save Logs| SQLite[(SQLite Conversation DB)]:::storage
-    
-    Orchestrator --> Strategy[StrategyAgent]:::agent
-    Strategy -->|Inference| Provider[Pluggable Provider Factory]:::storage
-    Provider -.->|Local| Llama[Llama.cpp 3B LLM]
-    Provider -.->|Cloud| APIs[OpenAI / Gemini APIs]
-    
-    Orchestrator --> Execution[ExecutionCoachAgent]:::agent
-    Execution --> Composer[ResponseComposer]:::agent
-    
-    Composer --> Validator{Deterministic Validator}
-    Validator -->|Validation Failure| Retry[Single Local Retry]
-    Retry --> Strategy
-    
-    Validator -->|Success| UI
-    UI -->|Format Output| Output[Usability-Enhanced 8-Part Contract]
-    UI -->|Exception Handler| Alert[Error Dialog QMessageBox]
+    PayAgent -->|Log Tx & Deduct USDC| DB
+    DB -->|Update Labels| UI
 ```
 
 1. **Local RAG Pipeline**: The proprietary `FounderFrameworks_clean.txt` playbook is embedded into a local vector database via ChromaDB.
-2. **Multi-Agent Orchestration Sequence**: When a user submits a challenge, a structured pipeline manages the diagnosis:
-    - **AssessmentAgent**: Analyzes the startup stage, business model, and primary challenge using the company profile and query context.
-    - **FrameworkSelectionAgent**: Selects the single best Founder Framework from the list of 13 proprietary frameworks (or honors manual user selection).
-    - **KnowledgeRetrievalAgent**: Dynamically retrieves matching framework segments from ChromaDB.
-    - **MemoryAgent**: Integrates conversational session history context.
-    - **StrategyAgent**: Formulates core business scenario analysis and Dreamer/Guardian perspective details.
-    - **ExecutionCoachAgent**: Generates priority actions and concrete athlete-stage recommendations.
-    - **ResponseComposer**: Assembles all components and synthesizes readability layers using the active LLM.
-3. **Deterministic Validator & Retry Logic**: Analyzes the generated advice to verify structural integrity and prevent leaks of agent formatting tags, running a single local retry block if any validation failure is detected.
-4. **Usability-Enhanced 8-Part Output Contract**: Every output is formatted in a strict 8-part sequence for absolute execution clarity:
+2. **Payment Interception**: The `OrchestratorAgent` checks incoming requests for execution actions. If payment is detected:
+    - **PolicyEngine**: Decouples validation from LLMs, checking transaction amounts, daily limits, and whitelists.
+    - **HMAC-SHA256 Signatures**: Cryptographically signs all active spending policy configurations to protect parameters from local tampering.
+    - **Circle Provider**: Settles payments on-chain via USDC testnets.
+    - **Audit Logs**: Records a complete immutable transaction trail in SQLite.
+3. **Multi-Agent Orchestration Sequence**: For strategic queries, standard agents execute sequentially:
+    - **AssessmentAgent** ➔ **FrameworkSelectionAgent** ➔ **KnowledgeRetrievalAgent** ➔ **StrategyAgent** ➔ **ExecutionCoachAgent** ➔ **ResponseComposer**.
+4. **Deterministic Validator & Retry Logic**: Analyzes generated strategy text to verify structural compliance and prevent raw delimiters from leaking.
+5. **Usability-Enhanced 8-Part Output Contract**: Every output is formatted in a strict 8-part sequence for absolute execution clarity:
     - `Framework Selected` ➔ `Executive Summary` ➔ `Framework Analysis` ➔ `Recommendation` ➔ `Priority Actions` ➔ `Next 24 Hours` ➔ `Risks and Missing Information` ➔ `Suggested Follow-up Questions`.
-5. **Absolute Privacy by Default**: Local processing runs completely on-device via Llama.cpp, with options to securely connect to cloud LLMs (OpenAI, Gemini) via user-provided API keys stored in settings.
 
 ## 📦 Local Setup Instructions
 If you want to run the application from source code:
