@@ -94,6 +94,12 @@ class PaymentDBManager:
             )
         """)
         
+        # Check and migrate signature column if table already exists in older runs
+        try:
+            cursor.execute("SELECT signature FROM policies LIMIT 1")
+        except sqlite3.OperationalError:
+            cursor.execute("ALTER TABLE policies ADD COLUMN signature TEXT")
+        
         self.conn.commit()
         self._seed_default_data()
 
