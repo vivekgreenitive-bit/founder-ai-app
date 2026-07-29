@@ -284,6 +284,65 @@ class ProfileDialog(QDialog):
         # Add tabs
         self.tabs.addTab(self.profile_tab, "🏢 Company Profile")
         self.tabs.addTab(self.model_tab, "🤖 Model Configuration")
+
+        # ----------------------------------------------------
+        # Tab 3: Payments & Policies
+        # ----------------------------------------------------
+        self.payments_tab = QWidget()
+        payments_layout = QVBoxLayout(self.payments_tab)
+        payments_layout.setContentsMargins(20, 20, 20, 20)
+        payments_layout.setSpacing(15)
+
+        from db.payment_db import PaymentDBManager
+        self.pay_db = PaymentDBManager()
+        wallet = self.pay_db.get_wallet("primary_usdc_wallet")
+        policy = self.pay_db.get_active_policy() or {
+            "max_transaction_limit": 200.0,
+            "daily_spending_limit": 500.0,
+            "monthly_budget": 2000.0,
+            "emergency_stop": 0
+        }
+
+        wallet_info = QLabel(f"<b>USDC Wallet:</b> {wallet['address']}<br><b>Blockchain:</b> {wallet['blockchain']}<br><b>USDC Balance:</b> {wallet['usdc_balance']} USDC")
+        wallet_info.setStyleSheet("padding: 12px; background: #e2e8f0; border-radius: 6px; color: #1e293b; font-size: 11pt;")
+        payments_layout.addWidget(wallet_info)
+
+        self.pay_form_layout = QFormLayout()
+        self.pay_form_layout.setSpacing(12)
+        self.pay_form_layout.setLabelAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+
+        self.max_limit_input = QLineEdit()
+        self.max_limit_input.setStyleSheet(input_style)
+        self.max_limit_input.setText(str(policy.get("max_transaction_limit", 200.0)))
+
+        self.daily_limit_input = QLineEdit()
+        self.daily_limit_input.setStyleSheet(input_style)
+        self.daily_limit_input.setText(str(policy.get("daily_spending_limit", 500.0)))
+
+        self.monthly_budget_input = QLineEdit()
+        self.monthly_budget_input.setStyleSheet(input_style)
+        self.monthly_budget_input.setText(str(policy.get("monthly_budget", 2000.0)))
+
+        self.emergency_checkbox = QComboBox()
+        self.emergency_checkbox.setStyleSheet(input_style)
+        self.emergency_checkbox.addItems(["Inactive (Normal Operations)", "Active (Freeze All Transactions)"])
+        self.emergency_checkbox.setCurrentIndex(1 if policy.get("emergency_stop") == 1 else 0)
+
+        def add_pay_row(label_text, widget):
+            lbl = QLabel(label_text)
+            lbl.setFont(label_font)
+            lbl.setStyleSheet("color: #334155;")
+            self.pay_form_layout.addRow(lbl, widget)
+
+        add_pay_row("Max Transaction Limit:", self.max_limit_input)
+        add_pay_row("Daily Spending Limit:", self.daily_limit_input)
+        add_pay_row("Monthly Spending Budget:", self.monthly_budget_input)
+        add_pay_row("Emergency Stop Lock:", self.emergency_checkbox)
+
+        payments_layout.addLayout(self.pay_form_layout)
+        payments_layout.addStretch()
+
+        self.tabs.addTab(self.payments_tab, "💳 Agentic Payments")
         main_layout.addWidget(self.tabs)
         
         # Load configs
@@ -446,6 +505,16 @@ class ProfileDialog(QDialog):
             self.model_config["gemini"]["model"] = self.model_select.currentText()
             
         ProviderFactory.save_config(self.model_config)
+
+        # Save payment policy limits
+        try:
+            max_limit = float(self.max_limit_input.text().strip())
+            daily_limit = float(self.daily_limit_input.text().strip())
+            monthly_budget = float(self.monthly_budget_input.text().strip())
+            emerg_stop = 1 if self.emergency_checkbox.currentIndex() == 1 else 0
+            self.pay_db.update_policy(max_limit, daily_limit, monthly_budget, emerg_stop)
+        except Exception as e:
+            print("Failed to save payment policy limits:", e)
         
         # Trigger reload of LLM in active application parent
         if self.parent() and hasattr(self.parent(), "init_ai"):
@@ -643,6 +712,42 @@ class FounderApp(QMainWindow):
         # No addStretch — cards expand to fill the full sidebar height on any screen
         sidebar_scroll.setWidget(sidebar_content)
         left_layout.addWidget(sidebar_scroll)
+
+        # Add Wallet Panel to Left Sidebar Bottom
+        self.wallet_panel = QFrame()
+        self.wallet_panel.setStyleSheet("""
+            QFrame {
+                background-color: #f1f5f9;
+                border-top: 1px solid #cbd5e1;
+                border-radius: 0px;
+            }
+        """)
+        wallet_panel_layout = QVBoxLayout(self.wallet_panel)
+        wallet_panel_layout.setContentsMargins(15, 12, 15, 12)
+        wallet_panel_layout.setSpacing(4)
+        
+        wallet_title = QLabel("💳 Circle Wallet (Testnet)")
+        wallet_title.setFont(QFont("Arial", 10, QFont.Weight.Bold))
+        wallet_title.setStyleSheet("color: #475569; background: transparent; border: none;")
+        
+        from db.payment_db import PaymentDBManager
+        self.sidebar_db = PaymentDBManager()
+        wallet_data = self.sidebar_db.get_wallet("primary_usdc_wallet")
+        balance = wallet_data["usdc_balance"] if wallet_data else 0.0
+        addr = wallet_data["address"] if wallet_data else ""
+        
+        self.sidebar_balance_label = QLabel(f"<b>Balance:</b> {balance} USDC")
+        self.sidebar_balance_label.setStyleSheet("color: #1e293b; font-size: 11pt; background: transparent; border: none;")
+        
+        self.sidebar_addr_label = QLabel(f"<b>Address:</b> {addr[:14]}...")
+        self.sidebar_addr_label.setStyleSheet("color: #64748b; font-size: 9pt; background: transparent; border: none;")
+        self.sidebar_addr_label.setToolTip(addr)
+        
+        wallet_panel_layout.addWidget(wallet_title)
+        wallet_panel_layout.addWidget(self.sidebar_balance_label)
+        wallet_panel_layout.addWidget(self.sidebar_addr_label)
+        
+        left_layout.addWidget(self.wallet_panel)
         body_layout.addWidget(left_panel)
 
         # ════════════════════════════════════════════════════════════════════
@@ -1098,6 +1203,16 @@ class FounderApp(QMainWindow):
         self.copy_btn.setVisible(True)
         self.status_label.setText("✅  Analysis complete. Copy or start a new diagnosis.")
         self.status_label.setStyleSheet("color: #10b981; font-weight: bold; font-size: 12px;")
+        self.refresh_wallet_balance()
+
+    def refresh_wallet_balance(self):
+        try:
+            wallet_data = self.sidebar_db.get_wallet("primary_usdc_wallet")
+            if wallet_data:
+                balance = wallet_data["usdc_balance"]
+                self.sidebar_balance_label.setText(f"<b>Balance:</b> {balance} USDC")
+        except Exception as e:
+            print("Failed to refresh wallet balance:", e)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
