@@ -29,6 +29,10 @@ jobs:
         pip install -r requirements.txt
 
 
+    - name: Run Automated Unit Tests
+      run: |
+        python -m unittest discover -s tests -p "test_*.py"
+
     - name: Build with PyInstaller
       run: |
         pyinstaller --name "FounderAI" --windowed --noconfirm --add-data "FounderFrameworks.txt:." --hidden-import="langchain" --hidden-import="chromadb" --hidden-import="llama_cpp" app.py
@@ -45,7 +49,20 @@ jobs:
         cd dist
         Compress-Archive -Path FounderAI -DestinationPath FounderAI-Windows.zip
 
-    - name: Create Release and Upload Assets
+    - name: Set up Google Cloud SDK
+      if: env.GCP_SA_KEY != ''
+      uses: google-github-actions/setup-gcloud@v2
+      env:
+        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Upload Release Artifacts to Google Cloud Storage
+      if: env.GCP_SA_KEY != ''
+      run: |
+        gcloud storage cp dist/*.zip gs://founder-ai-app-neat-tempo-477810/
+      env:
+        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Create GitHub Release and Upload Assets
       uses: softprops/action-gh-release@v2
       with:
         repository: ${{ secrets.RELEASE_REPO_TOKEN && 'vivekgreenitive-bit/founder-app-release' || github.repository }}

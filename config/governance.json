@@ -1,0 +1,8 @@
+{
+  "agentic_payments_enabled": false,
+  "testnet_only": true,
+  "max_transaction_limit": 200,
+  "daily_limit": 500,
+  "monthly_budget": 2000,
+  "emergency_stop": false
+}

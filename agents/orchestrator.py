@@ -6,6 +6,8 @@ import os
 from datetime import datetime
 from typing import Any, Dict, Optional, Tuple, Callable
 
+from services.governance_service import GovernanceService
+
 from agents.assessment_agent import AssessmentAgent
 from agents.framework_agent import FrameworkSelectionAgent
 from agents.retrieval_agent import KnowledgeRetrievalAgent
@@ -40,7 +42,7 @@ class OrchestratorAgent:
     def __init__(self, llm: Any, vectorstore: Any) -> None:
         self.llm = llm
         self.vectorstore = vectorstore
-        
+
         # Instantiate specialized agents
         self.assessment_agent = AssessmentAgent(llm)
         self.framework_agent = FrameworkSelectionAgent(llm, vectorstore)
@@ -51,7 +53,8 @@ class OrchestratorAgent:
         self.response_composer = ResponseComposer(llm)
         self.payment_db = PaymentDBManager()
         self.payment_agent = PaymentAgent(self.payment_db)
-        
+        self.governance = GovernanceService()
+
         self.log_file = "orchestrator.log"
 
     def _log_run(self, log_entry):
@@ -170,9 +173,14 @@ Do not write any other text. Only valid JSON."""
             "errors": []
         }
 
-        # Check for payment/transaction action
+        # Check for payment/transaction action — ONLY when founder has explicitly
+        # opted-in via Settings → Automation & Governance. Default: DISCONNECTED.
         payment_details = self.parse_payment_details(query)
-        if payment_details.get("action") in ["pay", "refund", "invoice"] and payment_details.get("amount", 0) > 0:
+        if (
+            self.governance.is_agentic_payments_enabled()
+            and payment_details.get("action") in ["pay", "refund", "invoice"]
+            and payment_details.get("amount", 0) > 0
+        ):
             action = payment_details["action"]
             amount = payment_details["amount"]
             merchant = payment_details["merchant"]
@@ -301,6 +309,13 @@ Category: {pay_res['category']}"""
                 "duration": duration,
                 "output_summary": output_summary[:100]
             })
+
+        # Fetch past execution outcomes and attach to profile_data for AssessmentAgent
+        from services.actions_service import ActionsService
+        actions_svc = ActionsService()
+        outcome_ctx = actions_svc.build_outcome_context()
+        if outcome_ctx:
+            profile_data["outcome_context"] = outcome_ctx
 
         # 1. Assessment
         s = log_step("AssessmentAgent", "Understanding your business challenge")

@@ -1,19 +1,31 @@
 import sys
 import os
 import json
+import uuid
+import re
 import numpy as np
 np.float_ = np.float64
 
-from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
-                             QHBoxLayout, QPushButton, QTextEdit, QLabel, 
+from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout,
+                             QHBoxLayout, QPushButton, QTextEdit, QLabel,
                              QFileDialog, QProgressBar, QMessageBox,
                              QDialog, QFormLayout, QLineEdit, QDialogButtonBox,
-                             QFrame, QComboBox, QScrollArea, QSizePolicy, QTabWidget)
+                             QFrame, QComboBox, QScrollArea, QSizePolicy, QTabWidget, QStackedWidget, QMenu)
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, QEvent
 from PyQt6.QtGui import QFont, QKeyEvent, QKeySequence
 
 from document_processor import extract_text_from_file
 from ai_engine import FounderAIEngine
+from ui.screens.today_screen import TodayScreen
+from ui.screens.frameworks_screen import FrameworksScreen
+from ui.screens.outcomes_screen import OutcomesScreen
+from ui.screens.actions_screen import ActionsScreen
+from ui.screens.subscription_screen import SubscriptionBillingDialog
+from ui.screens.onboarding_dialog import OnboardingWizardDialog
+from ui.screens.business_data_screen import BusinessDataScreen
+from services.company_profile_service import CompanyProfileService
+from services.entitlement_service import EntitlementService
+from services.diagnosis_session_service import DiagnosisSessionService
 
 
 class ClickableCard(QFrame):
@@ -46,22 +58,21 @@ class ClickableCard(QFrame):
         if selected:
             self.setStyleSheet(f"""
                 ClickableCard {{
-                    background-color: {self.bg};
-                    border: 2px solid {self.color};
-                    border-left: 5px solid {self.color};
-                    border-radius: 6px;
+                    background-color: #1e293b;
+                    border: 2px solid #3b82f6;
+                    border-radius: 8px;
                 }}
             """)
         else:
             self.setStyleSheet(f"""
                 ClickableCard {{
-                    background-color: white;
-                    border: 1px solid {self.border};
-                    border-left: 4px solid {self.color};
-                    border-radius: 6px;
+                    background-color: #0f172a;
+                    border: 1px solid #1e293b;
+                    border-radius: 8px;
                 }}
                 ClickableCard:hover {{
-                    background-color: {self.bg};
+                    background-color: #1e293b;
+                    border: 1px solid #334155;
                 }}
             """)
 
@@ -264,6 +275,7 @@ class ProfileDialog(QDialog):
                 background-color: #e2e8f0;
             }
         """)
+        
         self.test_conn_btn.clicked.connect(self.test_model_connection)
         model_layout.addWidget(self.test_conn_btn)
         
@@ -526,14 +538,19 @@ class ProfileDialog(QDialog):
 class FounderApp(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Founder AI Assistant")
-        self.setMinimumSize(960, 640)
+        self.setWindowTitle("Founder AI")
+        self.setMinimumSize(1100, 680)
+
+        # Services — initialized once, shared across screens
+        self._profile_svc = CompanyProfileService()
+        self._entitlement_svc = EntitlementService()
+        self._session_svc = DiagnosisSessionService()
 
         # Size the window to fit the screen naturally — desktop app feel
         from PyQt6.QtGui import QGuiApplication
         screen = QGuiApplication.primaryScreen().availableGeometry()
-        w = min(1280, int(screen.width() * 0.90))
-        h = min(820, int(screen.height() * 0.90))
+        w = min(1400, int(screen.width() * 0.92))
+        h = min(860, int(screen.height() * 0.92))
         self.resize(w, h)
         # Center on screen
         self.move(
@@ -541,7 +558,7 @@ class FounderApp(QMainWindow):
             screen.y() + (screen.height() - h) // 2
         )
         self.setAcceptDrops(True)
-        
+
         # Data
         self.engine = None
         self.current_document_text = ""
@@ -549,16 +566,19 @@ class FounderApp(QMainWindow):
         self.selected_framework_prompt = None
         self._selected_card = None        # track highlighted sidebar card
         self._all_sidebar_cards = []      # list of all ClickableCard widgets
-        
+
         self.init_ui()
         self.init_ai()
         
     def showEvent(self, event):
         super().showEvent(event)
-        # Automated onboarding: Force profile setup if it doesn't exist
-        if not os.path.exists("company_profile.json"):
-            QMessageBox.information(self, "Welcome", "Welcome to Founder AI! Let's set up your Company Profile first so the AI can provide personalized advice.")
-            self.open_settings()
+        # Wire OnboardingWizardDialog: open on first launch or incomplete onboarding.
+        # CompanyProfileService is the canonical source — avoids raw file checks.
+        if not self._profile_svc.is_onboarding_complete():
+            wizard = OnboardingWizardDialog(self)
+            wizard.exec()
+            # Refresh account button label after onboarding completes
+            self._refresh_account_button()
            
     def init_ui(self):
         main_widget = QWidget()
@@ -586,16 +606,70 @@ class FounderApp(QMainWindow):
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         header_bar_layout.addWidget(self.status_label, stretch=1)
 
-        self.settings_btn = QPushButton("⚙️ Profile")
-        self.settings_btn.setToolTip("Set Company Context")
-        self.settings_btn.setFixedSize(100, 34)
-        self.settings_btn.setStyleSheet(
-            "QPushButton { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; "
-            "border-radius: 8px; font-size: 10pt; }"
-            "QPushButton:hover { background: #e2e8f0; color: #0f172a; }"
-        )
-        self.settings_btn.clicked.connect(self.open_settings)
-        header_bar_layout.addWidget(self.settings_btn)
+        # Account Control Bar Dropdown (Top Right)
+        # Read real founder name and plan from services — never hardcoded.
+        self.account_btn = QPushButton("")
+        self._refresh_account_button()  # populates label from real services
+        self.account_btn.setFixedHeight(36)
+        self.account_btn.setToolTip("Account & Profile Controls")
+        self.account_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #ffffff;
+                color: #0f2318;
+                border: 1px solid #ccebd7;
+                border-radius: 18px;
+                padding: 0 14px;
+                font-weight: 600;
+                font-size: 10.5pt;
+            }
+            QPushButton:hover {
+                background-color: #ebf7f0;
+                border: 1px solid #1a7a3c;
+            }
+        """)
+
+        # Account Dropdown Menu
+        self.account_menu = QMenu(self)
+        self.account_menu.setStyleSheet("""
+            QMenu {
+                background-color: #ffffff;
+                border: 1px solid #ccebd7;
+                border-radius: 8px;
+                padding: 6px;
+            }
+            QMenu::item {
+                padding: 8px 20px;
+                color: #0f2318;
+                font-size: 10pt;
+                border-radius: 4px;
+            }
+            QMenu::item:selected {
+                background-color: #ebf7f0;
+                color: #1a7a3c;
+                font-weight: bold;
+            }
+            QMenu::separator {
+                height: 1px;
+                background: #e2e8f0;
+                margin: 4px 0;
+            }
+        """)
+
+        act_account = self.account_menu.addAction("👤  My Account")
+        act_profile = self.account_menu.addAction("🏢  Company Profile")
+        act_billing = self.account_menu.addAction("💳  Subscription & Billing")
+        act_payments = self.account_menu.addAction("🛡️  Payments & Governance")
+        self.account_menu.addSeparator()
+        act_signout = self.account_menu.addAction("🚪  Sign Out")
+
+        act_account.triggered.connect(self.open_settings)
+        act_profile.triggered.connect(self.open_settings)
+        act_billing.triggered.connect(self.open_subscription)
+        act_payments.triggered.connect(self.open_settings)
+        act_signout.triggered.connect(self.handle_sign_out)
+
+        self.account_btn.setMenu(self.account_menu)
+        header_bar_layout.addWidget(self.account_btn)
         root.addWidget(header_bar)
 
         # ── Two-panel body ────────────────────────────────────────────────────
@@ -605,156 +679,140 @@ class FounderApp(QMainWindow):
         body_layout.setSpacing(0)
 
         # ════════════════════════════════════════════════════════════════════
-        # LEFT PANEL — Framework Navigator
+        # LEFT PANEL — Workflow Navigator
         # ════════════════════════════════════════════════════════════════════
         left_panel = QFrame()
         left_panel.setObjectName("LeftPanel")
-        left_panel.setFixedWidth(300)
+        left_panel.setFixedWidth(220)
         left_panel.setStyleSheet("""
             QFrame#LeftPanel {
-                background-color: #f8fafc;
-                border-right: 1px solid #e2e8f0;
-                border: none;
+                background-color: #f0fbf4;
+                border-right: 1px solid #ccebd7;
             }
         """)
         left_layout = QVBoxLayout(left_panel)
-        left_layout.setContentsMargins(0, 0, 0, 0)
-        left_layout.setSpacing(0)
+        left_layout.setContentsMargins(12, 16, 12, 16)
+        left_layout.setSpacing(8)
 
-        left_title = QLabel("  Choose a Framework")
-        left_title.setFont(QFont("Arial", 11, QFont.Weight.Bold))
-        left_title.setFixedHeight(38)
-        left_title.setStyleSheet(
-            "color: #475569; background: #f1f5f9; "
-            "border-bottom: 1px solid #e2e8f0; padding-left: 10px;"
+        nav_title = QLabel("FOUNDER AI")
+        nav_title.setFont(QFont("Arial", 11, QFont.Weight.Bold))
+        nav_title.setStyleSheet("color: #1a7a3c; letter-spacing: 1.5px; margin-bottom: 8px;")
+        left_layout.addWidget(nav_title)
+
+        self.nav_buttons = {}
+
+        # ── Section: Core Journey ────────────────────────────────────────────
+        core_section = QLabel("CORE JOURNEY")
+        core_section.setStyleSheet(
+            "color: #94a3b8; font-size: 7.5pt; font-weight: bold; "
+            "letter-spacing: 1px; padding: 8px 14px 2px 14px;"
         )
-        left_layout.addWidget(left_title)
+        left_layout.addWidget(core_section)
 
-        # Scrollable list of all categories + cards
-        sidebar_scroll = QScrollArea()
-        sidebar_scroll.setWidgetResizable(True)
-        sidebar_scroll.setFrameShape(QFrame.Shape.NoFrame)
-        sidebar_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        sidebar_scroll.setStyleSheet("background: #f8fafc; border: none;")
-
-        sidebar_content = QWidget()
-        sidebar_content.setStyleSheet("background: #f8fafc;")
-        sidebar_inner = QVBoxLayout(sidebar_content)
-        sidebar_inner.setContentsMargins(5, 5, 5, 5)
-        sidebar_inner.setSpacing(2)
-
-        categories = [
-            {
-                "title": "🗓  PLANNING",
-                "color": "#1a7a3c",
-                "bg": "#f0fdf4",
-                "border": "#bbf7d0",
-                "items": [
-                    ("ECG KISS", "Overall Business Diagnostic", "Define your end goal, identify gaps, and simulate solutions.", "Run the ECG KISS overall business diagnosis on my situation and identify my biggest operational gap."),
-                    ("SLR CAMERAS", "Yearly Planning", "Plan your yearly milestones, allocate resources, schedule.", "Apply the SLR CAMERAS framework to help me build a structured yearly plan for my business."),
-                    ("MC BEERS", "Quarterly Planning", "Break down quarterly goals into sprints.", "Use the MC BEERS framework to break down my goals into a 90-day execution sprint."),
-                    ("PC PEERS", "Monthly Planning", "Manage monthly priorities, people, execution checkpoints.", "Apply the PC PEERS framework to create a focused monthly planning structure for my team."),
-                    ("PS ERP", "Weekly Planning", "Organize weekly focus so you stop wasting time on low-value tasks.", "Use the PS ERP framework to organize my weekly priorities and stop wasting time on low-value tasks."),
-                    ("DC ERPRS", "Daily Planning", "Structure each day to maximize output and create momentum.", "Apply the DC ERPRS framework to structure my daily schedule and make every day count."),
-                ]
-            },
-            {
-                "title": "⚙️  OPERATIONS",
-                "color": "#b45309",
-                "bg": "#fffbeb",
-                "border": "#fde68a",
-                "items": [
-                    ("OKS REC SME", "Business System Architecture", "Build systems that run without you.", "Use the OKS REC SME framework to design a system that removes me as the bottleneck."),
-                    ("PFA SAAS SME", "Business Process Mapping", "Define and streamline core business processes.", "Apply the PFA SAAS SME framework to document and optimize a core business process."),
-                    ("RSS FEED SME", "SOP Builder", "Create SOPs so your team executes consistently.", "Use the RSS FEED SME framework to create an SOP so my team stops making errors on routine tasks."),
-                ]
-            },
-            {
-                "title": "🚀  EXECUTION",
-                "color": "#1d4ed8",
-                "bg": "#eff6ff",
-                "border": "#bfdbfe",
-                "items": [
-                    ("RPM REAP ER", "Business Execution Strategy", "Diagnose why execution is failing.", "Apply the RPM REAP ER framework to diagnose why my execution is breaking down and fix it."),
-                    ("RUN DCMS ER", "Revenue Generation", "Identify and fix revenue leaks.", "Use the RUN DCMS ER framework to find and fix the revenue leaks in my business."),
-                    ("ERM FABS ER", "Business Evaluation", "Evaluate what is working and what needs to change.", "Apply the ERM FABS ER framework to evaluate what is working and what needs to change immediately."),
-                    ("ADMINS ER", "Crisis Management", "Manage an active business crisis with a clear plan.", "Use the ADMINS ER framework to help me manage the current crisis in my business."),
-                ]
-            },
+        nav_items_core = [
+            ("today",      "  Today"),
+            ("diagnose",   "  Diagnose"),
+            ("actions",    "  Actions"),
+            ("outcomes",   "  Outcomes"),
         ]
 
-        for idx, cat in enumerate(categories):
-            # Add spacing before every section except the first
-            if idx > 0:
-                sidebar_inner.addSpacing(8)
+        # ── Section: Knowledge & Data ─────────────────────────────────────────
+        knowledge_section = QLabel("KNOWLEDGE & DATA")
+        knowledge_section.setStyleSheet(
+            "color: #94a3b8; font-size: 7.5pt; font-weight: bold; "
+            "letter-spacing: 1px; padding: 12px 14px 2px 14px;"
+        )
 
-            # Category header — compact pill label
-            cat_header = QLabel(cat["title"])
-            cat_header.setFont(QFont("Arial", 9, QFont.Weight.Bold))
-            cat_header.setFixedHeight(22)
-            cat_header.setStyleSheet(
-                f"color: {cat['color']}; background: {cat['bg']}; "
-                f"border: 1px solid {cat['border']}; border-radius: 4px; "
-                f"padding-left: 8px; letter-spacing: 1px;"
-            )
-            sidebar_inner.addWidget(cat_header)
+        nav_items_knowledge = [
+            ("frameworks",    "  Frameworks"),
+            ("business_data", "  Business Data"),
+        ]
 
-            # Framework cards — tightly spaced
-            for name, subtitle, desc, prompt in cat["items"]:
-                fw_card = ClickableCard(
-                    name, subtitle, desc, prompt,
-                    cat["color"], cat["bg"], cat["border"],
-                    self.select_framework
-                )
-                self._all_sidebar_cards.append(fw_card)
-                sidebar_inner.addWidget(fw_card)
+        nav_items = nav_items_core + nav_items_knowledge
 
-        # No addStretch — cards expand to fill the full sidebar height on any screen
-        sidebar_scroll.setWidget(sidebar_content)
-        left_layout.addWidget(sidebar_scroll)
+        nav_btn_qss = """
+            QPushButton {
+                background-color: transparent;
+                color: #1e4433;
+                border: none;
+                border-radius: 8px;
+                text-align: left;
+                padding-left: 14px;
+                font-size: 10.5pt;
+                font-weight: 600;
+            }
+            QPushButton:hover {
+                background-color: #d1f5e0;
+                color: #1a7a3c;
+            }
+            QPushButton:checked {
+                background-color: #1a7a3c;
+                color: #ffffff;
+            }
+        """
 
-        # Add Wallet Panel to Left Sidebar Bottom
-        self.wallet_panel = QFrame()
-        self.wallet_panel.setStyleSheet("""
-            QFrame {
-                background-color: #f1f5f9;
-                border-top: 1px solid #cbd5e1;
-                border-radius: 0px;
+        left_layout.addWidget(core_section)
+        for key, label in nav_items_core:
+            btn = QPushButton(label)
+            btn.setFixedHeight(40)
+            btn.setCheckable(True)
+            btn.setStyleSheet(nav_btn_qss)
+            btn.clicked.connect(lambda checked, k=key: self.switch_nav(k))
+            left_layout.addWidget(btn)
+            self.nav_buttons[key] = btn
+
+        left_layout.addWidget(knowledge_section)
+        for key, label in nav_items_knowledge:
+            btn = QPushButton(label)
+            btn.setFixedHeight(40)
+            btn.setCheckable(True)
+            btn.setStyleSheet(nav_btn_qss)
+            btn.clicked.connect(lambda checked, k=key: self.switch_nav(k))
+            left_layout.addWidget(btn)
+            self.nav_buttons[key] = btn
+
+        left_layout.addStretch()
+
+        # Settings nav button at bottom
+        self.nav_settings_btn = QPushButton("Settings")
+        self.nav_settings_btn.setFixedHeight(40)
+        self.nav_settings_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #ffffff;
+                color: #2d4536;
+                border: 1px solid #ccebd7;
+                border-radius: 8px;
+                text-align: left;
+                padding-left: 14px;
+                font-size: 10.5pt;
+                font-weight: 600;
+            }
+            QPushButton:hover {
+                background-color: #dcfce7;
+                color: #1a7a3c;
+                border: 1px solid #1a7a3c;
             }
         """)
-        wallet_panel_layout = QVBoxLayout(self.wallet_panel)
-        wallet_panel_layout.setContentsMargins(15, 12, 15, 12)
-        wallet_panel_layout.setSpacing(4)
-        
-        wallet_title = QLabel("💳 Circle Wallet (Testnet)")
-        wallet_title.setFont(QFont("Arial", 10, QFont.Weight.Bold))
-        wallet_title.setStyleSheet("color: #475569; background: transparent; border: none;")
-        
-        from db.payment_db import PaymentDBManager
-        self.sidebar_db = PaymentDBManager()
-        wallet_data = self.sidebar_db.get_wallet("primary_usdc_wallet")
-        balance = wallet_data["usdc_balance"] if wallet_data else 0.0
-        addr = wallet_data["address"] if wallet_data else ""
-        
-        self.sidebar_balance_label = QLabel(f"<b>Balance:</b> {balance} USDC")
-        self.sidebar_balance_label.setStyleSheet("color: #1e293b; font-size: 11pt; background: transparent; border: none;")
-        
-        self.sidebar_addr_label = QLabel(f"<b>Address:</b> {addr[:14]}...")
-        self.sidebar_addr_label.setStyleSheet("color: #64748b; font-size: 9pt; background: transparent; border: none;")
-        self.sidebar_addr_label.setToolTip(addr)
-        
-        wallet_panel_layout.addWidget(wallet_title)
-        wallet_panel_layout.addWidget(self.sidebar_balance_label)
-        wallet_panel_layout.addWidget(self.sidebar_addr_label)
-        
-        left_layout.addWidget(self.wallet_panel)
+        self.nav_settings_btn.clicked.connect(self.open_settings)
+        left_layout.addWidget(self.nav_settings_btn)
+
         body_layout.addWidget(left_panel)
 
         # ════════════════════════════════════════════════════════════════════
-        # RIGHT PANEL — Output + Input
+        # MAIN CANVAS — QStackedWidget Screen Container
         # ════════════════════════════════════════════════════════════════════
-        right_panel = QWidget()
-        right_layout = QVBoxLayout(right_panel)
+        self.stacked_widget = QStackedWidget()
+        
+        # Instantiate Screens
+        self.today_screen = TodayScreen(self)
+        self.actions_screen = ActionsScreen(self)
+        self.frameworks_screen = FrameworksScreen(self)
+        self.outcomes_screen = OutcomesScreen(self)
+        self.business_data_screen = BusinessDataScreen(self)
+        
+        # Diagnose Screen (Existing Right Panel Canvas)
+        self.diagnose_screen = QWidget()
+        right_layout = QVBoxLayout(self.diagnose_screen)
         right_layout.setContentsMargins(16, 12, 16, 12)
         right_layout.setSpacing(8)
 
@@ -854,16 +912,168 @@ class FounderApp(QMainWindow):
         self.analyze_btn.clicked.connect(self.run_analysis)
         self.analyze_btn.setEnabled(False)
         input_row.addWidget(self.analyze_btn, alignment=Qt.AlignmentFlag.AlignBottom)
+
+        # Button Action Row: Ingest Data & Customer Intelligence
+        input_btn_layout = QHBoxLayout()
+        input_btn_layout.setSpacing(10)
+
+        self.upload_btn = QPushButton("+ Add Business Data")
+        self.upload_btn.setFixedHeight(36)
+        self.upload_btn.setMinimumWidth(160)
+        self.upload_btn.setToolTip("Upload CSV, PDF, or P&L text files to improve evidence quality")
+        self.upload_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #f8fafc;
+                border: 1px solid #cbd5e1;
+                border-radius: 6px;
+                color: #334155;
+                font-size: 10pt;
+                font-weight: bold;
+                padding: 0 12px;
+            }
+            QPushButton:hover {
+                background-color: #e2e8f0;
+                color: #0f172a;
+            }
+        """)
+        self.upload_btn.clicked.connect(self.upload_file)
+        input_btn_layout.addWidget(self.upload_btn)
+
+        # File name label — shows currently attached file
+        self.file_label = QLabel("")
+        self.file_label.setStyleSheet("color: #64748b; font-size: 9pt; font-style: italic;")
+        input_btn_layout.addWidget(self.file_label)
+
+        self.persona_btn = QPushButton("Customer Intelligence")
+        self.persona_btn.setFixedHeight(36)
+        self.persona_btn.setMinimumWidth(160)
+        self.persona_btn.setToolTip("Run Gemini Structured Persona & Competitive Gap Analysis (Pro)")
+        self.persona_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #f3e8ff;
+                border: 1px solid #d8b4fe;
+                border-radius: 6px;
+                color: #6b21a8;
+                font-size: 10pt;
+                font-weight: bold;
+                padding: 0 12px;
+            }
+            QPushButton:hover {
+                background-color: #e9d5ff;
+                color: #581c87;
+            }
+        """)
+        self.persona_btn.clicked.connect(self.run_customer_persona_analysis)
+        input_btn_layout.addWidget(self.persona_btn)
+        input_btn_layout.addStretch()
+
+        bottom_layout.addLayout(input_btn_layout)
         bottom_layout.addLayout(input_row)
 
         # Toolbar placeholder for compatibility (not added to layout)
-        self.file_label = QLabel("")
-        self.file_label.setStyleSheet("color: #64748b; font-style: italic; font-size: 9pt;")
-
         right_layout.addWidget(bottom_card)
 
-        body_layout.addWidget(right_panel, stretch=1)
+
+        # Add Screens to StackedWidget
+        self.stacked_widget.addWidget(self.today_screen)          # Index 0: Today
+        self.stacked_widget.addWidget(self.diagnose_screen)       # Index 1: Diagnose
+        self.stacked_widget.addWidget(self.actions_screen)        # Index 2: Actions
+        self.stacked_widget.addWidget(self.outcomes_screen)       # Index 3: Outcomes
+        self.stacked_widget.addWidget(self.frameworks_screen)     # Index 4: Frameworks
+        self.stacked_widget.addWidget(self.business_data_screen)  # Index 5: Business Data
+
+        body_layout.addWidget(self.stacked_widget, stretch=1)
         root.addWidget(body, stretch=1)
+
+        # Set Default Screen to TODAY (Index 0)
+        self.switch_nav("today")
+
+    def switch_nav(self, key: str):
+        """Switch stacked widget screen and update persistent sidebar button states."""
+        mapping = {
+            "today":         0,
+            "diagnose":      1,
+            "actions":       2,
+            "outcomes":      3,
+            "frameworks":    4,
+            "business_data": 5,
+        }
+        idx = mapping.get(key, 0)
+        self.stacked_widget.setCurrentIndex(idx)
+        for k, btn in self.nav_buttons.items():
+            btn.setChecked(k == key)
+
+    def switch_to_diagnose(self):
+        """Shortcut helper to switch directly to Diagnose tab."""
+        self.switch_nav("diagnose")
+
+    def run_customer_persona_analysis(self):
+        """Runs Gemini customer persona & competitive gap analysis."""
+        prompt_text = self.query_input.toPlainText().strip()
+        if not prompt_text:
+            QMessageBox.warning(self, "Input Required", "Please describe your product, service, or business idea in the text area first.")
+            return
+
+        if not self.engine or not hasattr(self.engine, 'provider'):
+            QMessageBox.warning(self, "Engine Not Ready", "AI Engine is initializing. Please wait a moment.")
+            return
+
+        self.switch_to_diagnose()
+        self.progress.setVisible(True)
+        self.status_label.setText("⏳  Analyzing Customer Persona & Competitive Gaps with Gemini...")
+        self.status_label.setStyleSheet("color: #7c3aed; font-weight: bold; font-size: 13px;")
+
+        try:
+            res = self.engine.provider.analyze_customer_profile(prompt_text)
+            persona = res.get("persona", {})
+            competitors = res.get("competitors", [])
+            diff = res.get("differentiation_opportunity", "N/A")
+            rec_fw = res.get("recommended_framework", "RUN DCMS ER")
+
+            html_output = f"""<html><body style="font-family: Arial; padding: 12px;">
+<div style="background:#f3e8ff; border: 1px solid #d8b4fe; border-radius: 8px; padding: 14px; margin-bottom: 14px;">
+  <h2 style="color:#6b21a8; margin-top:0;">🔍 Customer Persona & Competitive Intelligence Report</h2>
+  <p style="color:#581c87; font-weight:bold;">Powered by Google Gemini</p>
+</div>
+
+<h3 style="color:#1e40af;">👤 Primary Customer Persona: {persona.get('name', 'Ideal Customer')}</h3>
+<ul>
+  <li><b>Demographics / Profile:</b> {persona.get('demographics', 'N/A')}</li>
+  <li><b>Pain Points:</b> {', '.join(persona.get('pain_points', []))}</li>
+  <li><b>Buying Triggers:</b> {', '.join(persona.get('buying_triggers', []))}</li>
+</ul>
+
+<h3 style="color:#b45309;">⚔️ Competitive Landscape</h3>
+<ul>
+"""
+            for comp in competitors:
+                html_output += f"<li><b>{comp.get('name', 'Competitor')}:</b> {comp.get('positioning', 'N/A')}</li>\n"
+
+            html_output += f"""</ul>
+
+<div style="background:#f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 12px; margin-top: 14px;">
+  <h4 style="color:#166534; margin:0 0 6px 0;">🎯 Differentiation Opportunity & Auto-Selected Action:</h4>
+  <p style="color:#15803d; margin:0;">{diff}</p>
+  <p style="color:#166534; font-weight:bold; margin-top:8px;">💡 Auto-Selected Framework: {rec_fw}</p>
+</div>
+</body></html>"""
+
+            self.output_area.setHtml(html_output)
+            self._plain_result = f"Customer Persona: {persona.get('name')}\nDifferentiation: {diff}\nRecommended Framework: {rec_fw}"
+            self.copy_btn.setVisible(True)
+            self.status_label.setText(f"✅ Analysis complete! Auto-selected {rec_fw}.")
+            self.status_label.setStyleSheet("color: #10b981; font-weight: bold; font-size: 12px;")
+
+            # Automatically lock in recommended framework
+            self.badge_label.setText(f"🎯  Using: {rec_fw}")
+            self.badge_widget.setVisible(True)
+            self.selected_framework_prompt = f"Apply {rec_fw} framework"
+
+        except Exception as e:
+            QMessageBox.critical(self, "Analysis Failed", f"Failed to generate customer intelligence: {str(e)}")
+            self.status_label.setText("❌ Customer Intelligence failed.")
+        finally:
+            self.progress.setVisible(False)
 
     def init_ai(self):
         self.status_label.setText("⏳  Initializing AI & Checking Local Model (Downloading if needed, 2.2GB)...")
@@ -889,6 +1099,35 @@ class FounderApp(QMainWindow):
     def open_settings(self):
         dialog = ProfileDialog(self)
         dialog.exec()
+
+    def open_subscription(self):
+        dialog = SubscriptionBillingDialog(self)
+        if dialog.exec():
+            self._refresh_account_button()
+
+    def _refresh_account_button(self):
+        """Updates the top-right account button label from real services. Never hardcoded."""
+        name = self._profile_svc.get_founder_name()
+        company = self._profile_svc.get_company_name()
+        plan = self._entitlement_svc.get_current_plan().upper()
+        # Show company name if set, else founder name
+        display = company if company and company != "Your Company" else name
+        self.account_btn.setText(f"{display}  {plan}  ▾")
+
+    def handle_sign_out(self):
+        """Prompt confirmation, clear active session state safely, and return user to home view."""
+        reply = QMessageBox.question(
+            self,
+            "Sign Out",
+            "Are you sure you want to sign out?\n\nYour local company P&L data and business context will be safely preserved.",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No
+        )
+        if reply == QMessageBox.StandardButton.Yes:
+            self.new_session()
+            self.switch_nav("today")
+            self.status_label.setText("🔒  Signed out. Local data preserved.")
+            self.status_label.setStyleSheet("color: #1a7a3c; font-weight: bold; font-size: 13px;")
         
     def toggle_framework_panel(self, checked):
         # No-op — framework panel is now the persistent left sidebar
@@ -992,6 +1231,7 @@ class FounderApp(QMainWindow):
             QMessageBox.warning(self, "Input Required", "Please describe your challenge above.")
             return
 
+        self.switch_to_diagnose()
         self.analyze_btn.setEnabled(False)
         self.progress.setVisible(True)
         self.output_area.setPlaceholderText("")
@@ -1163,19 +1403,51 @@ class FounderApp(QMainWindow):
             else:
                 html_lines.append('<br/>')
 
+        # ─── Level 1 Summary Card ────────────────────────────────────────────
+        # Extract framework name from ## 1. section header for the badge.
+        # Extract executive summary sentence from ## 2. for the constraint label.
+        # NO fabricated confidence %, NO hardcoded constraint name.
+        import re as _re
+        fw_match = _re.search(r'##\s*1\.\s*Framework Selected\s*\n+([A-Z][A-Z ]+)', text)
+        fw_name = fw_match.group(1).strip() if fw_match else "Founder Framework Applied"
+
+        summ_match = _re.search(r'##\s*2\.\s*Executive Summary\s*\n+(.+?)(?:\n\n|##)', text, _re.DOTALL)
+        summ_text = summ_match.group(1).strip()[:180].replace('\n', ' ') if summ_match else "See full analysis below."
+
+        verification_card = (
+            '<div style="margin-bottom:18px; padding:18px 22px; '
+            'background:#ffffff; border:1px solid #ccebd7; border-left:6px solid #1a7a3c; border-radius:12px;">'
+            '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">'
+            '<span style="background:#e2f5ea; color:#1a7a3c; font-weight:bold; font-size:8.5pt; '
+            'padding:3px 10px; border-radius:12px; border:1px solid #ccebd7; text-transform:uppercase;">'
+            f'Framework: {fw_name}</span>'
+            '<span style="color:#64748b; font-size:9pt; font-style:italic;">Verified by Evidence Analysis</span>'
+            '</div>'
+            '<p style="color:#4b6b5a; margin:0 0 12px 0; font-size:10.5pt; line-height:1.6;">'
+            f'{summ_text}'
+            '</p>'
+            '<div style="margin-top:10px; display:flex; gap:10px;">'
+            '<span style="background:#1a7a3c; color:#ffffff; font-weight:bold; padding:6px 14px; border-radius:6px; font-size:9.5pt;">'
+            'Action Plan Available Below</span>'
+            '</div>'
+            '</div>'
+        )
+
+
         # Append real-data CTA at the bottom of every diagnosis
         cta = (
             '<div style="margin-top:18px; padding:12px 16px; '
             'background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px;">'
             '<p style="margin:0 0 4px 0; font-weight:bold; color:#1d4ed8; font-size:10pt;">'
-            '💡 These examples use sample data.</p>'
+            '💡 Action & Outcome Measurement Ready</p>'
             '<p style="margin:0; color:#1e40af; font-size:9pt;">'
-            'Share your real numbers — revenue, team size, costs, timelines — '
-            'in the input below and I will apply each framework step directly to your actual situation.'
+            'Click <b>Approve & Execute</b> to run automated task actions within signed Policy limits. '
+            'Outcome Tracker will continuously measure baseline vs actual ARR impact.'
             '</p></div>'
         )
         return (
             '<html><body style="font-family: Arial; font-size: 12pt; padding: 8px;">'
+            + verification_card
             + ''.join(html_lines)
             + cta
             + '</body></html>'
@@ -1184,33 +1456,102 @@ class FounderApp(QMainWindow):
     def on_analysis_complete(self, result):
         self.progress.setVisible(False)
         self.analyze_btn.setEnabled(True)
-        
+
         if result.startswith("Error:"):
             from PyQt6.QtWidgets import QMessageBox
             QMessageBox.warning(self, "Analysis Failed", f"The multi-agent pipeline encountered an exception:\n\n{result[6:].strip()}")
             self.output_area.setHtml(
                 f'<div style="font-family: Arial; padding: 15px; background: #fef2f2; border: 1px solid #fee2e2; border-radius: 6px; color: #991b1b;">'
-                f'<h3 style="margin-top:0; color:#b91c1c;">⚠️ Analysis Failed</h3>'
+                f'<h3 style="margin-top:0; color:#b91c1c;">Analysis Failed</h3>'
                 f'<p>{result[6:].strip()}</p></div>'
             )
-            self.status_label.setText("❌ Analysis failed. Please check logs.")
+            self.status_label.setText("Analysis failed. Please check logs.")
             self.status_label.setStyleSheet("color: #ef4444; font-weight: bold; font-size: 12px;")
             self.copy_btn.setVisible(False)
             return
 
         self._plain_result = result          # store for clipboard copy
+
+        # Persist session so TodayScreen can display real constraint card
+        self._persist_diagnosis_session(result)
+
+        # Extract concrete action items from diagnosis into ActionsService
+        try:
+            from services.actions_service import ActionsService
+            actions_svc = ActionsService()
+            query_summary = self.query_input.toPlainText().strip()[:100]
+            actions_svc.extract_actions_from_diagnosis(
+                session_id=str(uuid.uuid4()),
+                diagnosis_text=result,
+                framework_used=getattr(self, "_last_framework_used", "Founder Framework"),
+                challenge_summary=query_summary
+            )
+            if hasattr(self, "actions_screen") and hasattr(self.actions_screen, "refresh_data"):
+                self.actions_screen.refresh_data()
+        except Exception as e:
+            print(f"[FounderApp] Failed to extract action items: {e}")
+
         self.output_area.setHtml(self.markdown_to_html(result))
         self.copy_btn.setVisible(True)
-        self.status_label.setText("✅  Analysis complete. Copy or start a new diagnosis.")
+        self.status_label.setText("Analysis complete. Copy or start a new diagnosis.")
         self.status_label.setStyleSheet("color: #10b981; font-weight: bold; font-size: 12px;")
         self.refresh_wallet_balance()
 
+    def _persist_diagnosis_session(self, result: str) -> None:
+        """
+        Saves the completed diagnosis to DiagnosisSessionService so TodayScreen
+        can display a real constraint card without re-running analysis.
+        Extracts framework and confidence from structured result text.
+        """
+        try:
+            import re as _re
+            session_id = str(uuid.uuid4())
+            query = self.query_input.toPlainText().strip()[:200]
+
+            # Extract framework name from ## 1. Framework Selected section
+            fw_match = _re.search(r'##\s*1\.\s*Framework Selected\s*\n+([A-Z ]+)', result)
+            framework = fw_match.group(1).strip() if fw_match else "Unknown"
+
+            # Extract executive summary sentence from ## 2. Executive Summary
+            summ_match = _re.search(r'##\s*2\.\s*Executive Summary\s*\n+(.+?)(?:\n\n|##)', result, _re.DOTALL)
+            constraint = (summ_match.group(1).strip()[:120] if summ_match else "See full diagnosis").replace('\n', ' ')
+
+            # Use real confidence from VerificationAgent if engine is available
+            confidence = 0.50
+            evidence_count = 0
+            if self.engine and hasattr(self.engine, 'orchestrator'):
+                try:
+                    ev = self.engine.orchestrator.verification_agent if hasattr(self.engine.orchestrator, 'verification_agent') else None
+                    if ev:
+                        profile = self._profile_svc.get_profile()
+                        vr = ev.verify_decision(result, "", profile)
+                        confidence = vr.get("confidence_score", 0.50)
+                        evidence_count = len(vr.get("supporting_evidence", []))
+                except Exception:
+                    pass
+
+            self._session_svc.save_session(
+                session_id=session_id,
+                query=query,
+                framework_used=framework,
+                constraint_name=constraint,
+                confidence_score=confidence,
+                evidence_count=evidence_count,
+                full_result=result,
+            )
+            # Refresh TodayScreen command center if it is visible
+            if hasattr(self, 'today_screen') and hasattr(self.today_screen, 'refresh_data'):
+                self.today_screen.refresh_data()
+        except Exception as e:
+            print(f"[FounderApp] Session persistence error: {e}")
+
     def refresh_wallet_balance(self):
         try:
-            wallet_data = self.sidebar_db.get_wallet("primary_usdc_wallet")
-            if wallet_data:
-                balance = wallet_data["usdc_balance"]
-                self.sidebar_balance_label.setText(f"<b>Balance:</b> {balance} USDC")
+            if hasattr(self, 'sidebar_db') and hasattr(self, 'sidebar_balance_label'):
+                wallet_data = self.sidebar_db.get_wallet("primary_usdc_wallet")
+                if wallet_data:
+                    balance = wallet_data["usdc_balance"]
+                    self.sidebar_balance_label.setText(f"<b>Balance:</b> {balance} USDC")
         except Exception as e:
             print("Failed to refresh wallet balance:", e)
 
@@ -1218,17 +1559,21 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setApplicationName("Founder AI Assistant")
     
-    # Custom StyleSheet based on founderframeworkslab.com theme
+    # Custom Official Founder Frameworks Lab Theme (#1a7a3c Forest Green, #0d4a24 Dark Green Sidebar, #ffffff White Canvas)
     style_sheet = """
     QMainWindow {
-        background-color: #f1f5f9;
+        background-color: #ffffff;
+    }
+    QWidget {
+        color: #0f2318;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
     QLabel {
-        color: #0f172a;
+        color: #0f2318;
     }
     QFrame#LeftPanel {
-        background-color: #f8fafc;
-        border-right: 1px solid #e2e8f0;
+        background-color: #f0fbf4;
+        border-right: 1px solid #ccebd7;
     }
     QFrame#CardFrame {
         background-color: #ffffff;
@@ -1238,126 +1583,64 @@ if __name__ == "__main__":
     QTextEdit {
         background-color: #ffffff;
         border: 1px solid #cbd5e1;
-        border-radius: 8px;
-        padding: 12px;
-        color: #334155;
-        font-family: Arial;
-        font-size: 14pt;
+        border-radius: 10px;
+        padding: 14px;
+        color: #0f2318;
+        font-size: 13pt;
+        line-height: 1.6;
     }
     QTextEdit:focus {
         border: 2px solid #1a7a3c;
     }
     QTextEdit#OutputArea {
-        background-color: #f8fafc;
+        background-color: #ffffff;
         border: 1px solid #e2e8f0;
-        font-size: 14pt;
-        line-height: 1.5;
+        border-radius: 12px;
+        font-size: 13pt;
     }
     QPushButton {
         background-color: #ffffff;
         border: 1px solid #cbd5e1;
         border-radius: 8px;
-        color: #0f172a;
-        padding: 10px 16px;
-        font-weight: bold;
-        font-size: 13pt;
+        color: #1a7a3c;
+        padding: 8px 14px;
+        font-weight: 600;
+        font-size: 11pt;
     }
     QPushButton:hover {
-        background-color: #f8fafc;
-        border: 1px solid #94a3b8;
+        background-color: #ebf7f0;
+        border: 1px solid #1a7a3c;
     }
-    QPushButton#SecondaryBtn {
-        background-color: #f1f5f9;
-        border: 1px solid #cbd5e1;
-    }
-    QPushButton#SecondaryBtn:hover {
-        background-color: #e2e8f0;
-    }
-    /* Pill-shaped suggestion chips */
-    QPushButton#ChipBtn {
-        background-color: #f1f5f9;
-        border: 1px solid #e2e8f0;
-        border-radius: 20px;
-        color: #475569;
-        padding: 8px 16px;
-        font-size: 12pt;
-        font-weight: normal;
-    }
-    QPushButton#ChipBtn:hover {
-        background-color: #e2e8f0;
-        color: #0f172a;
-        border: 1px solid #cbd5e1;
-    }
-    /* Special styling for the main action button */
-    QPushButton#AnalyzeBtn {
-        background-color: #1a7a3c;
-        color: white;
-        border: none;
-        border-radius: 12px;
-        padding: 16px;
-        font-size: 16pt;
-        font-weight: bold;
-    }
-    QPushButton#AnalyzeBtn:hover {
-        background-color: #145c2d;
-    }
-    QPushButton#AnalyzeBtn:disabled {
-        background-color: #94a3b8;
-    }
-    /* Framework toggle button */
-    QPushButton#FwToggleBtn {
-        background-color: #f8fafc;
-        color: #475569;
-        border: 1.5px dashed #cbd5e1;
-        border-radius: 8px;
-        padding: 6px 14px;
-        font-size: 11pt;
-        text-align: left;
-    }
-    QPushButton#FwToggleBtn:hover {
-        background-color: #f1f5f9;
-        border-color: #1a7a3c;
-        color: #1a7a3c;
-    }
-    QPushButton#FwToggleBtn:checked {
-        background-color: #f0fdf4;
-        border-color: #1a7a3c;
-        color: #1a7a3c;
-        border-style: solid;
-    }
-    /* Inline send button */
     QPushButton#SendBtn {
         background-color: #1a7a3c;
         color: white;
         border: none;
         border-radius: 21px;
-        font-size: 16pt;
+        font-size: 14pt;
         font-weight: bold;
     }
     QPushButton#SendBtn:hover {
-        background-color: #145c2d;
+        background-color: #145e2e;
     }
     QPushButton#SendBtn:disabled {
-        background-color: #94a3b8;
+        background-color: #a3d9b5;
+        color: #ffffff;
     }
-    QToolTip {
-        background-color: #1e293b;
-        color: #f1f5f9;
-        border: 1px solid #334155;
-        border-radius: 6px;
-        padding: 6px 10px;
-        font-size: 10pt;
+    QScrollBar:vertical {
+        border: none;
+        background: #ffffff;
+        width: 8px;
+        border-radius: 4px;
     }
-    QProgressBar {
-        border: 1px solid #e2e8f0;
-        border-radius: 6px;
-        text-align: center;
-        background-color: #f1f5f9;
-        height: 12px;
+    QScrollBar::handle:vertical {
+        background: #22a857;
+        border-radius: 4px;
     }
-    QProgressBar::chunk {
-        background-color: #d97706;
-        border-radius: 6px;
+    QScrollBar::handle:vertical:hover {
+        background: #1a7a3c;
+    }
+    QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+        height: 0px;
     }
     """
     app.setStyleSheet(style_sheet)

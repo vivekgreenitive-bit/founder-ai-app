@@ -47,4 +47,32 @@ def extract_text_from_file(file_path: str) -> str:
             return f"Error extracting text from image: {str(e)}"
             
     else:
-        return f"Unsupported file format: {ext}"
+        text = f"Unsupported file format: {ext}"
+
+    return sanitize_extracted_text(text)
+
+def sanitize_extracted_text(raw_text: str) -> str:
+    """
+    Sanitizes extracted document text to strip common indirect prompt injection attacks, 
+    system prompt overrides, and unauthorized control tags before passing to LLM context.
+    """
+    import re
+    if not raw_text:
+        return ""
+
+    # Neutralize common prompt injection system override patterns
+    injection_patterns = [
+        r"(?i)ignore\s+(previous|all)\s+(instructions|prompts|rules)",
+        r"(?i)system\s*:\s*",
+        r"(?i)\[system\s+instruction\]",
+        r"(?i)override\s+policy",
+        r"(?i)transfer\s+all\s+funds",
+        r"(?i)delete\s+(all\s+)?database"
+    ]
+
+    sanitized = raw_text
+    for pattern in injection_patterns:
+        sanitized = re.sub(pattern, "[FILTERED_SECURITY_VIOLATION]", sanitized)
+
+    return sanitized
+

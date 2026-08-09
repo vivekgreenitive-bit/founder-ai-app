@@ -112,20 +112,48 @@ class TestPaymentSystem(unittest.TestCase):
         invoices = self.db.get_all_invoices()
         self.assertEqual(invoices[0]["status"], "paid")
 
-    def test_orchestrator_payment_interception(self):
+    def test_orchestrator_payment_disabled_by_default(self):
+        """
+        When GovernanceService is DISABLED (default), payment keywords must NOT
+        route through Circle USDC — they should go through normal diagnosis pipeline.
+        This is the correct production behavior.
+        """
         mock_llm = MagicMock()
-        # Mock LLM to return a payment intent JSON structure
         mock_llm.invoke.return_value = '{"amount": 49.00, "merchant": "Zoom", "category": "Subscriptions", "action": "pay", "destination": "0xaddr"}'
-        
+
         orchestrator = OrchestratorAgent(mock_llm, MagicMock())
         orchestrator.payment_db = self.db
         orchestrator.payment_agent = self.payment_agent
 
-        # Call orchestrator with payment query
+        # Governance is disabled by default — payment keywords go to diagnosis pipeline
+        self.assertFalse(orchestrator.governance.is_agentic_payments_enabled())
+        res = orchestrator.run("Please renew my Zoom subscription for $49", "", {})
+        # Should NOT be a PAYMENT RECEIPT — should be a normal diagnosis response
+        self.assertNotIn("PAYMENT RECEIPT", res)
+
+    def test_orchestrator_payment_enabled_when_opted_in(self):
+        """
+        When GovernanceService is explicitly ENABLED, payment keywords must route
+        through Circle USDC and return a PAYMENT RECEIPT.
+        """
+        mock_llm = MagicMock()
+        mock_llm.invoke.return_value = '{"amount": 49.00, "merchant": "Zoom", "category": "Subscriptions", "action": "pay", "destination": "0xaddr"}'
+
+        orchestrator = OrchestratorAgent(mock_llm, MagicMock())
+        orchestrator.payment_db = self.db
+        orchestrator.payment_agent = self.payment_agent
+
+        # Explicitly enable agentic payments (opt-in behavior)
+        orchestrator.governance.enable_agentic_payments()
+        self.assertTrue(orchestrator.governance.is_agentic_payments_enabled())
+
         res = orchestrator.run("Please renew my Zoom subscription for $49", "", {})
         self.assertIn("PAYMENT RECEIPT", res)
         self.assertIn("49.0 USDC", res)
         self.assertIn("ZOOM", res.upper())
+
+        # Cleanup: restore default disconnected state
+        orchestrator.governance.disable_agentic_payments()
 
 if __name__ == '__main__':
     unittest.main()

@@ -3,12 +3,23 @@ from typing import Dict, Any, List
 from db.payment_db import PaymentDBManager
 from agents.policy_engine import PolicyEngine
 from providers.circle_provider import CirclePaymentProvider
+from providers.razorpay_provider import RazorpayPaymentProvider
+from providers.stripe_provider import StripePaymentProvider
+from providers.coinbase_provider import CoinbasePaymentProvider
 
 class PaymentAgent:
-    def __init__(self, db_manager: PaymentDBManager):
+    def __init__(self, db_manager: PaymentDBManager, provider_type: str = "circle"):
         self.db = db_manager
         self.policy_engine = PolicyEngine(self.db)
-        self.provider = CirclePaymentProvider()
+        
+        if provider_type == "razorpay":
+            self.provider = RazorpayPaymentProvider()
+        elif provider_type == "stripe":
+            self.provider = StripePaymentProvider()
+        elif provider_type == "coinbase":
+            self.provider = CoinbasePaymentProvider()
+        else:
+            self.provider = CirclePaymentProvider()
 
     def execute_payment_workflow(self, amount: float, merchant: str, category: str, destination_address: str) -> Dict[str, Any]:
         """

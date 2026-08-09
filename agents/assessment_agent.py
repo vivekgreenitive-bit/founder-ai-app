@@ -17,6 +17,8 @@ IMPORTANT: You MUST extract the "stage" and "business_model" (industry) fields d
 Company Profile Context:
 {json.dumps(profile_data, indent=2)}
 
+{profile_data.get("outcome_context", "")}
+
 Uploaded Document Context:
 {document_text[:1000]}
 

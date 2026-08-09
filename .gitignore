@@ -21,4 +21,13 @@ company_profile.json
 *.db
 conversation_history.db
 
+# Environment variables & API keys
+.env
+.env.local
+.env.*.local
+config/settings.json
+*.pem
+*.key
+
+
 
