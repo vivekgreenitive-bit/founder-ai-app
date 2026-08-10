@@ -3,10 +3,10 @@ ui/screens/today_screen.py
 Business Command Center — answers: "What needs my attention right now?"
 
 Shows:
-- Personalized greeting from CompanyProfileService (real data)
-- Proactive follow-up card for pending actions ("You had N actions — how did they go?")
-- Most recent diagnosis constraint card from DiagnosisSessionService (real data)
-- Clean empty state CTA when no data exists yet (no fabricated metrics)
+- Executive Summary Dashboard: 3 metric cards (Bottleneck Tax, Velocity Score, Open Actions)
+- Proactive follow-up card for pending actions
+- Most recent diagnosis constraint cards from DiagnosisSessionService
+- Clean empty state CTA when no data exists yet
 """
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QFrame, QScrollArea
@@ -17,6 +17,8 @@ from PyQt6.QtGui import QFont
 from services.company_profile_service import CompanyProfileService
 from services.diagnosis_session_service import DiagnosisSessionService
 from services.actions_service import ActionsService
+from agents.bottleneck_agent import BottleneckAgent
+from agents.velocity_agent import VelocityAgent
 from db.outcome_tracker import OutcomeTrackerDB
 
 
@@ -24,7 +26,7 @@ class TodayScreen(QWidget):
     """
     Default Home Screen: Business Command Center.
     Displays real data from services. Zero fabricated metrics.
-    Includes proactive in-app follow-up for open action items.
+    Includes proactive in-app follow-up and executive dashboard.
     """
 
     def __init__(self, parent=None):
@@ -34,6 +36,8 @@ class TodayScreen(QWidget):
         self._session_svc = DiagnosisSessionService()
         self._actions_svc = ActionsService()
         self._outcome_db = OutcomeTrackerDB()
+        self._velocity_agent = VelocityAgent()
+        self._bottleneck_agent = BottleneckAgent()
         self._content_layout = None
         self.init_ui()
 
@@ -50,7 +54,7 @@ class TodayScreen(QWidget):
         self._canvas = QWidget()
         self._content_layout = QVBoxLayout(self._canvas)
         self._content_layout.setContentsMargins(0, 0, 0, 0)
-        self._content_layout.setSpacing(20)
+        self._content_layout.setSpacing(16)
 
         scroll.setWidget(self._canvas)
         self._root_layout.addWidget(scroll)
@@ -78,10 +82,91 @@ class TodayScreen(QWidget):
         sub.setStyleSheet("color: #4b6b5a; font-size: 11pt; margin-bottom: 4px;")
         self._content_layout.addWidget(sub)
 
+        # ═══════════════════════════════════════════════════════════════════════
+        # EXECUTIVE SUMMARY DASHBOARD — 3 Metric Cards
+        # ═══════════════════════════════════════════════════════════════════════
         sessions = self._session_svc.get_recent_sessions(limit=3)
-        pending_actions = self._actions_svc.get_actions_by_status("PENDING") + self._actions_svc.get_actions_by_status("IN_PROGRESS")
+        pending_actions = (
+            self._actions_svc.get_actions_by_status("PENDING") +
+            self._actions_svc.get_actions_by_status("IN_PROGRESS")
+        )
 
-        # 1. Proactive Follow-up Prompt Card if there are open actions
+        dashboard_row = QHBoxLayout()
+        dashboard_row.setSpacing(14)
+
+        # Card 1: Bottleneck Tax
+        profile = self._profile_svc.get_profile()
+        hourly_rate = float(profile.get("hourly_rate", "150") or "150")
+        hours_low_leverage = float(profile.get("low_leverage_hours", "15") or "15")
+        monthly_rev = float(profile.get("monthly_revenue", "30000") or "30000")
+        tax_result = self._bottleneck_agent.calculate_tax(hourly_rate, hours_low_leverage, monthly_rev)
+        monthly_tax = tax_result["monthly_tax"]
+        severity = tax_result["severity"]
+
+        sev_colors = {
+            "CRITICAL": ("#b91c1c", "#fef2f2", "#fca5a5"),
+            "HIGH":     ("#b45309", "#fffbeb", "#fde68a"),
+            "MODERATE": ("#1d4ed8", "#eff6ff", "#bfdbfe"),
+            "LOW":      ("#166534", "#f0fdf4", "#86efac"),
+        }
+        sev_text, sev_bg, sev_border = sev_colors.get(severity, ("#166534", "#f0fdf4", "#86efac"))
+
+        tax_card = self._make_dashboard_card(
+            "💰 BOTTLENECK TAX",
+            f"${monthly_tax:,.0f}/mo",
+            f"Severity: {severity}",
+            sev_bg, sev_border, sev_text,
+            nav_key="bottleneck_tax"
+        )
+        dashboard_row.addWidget(tax_card, stretch=1)
+
+        # Card 2: Execution Velocity Score
+        velocity = self._velocity_agent.compute_velocity()
+        v_score = velocity["velocity_score"]
+        v_status = velocity["status"]
+
+        if v_score >= 80:
+            v_text, v_bg, v_border = "#166534", "#f0fdf4", "#86efac"
+        elif v_score >= 60:
+            v_text, v_bg, v_border = "#b45309", "#fffbeb", "#fde68a"
+        else:
+            v_text, v_bg, v_border = "#b91c1c", "#fef2f2", "#fca5a5"
+
+        vel_card = self._make_dashboard_card(
+            "⚡ EXECUTION VELOCITY",
+            f"{v_score} / 100",
+            v_status,
+            v_bg, v_border, v_text,
+            nav_key="velocity_grader"
+        )
+        dashboard_row.addWidget(vel_card, stretch=1)
+
+        # Card 3: Open Actions
+        open_count = len(pending_actions)
+        if open_count == 0:
+            a_text, a_bg, a_border = "#166534", "#f0fdf4", "#86efac"
+            a_status = "All Clear"
+        elif open_count <= 3:
+            a_text, a_bg, a_border = "#b45309", "#fffbeb", "#fde68a"
+            a_status = "Needs Attention"
+        else:
+            a_text, a_bg, a_border = "#b91c1c", "#fef2f2", "#fca5a5"
+            a_status = "Action Required"
+
+        actions_card = self._make_dashboard_card(
+            "🎯 OPEN ACTIONS",
+            str(open_count),
+            a_status,
+            a_bg, a_border, a_text,
+            nav_key="actions"
+        )
+        dashboard_row.addWidget(actions_card, stretch=1)
+
+        self._content_layout.addLayout(dashboard_row)
+
+        # ═══════════════════════════════════════════════════════════════════════
+        # PROACTIVE FOLLOW-UP CARD
+        # ═══════════════════════════════════════════════════════════════════════
         if pending_actions:
             followup_card = self._make_followup_card(pending_actions)
             self._content_layout.addWidget(followup_card)
@@ -93,8 +178,41 @@ class TodayScreen(QWidget):
 
         self._content_layout.addStretch()
 
+    # ── Executive Dashboard Card Builder ──────────────────────────────────────
+
+    def _make_dashboard_card(self, title, value, subtitle, bg, border, text_color, nav_key=None):
+        card = QFrame()
+        card.setStyleSheet(
+            f"QFrame {{ background:{bg}; border:1px solid {border}; "
+            f"border-top:3px solid {text_color}; border-radius:12px; }}"
+        )
+        card.setCursor(Qt.CursorShape.PointingHandCursor)
+
+        layout = QVBoxLayout(card)
+        layout.setContentsMargins(16, 14, 16, 14)
+        layout.setSpacing(4)
+
+        t_lbl = QLabel(title)
+        t_lbl.setStyleSheet(f"color:{text_color}; font-size:7.5pt; font-weight:bold; letter-spacing:0.8px;")
+        layout.addWidget(t_lbl)
+
+        v_lbl = QLabel(value)
+        v_lbl.setFont(QFont("Arial", 22, QFont.Weight.Bold))
+        v_lbl.setStyleSheet(f"color:{text_color};")
+        layout.addWidget(v_lbl)
+
+        s_lbl = QLabel(subtitle)
+        s_lbl.setStyleSheet(f"color:{text_color}; font-size:9pt; font-weight:500;")
+        layout.addWidget(s_lbl)
+
+        if nav_key and self.main_app and hasattr(self.main_app, "switch_nav"):
+            card.mousePressEvent = lambda e, k=nav_key: self.main_app.switch_nav(k)
+
+        return card
+
+    # ── Proactive Follow-up Card ──────────────────────────────────────────────
+
     def _make_followup_card(self, pending_actions: list) -> QFrame:
-        """Proactive AI Follow-up card prompting the user on open action items."""
         card = QFrame()
         card.setStyleSheet("""
             QFrame {
@@ -156,6 +274,8 @@ class TodayScreen(QWidget):
 
         return card
 
+    # ── Populated State ───────────────────────────────────────────────────────
+
     def _build_populated_state(self, sessions):
         if sessions:
             attn_lbl = QLabel("RECENT DIAGNOSES")
@@ -191,6 +311,8 @@ class TodayScreen(QWidget):
         action_row.addWidget(view_actions_btn)
         action_row.addStretch()
         self._content_layout.addLayout(action_row)
+
+    # ── Empty State ───────────────────────────────────────────────────────────
 
     def _build_empty_state(self):
         card = QFrame()
@@ -242,6 +364,8 @@ class TodayScreen(QWidget):
         card_layout.addWidget(cta_btn, alignment=Qt.AlignmentFlag.AlignCenter)
 
         self._content_layout.addWidget(card, stretch=1)
+
+    # ── Constraint Card ───────────────────────────────────────────────────────
 
     def _make_constraint_card(self, session: dict) -> QFrame:
         card = QFrame()

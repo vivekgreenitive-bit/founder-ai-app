@@ -89,6 +89,14 @@ class CompanyProfileService:
     def mark_onboarding_complete(self) -> None:
         self.save_profile({"onboarding_complete": True})
 
+    def set_quarterly_goal(self, goal: str) -> None:
+        """Set the founder's primary quarterly goal."""
+        self.save_profile({"quarterly_goal": goal})
+
+    def get_quarterly_goal(self) -> str:
+        """Returns the founder's primary quarterly goal."""
+        return self._load().get("quarterly_goal", "")
+
     def reset_session(self) -> None:
         """Resets active session state without deleting persistent data."""
         # Only clears transient state; company data survives

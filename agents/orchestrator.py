@@ -312,10 +312,15 @@ Category: {pay_res['category']}"""
 
         # Fetch past execution outcomes and attach to profile_data for AssessmentAgent
         from services.actions_service import ActionsService
+        from services.company_profile_service import CompanyProfileService
         actions_svc = ActionsService()
+        profile_svc = CompanyProfileService()
         outcome_ctx = actions_svc.build_outcome_context()
         if outcome_ctx:
             profile_data["outcome_context"] = outcome_ctx
+        quarterly_goal = profile_svc.get_quarterly_goal()
+        if quarterly_goal:
+            profile_data["quarterly_goal"] = quarterly_goal
 
         # 1. Assessment
         s = log_step("AssessmentAgent", "Understanding your business challenge")

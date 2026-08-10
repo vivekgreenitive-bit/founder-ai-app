@@ -78,6 +78,13 @@ class OnboardingWizardDialog(QDialog):
         self.stage_combo.setStyleSheet("border: 1px solid #ccebd7; border-radius: 6px; padding: 0 10px;")
         s1_layout.addWidget(self.stage_combo)
 
+        s1_layout.addWidget(QLabel("Your #1 Quarterly Goal (What matters most right now?):"))
+        self.quarterly_goal_input = QLineEdit()
+        self.quarterly_goal_input.setPlaceholderText("e.g. Reach $10k MRR by end of Q3")
+        self.quarterly_goal_input.setFixedHeight(36)
+        self.quarterly_goal_input.setStyleSheet("border: 1px solid #ccebd7; border-radius: 6px; padding: 0 10px;")
+        s1_layout.addWidget(self.quarterly_goal_input)
+
         s1_layout.addStretch()
         self.stacked.addWidget(self.step1_widget)
 
@@ -216,6 +223,7 @@ class OnboardingWizardDialog(QDialog):
             self.profile_data["company_name"] = name
             self.profile_data["industry"] = self.industry_input.text().strip() or "General SaaS"
             self.profile_data["stage"] = self.stage_combo.currentText()
+            self.profile_data["quarterly_goal"] = self.quarterly_goal_input.text().strip()
             self.stacked.setCurrentIndex(1)
             self.step_label.setText("STEP 2 OF 4  •  PRIMARY GOALS")
             self.back_btn.setEnabled(True)

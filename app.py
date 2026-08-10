@@ -23,6 +23,9 @@ from ui.screens.actions_screen import ActionsScreen
 from ui.screens.subscription_screen import SubscriptionBillingDialog
 from ui.screens.onboarding_dialog import OnboardingWizardDialog
 from ui.screens.business_data_screen import BusinessDataScreen
+from ui.screens.bottleneck_tax_screen import BottleneckTaxScreen
+from ui.screens.velocity_grader_screen import VelocityGraderScreen
+from ui.screens.bottleneck_diagnostic_screen import BottleneckDiagnosticScreen
 from services.company_profile_service import CompanyProfileService
 from services.entitlement_service import EntitlementService
 from services.diagnosis_session_service import DiagnosisSessionService
@@ -716,6 +719,19 @@ class FounderApp(QMainWindow):
             ("outcomes",   "  Outcomes"),
         ]
 
+        # ── Section: Diagnostic Tools ─────────────────────────────────────────
+        diag_section = QLabel("DIAGNOSTIC TOOLS")
+        diag_section.setStyleSheet(
+            "color: #94a3b8; font-size: 7.5pt; font-weight: bold; "
+            "letter-spacing: 1px; padding: 12px 14px 2px 14px;"
+        )
+
+        nav_items_diag = [
+            ("bottleneck_tax",        "  Bottleneck Tax Calculator"),
+            ("velocity_grader",       "  Execution Velocity Grader"),
+            ("bottleneck_diagnostic",  "  60s Bottleneck Diagnostic"),
+        ]
+
         # ── Section: Knowledge & Data ─────────────────────────────────────────
         knowledge_section = QLabel("KNOWLEDGE & DATA")
         knowledge_section.setStyleSheet(
@@ -728,7 +744,7 @@ class FounderApp(QMainWindow):
             ("business_data", "  Business Data"),
         ]
 
-        nav_items = nav_items_core + nav_items_knowledge
+        nav_items = nav_items_core + nav_items_diag + nav_items_knowledge
 
         nav_btn_qss = """
             QPushButton {
@@ -753,6 +769,16 @@ class FounderApp(QMainWindow):
 
         left_layout.addWidget(core_section)
         for key, label in nav_items_core:
+            btn = QPushButton(label)
+            btn.setFixedHeight(40)
+            btn.setCheckable(True)
+            btn.setStyleSheet(nav_btn_qss)
+            btn.clicked.connect(lambda checked, k=key: self.switch_nav(k))
+            left_layout.addWidget(btn)
+            self.nav_buttons[key] = btn
+
+        left_layout.addWidget(diag_section)
+        for key, label in nav_items_diag:
             btn = QPushButton(label)
             btn.setFixedHeight(40)
             btn.setCheckable(True)
@@ -809,6 +835,9 @@ class FounderApp(QMainWindow):
         self.frameworks_screen = FrameworksScreen(self)
         self.outcomes_screen = OutcomesScreen(self)
         self.business_data_screen = BusinessDataScreen(self)
+        self.bottleneck_tax_screen = BottleneckTaxScreen(self)
+        self.velocity_grader_screen = VelocityGraderScreen(self)
+        self.bottleneck_diagnostic_screen = BottleneckDiagnosticScreen(self)
         
         # Diagnose Screen (Existing Right Panel Canvas)
         self.diagnose_screen = QWidget()
@@ -831,6 +860,15 @@ class FounderApp(QMainWindow):
         self.copy_btn.setVisible(False)
         self.copy_btn.clicked.connect(self.copy_output)
         out_title_row.addWidget(self.copy_btn)
+
+        self.export_pdf_btn = QPushButton("📄 Export PDF")
+        self.export_pdf_btn.setObjectName("SecondaryBtn")
+        self.export_pdf_btn.setFixedHeight(30)
+        self.export_pdf_btn.setMinimumWidth(100)
+        self.export_pdf_btn.setToolTip("Download diagnosis as a shareable PDF report")
+        self.export_pdf_btn.setVisible(False)
+        self.export_pdf_btn.clicked.connect(self.export_diagnosis_pdf)
+        out_title_row.addWidget(self.export_pdf_btn)
 
         new_btn = QPushButton("➕ New")
         new_btn.setObjectName("SecondaryBtn")
@@ -975,12 +1013,15 @@ class FounderApp(QMainWindow):
 
 
         # Add Screens to StackedWidget
-        self.stacked_widget.addWidget(self.today_screen)          # Index 0: Today
-        self.stacked_widget.addWidget(self.diagnose_screen)       # Index 1: Diagnose
-        self.stacked_widget.addWidget(self.actions_screen)        # Index 2: Actions
-        self.stacked_widget.addWidget(self.outcomes_screen)       # Index 3: Outcomes
-        self.stacked_widget.addWidget(self.frameworks_screen)     # Index 4: Frameworks
-        self.stacked_widget.addWidget(self.business_data_screen)  # Index 5: Business Data
+        self.stacked_widget.addWidget(self.today_screen)                   # Index 0: Today
+        self.stacked_widget.addWidget(self.diagnose_screen)                # Index 1: Diagnose
+        self.stacked_widget.addWidget(self.actions_screen)                 # Index 2: Actions
+        self.stacked_widget.addWidget(self.outcomes_screen)                # Index 3: Outcomes
+        self.stacked_widget.addWidget(self.frameworks_screen)              # Index 4: Frameworks
+        self.stacked_widget.addWidget(self.business_data_screen)           # Index 5: Business Data
+        self.stacked_widget.addWidget(self.bottleneck_tax_screen)          # Index 6: Bottleneck Tax
+        self.stacked_widget.addWidget(self.velocity_grader_screen)         # Index 7: Velocity Grader
+        self.stacked_widget.addWidget(self.bottleneck_diagnostic_screen)   # Index 8: 60s Diagnostic
 
         body_layout.addWidget(self.stacked_widget, stretch=1)
         root.addWidget(body, stretch=1)
@@ -991,17 +1032,23 @@ class FounderApp(QMainWindow):
     def switch_nav(self, key: str):
         """Switch stacked widget screen and update persistent sidebar button states."""
         mapping = {
-            "today":         0,
-            "diagnose":      1,
-            "actions":       2,
-            "outcomes":      3,
-            "frameworks":    4,
-            "business_data": 5,
+            "today":                 0,
+            "diagnose":              1,
+            "actions":               2,
+            "outcomes":              3,
+            "frameworks":            4,
+            "business_data":         5,
+            "bottleneck_tax":        6,
+            "velocity_grader":       7,
+            "bottleneck_diagnostic": 8,
         }
         idx = mapping.get(key, 0)
         self.stacked_widget.setCurrentIndex(idx)
         for k, btn in self.nav_buttons.items():
             btn.setChecked(k == key)
+        # Refresh velocity screen on navigation
+        if key == "velocity_grader" and hasattr(self.velocity_grader_screen, "refresh_data"):
+            self.velocity_grader_screen.refresh_data()
 
     def switch_to_diagnose(self):
         """Shortcut helper to switch directly to Diagnose tab."""
@@ -1164,6 +1211,30 @@ class FounderApp(QMainWindow):
             self.status_label.setText("✅ Copied to clipboard!")
             self.status_label.setStyleSheet("color: #10b981; font-weight: bold; font-size: 12px;")
 
+    def export_diagnosis_pdf(self):
+        """Export current diagnosis as a branded PDF report."""
+        text = getattr(self, '_plain_result', self.output_area.toPlainText())
+        if not text:
+            QMessageBox.information(self, "No Diagnosis", "Run a diagnosis first to export a PDF.")
+            return
+        try:
+            from services.pdf_export_service import export_diagnosis_pdf
+            company_name = self.profile_service.get_company_name()
+            query = self.query_input.toPlainText().strip()[:200]
+            framework = getattr(self, '_last_framework_used', '')
+            filepath = export_diagnosis_pdf(
+                diagnosis_text=text,
+                company_name=company_name,
+                framework_used=framework,
+                query=query,
+            )
+            import subprocess
+            subprocess.Popen(['open', filepath])  # macOS
+            self.status_label.setText(f"✅ PDF exported: {filepath}")
+            self.status_label.setStyleSheet("color: #10b981; font-weight: bold; font-size: 12px;")
+        except Exception as e:
+            QMessageBox.critical(self, "Export Error", f"Failed to export PDF: {str(e)}")
+
     def new_session(self):
         """Clear everything for a fresh diagnosis."""
         self.output_area.clear()
@@ -1173,6 +1244,7 @@ class FounderApp(QMainWindow):
         self.current_file_path = ""
         self.file_label.setText("")
         self.copy_btn.setVisible(False)
+        self.export_pdf_btn.setVisible(False)
         self.status_label.setText("✅  Ready. Describe your challenge and get your diagnosis.")
         self.status_label.setStyleSheet("color: #1a7a3c; font-size: 12px;")
 
@@ -1493,7 +1565,8 @@ class FounderApp(QMainWindow):
 
         self.output_area.setHtml(self.markdown_to_html(result))
         self.copy_btn.setVisible(True)
-        self.status_label.setText("Analysis complete. Copy or start a new diagnosis.")
+        self.export_pdf_btn.setVisible(True)
+        self.status_label.setText("Analysis complete. Copy, export PDF, or start a new diagnosis.")
         self.status_label.setStyleSheet("color: #10b981; font-weight: bold; font-size: 12px;")
         self.refresh_wallet_balance()
 

@@ -19,6 +19,9 @@ Company Profile Context:
 
 {profile_data.get("outcome_context", "")}
 
+Founder's Primary Quarterly Goal:
+{profile_data.get("quarterly_goal", "Not set — recommend the founder set a quarterly goal.")}
+
 Uploaded Document Context:
 {document_text[:1000]}
 
