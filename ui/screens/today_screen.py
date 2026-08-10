@@ -1,13 +1,11 @@
 """
 ui/screens/today_screen.py
-Business Command Center — answers: "What needs my attention right now?"
+Business Command Center — World-Class Executive UI Console.
 
-Shows:
-- Executive Summary Dashboard: 3 metric cards (Bottleneck Tax, Velocity Score, Open Actions)
-- Proactive follow-up card for pending actions
-- Most recent diagnosis constraint cards from DiagnosisSessionService
-- Clean empty state CTA when no data exists yet
+Clean card styling, zero raw markdown bleed, polished button layout,
+perfect padding & border-left indicator design system.
 """
+import re
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QFrame, QScrollArea
 )
@@ -22,11 +20,23 @@ from agents.velocity_agent import VelocityAgent
 from db.outcome_tracker import OutcomeTrackerDB
 
 
+def clean_markdown_text(text: str) -> str:
+    """Removes raw markdown bold/italic formatting tags (***, **, *) and normalizes whitespace."""
+    if not text:
+        return ""
+    # Strip markdown bold/italic stars
+    cleaned = re.sub(r"\*{1,3}", "", text)
+    # Strip backticks
+    cleaned = re.sub(r"`{1,3}", "", cleaned)
+    # Strip leading bullet dashes
+    cleaned = re.sub(r"^\s*[\-\*]\s*", "", cleaned)
+    return cleaned.strip()
+
+
 class TodayScreen(QWidget):
     """
-    Default Home Screen: Business Command Center.
-    Displays real data from services. Zero fabricated metrics.
-    Includes proactive in-app follow-up and executive dashboard.
+    Default Home Screen: Executive Business Command Center.
+    Presents real data from services with executive-grade typography & styling.
     """
 
     def __init__(self, parent=None):
@@ -54,7 +64,7 @@ class TodayScreen(QWidget):
         self._canvas = QWidget()
         self._content_layout = QVBoxLayout(self._canvas)
         self._content_layout.setContentsMargins(0, 0, 0, 0)
-        self._content_layout.setSpacing(16)
+        self._content_layout.setSpacing(20)
 
         scroll.setWidget(self._canvas)
         self._root_layout.addWidget(scroll)
@@ -62,7 +72,7 @@ class TodayScreen(QWidget):
         self._build_content()
 
     def _build_content(self):
-        """Clears and rebuilds all content from real data sources."""
+        """Clears and rebuilds all content from real data sources with clean QSS styling."""
         while self._content_layout.count():
             item = self._content_layout.takeAt(0)
             if item.widget():
@@ -79,11 +89,11 @@ class TodayScreen(QWidget):
         self._content_layout.addWidget(header)
 
         sub = QLabel("Here's what needs your attention today.")
-        sub.setStyleSheet("color: #4b6b5a; font-size: 11pt; margin-bottom: 4px;")
+        sub.setStyleSheet("color: #4b6b5a; font-size: 11pt; margin-bottom: 2px;")
         self._content_layout.addWidget(sub)
 
         # ═══════════════════════════════════════════════════════════════════════
-        # EXECUTIVE SUMMARY DASHBOARD — 3 Metric Cards
+        # EXECUTIVE SUMMARY DASHBOARD — 3 Clean Metric Cards
         # ═══════════════════════════════════════════════════════════════════════
         sessions = self._session_svc.get_recent_sessions(limit=3)
         pending_actions = (
@@ -92,7 +102,7 @@ class TodayScreen(QWidget):
         )
 
         dashboard_row = QHBoxLayout()
-        dashboard_row.setSpacing(14)
+        dashboard_row.setSpacing(16)
 
         # Card 1: Bottleneck Tax
         profile = self._profile_svc.get_profile()
@@ -104,18 +114,18 @@ class TodayScreen(QWidget):
         severity = tax_result["severity"]
 
         sev_colors = {
-            "CRITICAL": ("#b91c1c", "#fef2f2", "#fca5a5"),
-            "HIGH":     ("#b45309", "#fffbeb", "#fde68a"),
-            "MODERATE": ("#1d4ed8", "#eff6ff", "#bfdbfe"),
-            "LOW":      ("#166534", "#f0fdf4", "#86efac"),
+            "CRITICAL": ("#991b1b", "#ffffff", "#fca5a5", "#dc2626"),
+            "HIGH":     ("#92400e", "#ffffff", "#fde68a", "#b45309"),
+            "MODERATE": ("#1e40af", "#ffffff", "#bfdbfe", "#2563eb"),
+            "LOW":      ("#166534", "#ffffff", "#bbf7d0", "#16a34a"),
         }
-        sev_text, sev_bg, sev_border = sev_colors.get(severity, ("#166534", "#f0fdf4", "#86efac"))
+        sev_text, sev_bg, sev_border, sev_indicator = sev_colors.get(severity, ("#166534", "#ffffff", "#bbf7d0", "#16a34a"))
 
         tax_card = self._make_dashboard_card(
             "💰 BOTTLENECK TAX",
             f"${monthly_tax:,.0f}/mo",
             f"Severity: {severity}",
-            sev_bg, sev_border, sev_text,
+            sev_bg, sev_border, sev_text, sev_indicator,
             nav_key="bottleneck_tax"
         )
         dashboard_row.addWidget(tax_card, stretch=1)
@@ -126,17 +136,17 @@ class TodayScreen(QWidget):
         v_status = velocity["status"]
 
         if v_score >= 80:
-            v_text, v_bg, v_border = "#166534", "#f0fdf4", "#86efac"
+            v_text, v_bg, v_border, v_ind = "#166534", "#ffffff", "#bbf7d0", "#16a34a"
         elif v_score >= 60:
-            v_text, v_bg, v_border = "#b45309", "#fffbeb", "#fde68a"
+            v_text, v_bg, v_border, v_ind = "#92400e", "#ffffff", "#fde68a", "#b45309"
         else:
-            v_text, v_bg, v_border = "#b91c1c", "#fef2f2", "#fca5a5"
+            v_text, v_bg, v_border, v_ind = "#991b1b", "#ffffff", "#fca5a5", "#dc2626"
 
         vel_card = self._make_dashboard_card(
             "⚡ EXECUTION VELOCITY",
             f"{v_score} / 100",
             v_status,
-            v_bg, v_border, v_text,
+            v_bg, v_border, v_text, v_ind,
             nav_key="velocity_grader"
         )
         dashboard_row.addWidget(vel_card, stretch=1)
@@ -144,20 +154,20 @@ class TodayScreen(QWidget):
         # Card 3: Open Actions
         open_count = len(pending_actions)
         if open_count == 0:
-            a_text, a_bg, a_border = "#166534", "#f0fdf4", "#86efac"
+            a_text, a_bg, a_border, a_ind = "#166534", "#ffffff", "#bbf7d0", "#16a34a"
             a_status = "All Clear"
         elif open_count <= 3:
-            a_text, a_bg, a_border = "#b45309", "#fffbeb", "#fde68a"
+            a_text, a_bg, a_border, a_ind = "#92400e", "#ffffff", "#fde68a", "#b45309"
             a_status = "Needs Attention"
         else:
-            a_text, a_bg, a_border = "#b91c1c", "#fef2f2", "#fca5a5"
+            a_text, a_bg, a_border, a_ind = "#991b1b", "#ffffff", "#fca5a5", "#dc2626"
             a_status = "Action Required"
 
         actions_card = self._make_dashboard_card(
             "🎯 OPEN ACTIONS",
             str(open_count),
             a_status,
-            a_bg, a_border, a_text,
+            a_bg, a_border, a_text, a_ind,
             nav_key="actions"
         )
         dashboard_row.addWidget(actions_card, stretch=1)
@@ -165,7 +175,7 @@ class TodayScreen(QWidget):
         self._content_layout.addLayout(dashboard_row)
 
         # ═══════════════════════════════════════════════════════════════════════
-        # PROACTIVE FOLLOW-UP CARD
+        # PROACTIVE FOLLOW-UP CARD (Executive Styled)
         # ═══════════════════════════════════════════════════════════════════════
         if pending_actions:
             followup_card = self._make_followup_card(pending_actions)
@@ -180,29 +190,37 @@ class TodayScreen(QWidget):
 
     # ── Executive Dashboard Card Builder ──────────────────────────────────────
 
-    def _make_dashboard_card(self, title, value, subtitle, bg, border, text_color, nav_key=None):
+    def _make_dashboard_card(self, title, value, subtitle, bg, border, text_color, indicator_color, nav_key=None):
+        """Clean modern dashboard card with left accent border — zero red lines or overlaps."""
         card = QFrame()
-        card.setStyleSheet(
-            f"QFrame {{ background:{bg}; border:1px solid {border}; "
-            f"border-top:3px solid {text_color}; border-radius:12px; }}"
-        )
+        card.setStyleSheet(f"""
+            QFrame {{
+                background-color: {bg};
+                border: 1px solid {border};
+                border-left: 4px solid {indicator_color};
+                border-radius: 10px;
+            }}
+            QFrame:hover {{
+                border-color: {indicator_color};
+            }}
+        """)
         card.setCursor(Qt.CursorShape.PointingHandCursor)
 
         layout = QVBoxLayout(card)
-        layout.setContentsMargins(16, 14, 16, 14)
+        layout.setContentsMargins(18, 16, 18, 16)
         layout.setSpacing(4)
 
         t_lbl = QLabel(title)
-        t_lbl.setStyleSheet(f"color:{text_color}; font-size:7.5pt; font-weight:bold; letter-spacing:0.8px;")
+        t_lbl.setStyleSheet(f"color: #64748b; font-size: 8pt; font-weight: bold; letter-spacing: 1px;")
         layout.addWidget(t_lbl)
 
         v_lbl = QLabel(value)
         v_lbl.setFont(QFont("Arial", 22, QFont.Weight.Bold))
-        v_lbl.setStyleSheet(f"color:{text_color};")
+        v_lbl.setStyleSheet(f"color: {text_color}; margin-top: 2px; margin-bottom: 2px;")
         layout.addWidget(v_lbl)
 
         s_lbl = QLabel(subtitle)
-        s_lbl.setStyleSheet(f"color:{text_color}; font-size:9pt; font-weight:500;")
+        s_lbl.setStyleSheet(f"color: {text_color}; font-size: 9pt; font-weight: 600;")
         layout.addWidget(s_lbl)
 
         if nav_key and self.main_app and hasattr(self.main_app, "switch_nav"):
@@ -210,31 +228,36 @@ class TodayScreen(QWidget):
 
         return card
 
-    # ── Proactive Follow-up Card ──────────────────────────────────────────────
+    # ── Proactive Follow-up Card (Executive Styled) ───────────────────────────
 
     def _make_followup_card(self, pending_actions: list) -> QFrame:
+        """Executive Proactive AI Follow-up Card with clean text & distinct buttons."""
         card = QFrame()
         card.setStyleSheet("""
             QFrame {
-                background-color: #fffbeb;
+                background-color: #ffffff;
                 border: 1px solid #fde68a;
-                border-left: 6px solid #b45309;
+                border-left: 5px solid #d97706;
                 border-radius: 12px;
-                padding: 16px;
             }
         """)
         layout = QVBoxLayout(card)
-        layout.setSpacing(10)
+        layout.setContentsMargins(20, 18, 20, 18)
+        layout.setSpacing(12)
 
+        # Header Row
         top_row = QHBoxLayout()
+        top_row.setSpacing(10)
+
         icon = QLabel("🤖")
-        icon.setStyleSheet("font-size: 16pt;")
+        icon.setStyleSheet("font-size: 15pt;")
+
         title = QLabel("AI Follow-up: Open Action Items")
         title.setFont(QFont("Arial", 12, QFont.Weight.Bold))
         title.setStyleSheet("color: #92400e;")
 
         count_badge = QLabel(f"{len(pending_actions)} Open")
-        count_badge.setStyleSheet("background:#fef3c7; color:#b45309; font-weight:bold; font-size:8.5pt; padding:2px 8px; border-radius:8px;")
+        count_badge.setStyleSheet("background: #fef3c7; color: #b45309; font-weight: bold; font-size: 8.5pt; padding: 3px 10px; border-radius: 10px; border: 1px solid #fde68a;")
 
         top_row.addWidget(icon)
         top_row.addWidget(title)
@@ -242,27 +265,41 @@ class TodayScreen(QWidget):
         top_row.addStretch()
         layout.addLayout(top_row)
 
-        latest_action = pending_actions[0]
-        desc = QLabel(f"From your last diagnosis: \"{latest_action.get('action_text', '')[:100]}\"")
-        desc.setStyleSheet("color: #78350f; font-size: 10pt; font-weight: 500;")
-        desc.setWordWrap(True)
-        layout.addWidget(desc)
+        # Action Text — Stripped of raw markdown stars and truncated cleanly
+        raw_text = pending_actions[0].get("action_text", "")
+        clean_text = clean_markdown_text(raw_text)
+        if len(clean_text) > 130:
+            clean_text = clean_text[:127] + "..."
 
+        desc_box = QFrame()
+        desc_box.setStyleSheet("background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; padding: 12px;")
+        db_layout = QVBoxLayout(desc_box)
+        db_layout.setContentsMargins(12, 10, 12, 10)
+
+        desc = QLabel(f"<b>Latest Action:</b> \"{clean_text}\"")
+        desc.setStyleSheet("color: #78350f; font-size: 10pt; line-height: 1.4;")
+        desc.setWordWrap(True)
+        db_layout.addWidget(desc)
+        layout.addWidget(desc_box)
+
+        # Action Buttons Row
         btn_row = QHBoxLayout()
-        update_btn = QPushButton("Update Status & Record Outcome")
-        update_btn.setFixedHeight(32)
+        btn_row.setSpacing(10)
+
+        update_btn = QPushButton("Update Status & Record Outcome ➔")
+        update_btn.setFixedHeight(36)
         update_btn.setStyleSheet("""
             QPushButton {
-                background-color: #b45309;
+                background-color: #d97706;
                 color: #ffffff;
-                border-radius: 6px;
+                border-radius: 8px;
                 font-weight: bold;
                 font-size: 9.5pt;
-                padding: 0 14px;
+                padding: 0 16px;
                 border: none;
             }
             QPushButton:hover {
-                background-color: #92400e;
+                background-color: #b45309;
             }
         """)
         if self.main_app and hasattr(self.main_app, "switch_nav"):
@@ -279,7 +316,7 @@ class TodayScreen(QWidget):
     def _build_populated_state(self, sessions):
         if sessions:
             attn_lbl = QLabel("RECENT DIAGNOSES")
-            attn_lbl.setStyleSheet("color: #1a7a3c; font-size: 8.5pt; font-weight: bold; letter-spacing: 1.2px; margin-top: 8px;")
+            attn_lbl.setStyleSheet("color: #1a7a3c; font-size: 8.5pt; font-weight: bold; letter-spacing: 1.2px; margin-top: 6px;")
             self._content_layout.addWidget(attn_lbl)
 
             for session in sessions[:2]:
@@ -287,12 +324,14 @@ class TodayScreen(QWidget):
                 self._content_layout.addWidget(card)
 
         action_row = QHBoxLayout()
+        action_row.setSpacing(12)
+
         new_btn = QPushButton("Run New Diagnosis")
         new_btn.setFixedHeight(40)
         new_btn.setStyleSheet(
-            "QPushButton { background:#1a7a3c; color:#fff; border-radius:8px; "
-            "font-weight:bold; font-size:10.5pt; padding:0 18px; border:none; }"
-            "QPushButton:hover { background:#145e2e; }"
+            "QPushButton { background: #1a7a3c; color: #fff; border-radius: 8px; "
+            "font-weight: bold; font-size: 10.5pt; padding: 0 20px; border: none; }"
+            "QPushButton:hover { background: #145e2e; }"
         )
         if self.main_app and hasattr(self.main_app, "switch_to_diagnose"):
             new_btn.clicked.connect(self.main_app.switch_to_diagnose)
@@ -300,9 +339,9 @@ class TodayScreen(QWidget):
         view_actions_btn = QPushButton("View All Actions")
         view_actions_btn.setFixedHeight(40)
         view_actions_btn.setStyleSheet(
-            "QPushButton { background:#ffffff; color:#1a7a3c; border:1px solid #ccebd7; "
-            "border-radius:8px; font-weight:600; font-size:10.5pt; padding:0 18px; }"
-            "QPushButton:hover { background:#f0fbf4; }"
+            "QPushButton { background: #ffffff; color: #1a7a3c; border: 1px solid #ccebd7; "
+            "border-radius: 8px; font-weight: 600; font-size: 10.5pt; padding: 0 20px; }"
+            "QPushButton:hover { background: #f0fbf4; }"
         )
         if self.main_app and hasattr(self.main_app, "switch_nav"):
             view_actions_btn.clicked.connect(lambda: self.main_app.switch_nav("actions"))
@@ -368,6 +407,7 @@ class TodayScreen(QWidget):
     # ── Constraint Card ───────────────────────────────────────────────────────
 
     def _make_constraint_card(self, session: dict) -> QFrame:
+        """Clean recent diagnosis card with proper padding and text hygiene."""
         card = QFrame()
         card.setStyleSheet("""
             QFrame {
@@ -376,23 +416,31 @@ class TodayScreen(QWidget):
                 border-left: 4px solid #1a7a3c;
                 border-radius: 10px;
             }
+            QFrame:hover {
+                border-color: #1a7a3c;
+            }
         """)
         card_layout = QVBoxLayout(card)
         card_layout.setContentsMargins(18, 14, 18, 14)
-        card_layout.setSpacing(6)
+        card_layout.setSpacing(8)
 
         hdr = QHBoxLayout()
         fw_badge = QLabel(session.get("framework", "Framework"))
-        fw_badge.setStyleSheet("background:#e2f5ea; color:#1a7a3c; font-weight:bold; font-size:8pt; padding:2px 8px; border-radius:8px; border:1px solid #ccebd7;")
+        fw_badge.setStyleSheet("background: #e2f5ea; color: #1a7a3c; font-weight: bold; font-size: 8pt; padding: 3px 8px; border-radius: 8px; border: 1px solid #ccebd7;")
         ts_lbl = QLabel(session.get("timestamp", "")[:10])
-        ts_lbl.setStyleSheet("color:#94a3b8; font-size:8.5pt;")
+        ts_lbl.setStyleSheet("color: #94a3b8; font-size: 8.5pt;")
         hdr.addWidget(fw_badge)
         hdr.addStretch()
         hdr.addWidget(ts_lbl)
         card_layout.addLayout(hdr)
 
-        constraint_lbl = QLabel(session.get("constraint", "Analysis complete — view full diagnosis."))
-        constraint_lbl.setStyleSheet("color:#0f2318; font-size:10.5pt; font-weight:600;")
+        raw_constraint = session.get("constraint", "Analysis complete — view full diagnosis.")
+        clean_constraint = clean_markdown_text(raw_constraint)
+        if len(clean_constraint) > 140:
+            clean_constraint = clean_constraint[:137] + "..."
+
+        constraint_lbl = QLabel(clean_constraint)
+        constraint_lbl.setStyleSheet("color: #0f2318; font-size: 10.5pt; font-weight: 600; line-height: 1.4;")
         constraint_lbl.setWordWrap(True)
         card_layout.addWidget(constraint_lbl)
 
@@ -401,16 +449,16 @@ class TodayScreen(QWidget):
         if conf > 0:
             conf_pct = int(conf * 100)
             meta_lbl = QLabel(f"Confidence: {conf_pct}%  •  Evidence signals: {ev_count}")
-            meta_lbl.setStyleSheet("color:#64748b; font-size:9pt;")
+            meta_lbl.setStyleSheet("color: #64748b; font-size: 9pt;")
             card_layout.addWidget(meta_lbl)
 
         cta_row = QHBoxLayout()
         view_btn = QPushButton("View Diagnosis")
         view_btn.setFixedHeight(30)
         view_btn.setStyleSheet(
-            "QPushButton { background:#1a7a3c; color:#fff; border-radius:6px; "
-            "font-weight:bold; font-size:9pt; padding:0 12px; border:none; }"
-            "QPushButton:hover { background:#145e2e; }"
+            "QPushButton { background: #1a7a3c; color: #fff; border-radius: 6px; "
+            "font-weight: bold; font-size: 9pt; padding: 0 14px; border: none; }"
+            "QPushButton:hover { background: #145e2e; }"
         )
         if self.main_app and hasattr(self.main_app, "switch_to_diagnose"):
             view_btn.clicked.connect(self.main_app.switch_to_diagnose)
