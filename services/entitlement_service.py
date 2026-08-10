@@ -51,8 +51,20 @@ class EntitlementService:
         state = self._load_state()
         return state.get("plan", "FREE").upper()
 
+    def get_user_plan(self) -> str:
+        return self.get_current_plan()
+
     def is_pro(self) -> bool:
-        return self.get_current_plan() in ["PRO", "TRIAL"]
+        return self.get_current_plan() in ["PRO", "ENTERPRISE", "TRIAL"]
+
+    def is_enterprise(self) -> bool:
+        return self.get_current_plan() == "ENTERPRISE"
+
+    def upgrade_to_enterprise(self) -> None:
+        state = self._load_state()
+        state["plan"] = "ENTERPRISE"
+        state["status"] = "active"
+        self._save_state(state)
 
     def can_access_framework(self, framework_name: str) -> bool:
         if self.is_pro():

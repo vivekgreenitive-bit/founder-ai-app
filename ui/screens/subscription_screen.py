@@ -1,7 +1,10 @@
 """
 ui/screens/subscription_screen.py
 Dedicated Subscription & Billing Dialog.
-Displays all subscription plans clearly with radio button selection (Free vs Pro).
+Displays 3 subscription plans clearly with radio button selection:
+1. Free Starter ($0/mo)
+2. Founder Pro ($49/mo)
+3. Enterprise Growth ($199/mo)
 Allows immediate plan switching / activation via Razorpay or direct selection.
 """
 from PyQt6.QtWidgets import (
@@ -16,24 +19,25 @@ from providers.razorpay_provider import RazorpayPaymentProvider
 
 class SubscriptionBillingDialog(QDialog):
     """
-    Subscription & Billing Dialog with Radio Button Selection for all plans.
+    Subscription & Billing Dialog with Radio Button Selection for all 3 plans.
     """
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Subscription & Billing")
-        self.setFixedSize(580, 560)
+        self.setFixedSize(620, 680)
 
         self.entitlement_service = EntitlementService()
         self.razorpay = RazorpayPaymentProvider()
 
-        self.selected_plan = "PRO" if self.entitlement_service.is_pro() else "FREE"
+        current_plan = self.entitlement_service.get_user_plan() if hasattr(self.entitlement_service, "get_user_plan") else ("PRO" if self.entitlement_service.is_pro() else "FREE")
+        self.selected_plan = current_plan
         self.init_ui()
 
     def init_ui(self):
         root = QVBoxLayout(self)
         root.setContentsMargins(24, 24, 24, 24)
-        root.setSpacing(16)
+        root.setSpacing(14)
 
         # Header
         head_title = QLabel("💳 Choose Subscription Plan")
@@ -45,7 +49,16 @@ class SubscriptionBillingDialog(QDialog):
         sub_title.setStyleSheet("color: #4b6b5a; font-size: 10pt;")
         root.addWidget(sub_title)
 
-        # Plan Selection Container (Radio Buttons)
+        # Scroll Area for Plans
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setFrameShape(QFrame.Shape.NoFrame)
+
+        container = QWidget()
+        c_layout = QVBoxLayout(container)
+        c_layout.setContentsMargins(0, 0, 0, 0)
+        c_layout.setSpacing(12)
+
         self.button_group = QButtonGroup(self)
 
         # ── PLAN 1: FREE STARTER ─────────────────────────────────────────────
@@ -76,7 +89,7 @@ class SubscriptionBillingDialog(QDialog):
         fc_layout.addWidget(free_desc)
 
         self.button_group.addButton(self.free_radio, 1)
-        root.addWidget(self.free_card)
+        c_layout.addWidget(self.free_card)
 
         # ── PLAN 2: FOUNDER PRO ──────────────────────────────────────────────
         self.pro_card = QFrame()
@@ -105,18 +118,54 @@ class SubscriptionBillingDialog(QDialog):
         pc_top.addWidget(pro_price)
         pc_layout.addLayout(pc_top)
 
-        pro_desc = QLabel("• All 13 Founder Frameworks (Unlimited)\n• Google Gemini 1.5 Pro Cloud Reasoning\n• Customer Intelligence & Competitor Gap Analysis\n• Evidence Validation & Decision Verification\n• Governed Agentic Payments Execution")
+        pro_desc = QLabel("• All 13 Founder Frameworks (Unlimited)\n• Google Gemini 1.5 Pro Cloud Reasoning\n• Customer Intelligence & Competitor Gap Analysis\n• 1:1 GCP Advisory Chat Workspace\n• PDF Report Exports & Bottleneck Tax Calculator")
         pro_desc.setStyleSheet("color: #581c87; font-size: 9.5pt; padding-left: 20px; font-weight: 500;")
         pc_layout.addWidget(pro_desc)
 
         self.button_group.addButton(self.pro_radio, 2)
-        root.addWidget(self.pro_card)
+        c_layout.addWidget(self.pro_card)
+
+        # ── PLAN 3: ENTERPRISE GROWTH ─────────────────────────────────────────
+        self.ent_card = QFrame()
+        self.ent_card.setCursor(Qt.CursorShape.PointingHandCursor)
+        self._style_card(self.ent_card, selected=(self.selected_plan == "ENTERPRISE"), is_ent=True)
+
+        ec_layout = QVBoxLayout(self.ent_card)
+        ec_layout.setSpacing(6)
+
+        ec_top = QHBoxLayout()
+        self.ent_radio = QRadioButton("Enterprise Growth Plan 👑")
+        self.ent_radio.setFont(QFont("Arial", 12, QFont.Weight.Bold))
+        self.ent_radio.setChecked(self.selected_plan == "ENTERPRISE")
+        self.ent_radio.setStyleSheet("QRadioButton { color: #1e3a8a; font-weight: bold; }")
+
+        ent_badge = QLabel("SCALE-UP")
+        ent_badge.setStyleSheet("background: #1d4ed8; color: white; font-weight: bold; font-size: 7.5pt; padding: 2px 6px; border-radius: 6px;")
+
+        ent_price = QLabel("$199 / month (₹15,999/mo)")
+        ent_price.setFont(QFont("Arial", 11, QFont.Weight.Bold))
+        ent_price.setStyleSheet("color: #1e3a8a;")
+
+        ec_top.addWidget(self.ent_radio)
+        ec_top.addWidget(ent_badge)
+        ec_top.addStretch()
+        ec_top.addWidget(ent_price)
+        ec_layout.addLayout(ec_top)
+
+        ent_desc = QLabel("• Everything in Pro Plan included\n• Multi-user Team & Co-founder Workspace\n• Custom SOP Generator & Process Automation\n• Governed Agentic Payments & Wallet Controls\n• Dedicated Human Startup Advisor Channel")
+        ent_desc.setStyleSheet("color: #1e40af; font-size: 9.5pt; padding-left: 20px; font-weight: 500;")
+        ec_layout.addWidget(ent_desc)
+
+        self.button_group.addButton(self.ent_radio, 3)
+        c_layout.addWidget(self.ent_card)
 
         # Connect radio selections
         self.free_radio.toggled.connect(self._on_plan_changed)
         self.pro_radio.toggled.connect(self._on_plan_changed)
+        self.ent_radio.toggled.connect(self._on_plan_changed)
 
-        root.addStretch()
+        scroll.setWidget(container)
+        root.addWidget(scroll, stretch=1)
 
         # Action Buttons
         self.confirm_btn = QPushButton("Save & Activate Selected Plan")
@@ -126,105 +175,78 @@ class SubscriptionBillingDialog(QDialog):
 
         root.addWidget(self.confirm_btn)
 
-    def _style_card(self, card: QFrame, selected: bool, is_pro: bool = False):
+    def _style_card(self, card: QFrame, selected: bool, is_pro: bool = False, is_ent: bool = False):
         if selected:
             if is_pro:
-                card.setStyleSheet("""
-                    QFrame {
-                        background-color: #f3e8ff;
-                        border: 2px solid #7c3aed;
-                        border-radius: 12px;
-                        padding: 14px;
-                    }
-                """)
+                card.setStyleSheet("QFrame { background-color: #f3e8ff; border: 2px solid #7c3aed; border-radius: 12px; padding: 12px; }")
+            elif is_ent:
+                card.setStyleSheet("QFrame { background-color: #eff6ff; border: 2px solid #1d4ed8; border-radius: 12px; padding: 12px; }")
             else:
-                card.setStyleSheet("""
-                    QFrame {
-                        background-color: #f0fbf4;
-                        border: 2px solid #1a7a3c;
-                        border-radius: 12px;
-                        padding: 14px;
-                    }
-                """)
+                card.setStyleSheet("QFrame { background-color: #f0fbf4; border: 2px solid #1a7a3c; border-radius: 12px; padding: 12px; }")
         else:
-            card.setStyleSheet("""
-                QFrame {
-                    background-color: #ffffff;
-                    border: 1px solid #cbd5e1;
-                    border-radius: 12px;
-                    padding: 14px;
-                }
-            """)
+            card.setStyleSheet("QFrame { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; }")
 
     def _on_plan_changed(self):
-        if self.pro_radio.isChecked():
-            self.selected_plan = "PRO"
-            self._style_card(self.free_card, selected=False)
-            self._style_card(self.pro_card, selected=True, is_pro=True)
-        else:
+        if self.free_radio.isChecked():
             self.selected_plan = "FREE"
-            self._style_card(self.free_card, selected=True)
-            self._style_card(self.pro_card, selected=False, is_pro=True)
+        elif self.pro_radio.isChecked():
+            self.selected_plan = "PRO"
+        elif self.ent_radio.isChecked():
+            self.selected_plan = "ENTERPRISE"
 
-        self._update_button_style()
+        active_plan = self.entitlement_service.get_user_plan() if hasattr(self.entitlement_service, "get_user_plan") else ("PRO" if self.entitlement_service.is_pro() else "FREE")
 
-    def _update_button_style(self):
-        is_currently_pro = self.entitlement_service.is_pro()
-        if self.selected_plan == "PRO":
-            if is_currently_pro:
-                self.confirm_btn.setText("Current Plan (Pro Active)")
-                self.confirm_btn.setStyleSheet("background: #7c3aed; color: white; font-weight: bold; border-radius: 8px; font-size: 11pt;")
-            else:
-                self.confirm_btn.setText("Upgrade to Founder Pro ($49/mo) 🚀")
-                self.confirm_btn.setStyleSheet("background: #1a7a3c; color: white; font-weight: bold; border-radius: 8px; font-size: 11pt;")
+        self._style_card(self.free_card, selected=(self.selected_plan == "FREE"))
+        self._style_card(self.pro_card, selected=(self.selected_plan == "PRO"), is_pro=True)
+        self._style_card(self.ent_card, selected=(self.selected_plan == "ENTERPRISE"), is_ent=True)
+
+        self._update_button_style(active_plan)
+
+    def _update_button_style(self, active_plan: str = None):
+        if active_plan is None:
+            active_plan = self.entitlement_service.get_user_plan() if hasattr(self.entitlement_service, "get_user_plan") else ("PRO" if self.entitlement_service.is_pro() else "FREE")
+
+        if self.selected_plan == active_plan:
+            self.confirm_btn.setText(f"Current Plan ({active_plan}) Active")
+            self.confirm_btn.setEnabled(False)
+            self.confirm_btn.setStyleSheet("background-color: #94a3b8; color: #ffffff; border-radius: 8px; font-weight: bold; font-size: 11pt;")
+        elif self.selected_plan == "PRO":
+            self.confirm_btn.setText("Upgrade to Founder Pro ($49/mo) 🚀")
+            self.confirm_btn.setEnabled(True)
+            self.confirm_btn.setStyleSheet("background-color: #7c3aed; color: #ffffff; border-radius: 8px; font-weight: bold; font-size: 11pt;")
+        elif self.selected_plan == "ENTERPRISE":
+            self.confirm_btn.setText("Upgrade to Enterprise Growth ($199/mo) 👑")
+            self.confirm_btn.setEnabled(True)
+            self.confirm_btn.setStyleSheet("background-color: #1d4ed8; color: #ffffff; border-radius: 8px; font-weight: bold; font-size: 11pt;")
         else:
-            if not is_currently_pro:
-                self.confirm_btn.setText("Current Plan (Free Active)")
-                self.confirm_btn.setStyleSheet("background: #94a3b8; color: white; font-weight: bold; border-radius: 8px; font-size: 11pt;")
-            else:
-                self.confirm_btn.setText("Downgrade to Free Starter")
-                self.confirm_btn.setStyleSheet("background: #dc2626; color: white; font-weight: bold; border-radius: 8px; font-size: 11pt;")
+            self.confirm_btn.setText("Downgrade to Free Starter")
+            self.confirm_btn.setEnabled(True)
+            self.confirm_btn.setStyleSheet("background-color: #64748b; color: #ffffff; border-radius: 8px; font-weight: bold; font-size: 11pt;")
 
     def handle_confirm(self):
-        is_currently_pro = self.entitlement_service.is_pro()
-
-        if self.selected_plan == "PRO" and not is_currently_pro:
-            # Trigger Pro upgrade checkout
-            try:
-                res = self.razorpay.create_subscription("plan_founder_pro", customer_email="founder@example.com")
-                sub_id = res.get("id")
-                pay_url = res.get("short_url")
-
-                if pay_url:
-                    import webbrowser
-                    webbrowser.open(pay_url)
-
-                reply = QMessageBox.question(
-                    self,
-                    "Verify Pro Upgrade",
-                    f"Razorpay checkout opened in your browser.\n\nDid you complete payment?",
-                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
-                )
-                if reply == QMessageBox.StandardButton.Yes:
-                    self.entitlement_service.activate_pro_subscription(sub_id)
-                    QMessageBox.information(self, "Success", "Pro subscription activated successfully!")
-                    self.accept()
-            except Exception as e:
-                # Fallback to direct activation for testing/demo
-                self.entitlement_service.activate_pro_subscription("sub_demo_active")
-                QMessageBox.information(self, "Activated", "Founder Pro plan activated!")
-                self.accept()
-
-        elif self.selected_plan == "FREE" and is_currently_pro:
-            reply = QMessageBox.question(
+        if self.selected_plan == "PRO":
+            res = self.razorpay.create_subscription("plan_pro_monthly", "founder@greenitive.com")
+            short_url = res.get("short_url", "https://rzp.io/i/pro")
+            self.entitlement_service.upgrade_to_pro()
+            QMessageBox.information(
                 self,
-                "Confirm Downgrade",
-                "Are you sure you want to downgrade to the Free Starter plan?",
-                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+                "Upgrade to Founder Pro",
+                f"Your upgrade to Founder Pro ($49/mo) is ready.\n\nCheckout URL:\n{short_url}\n\nPlan features have been activated!"
             )
-            if reply == QMessageBox.StandardButton.Yes:
-                self.entitlement_service.cancel_subscription()
-                QMessageBox.information(self, "Updated", "Your plan has been updated to Free Starter.")
-                self.accept()
+        elif self.selected_plan == "ENTERPRISE":
+            res = self.razorpay.create_subscription("plan_enterprise_monthly", "founder@greenitive.com")
+            short_url = res.get("short_url", "https://rzp.io/i/enterprise")
+            if hasattr(self.entitlement_service, "upgrade_to_enterprise"):
+                self.entitlement_service.upgrade_to_enterprise()
+            else:
+                self.entitlement_service.upgrade_to_pro()
+            QMessageBox.information(
+                self,
+                "Upgrade to Enterprise Growth",
+                f"Your upgrade to Enterprise Growth ($199/mo) is ready.\n\nCheckout URL:\n{short_url}\n\nAll Enterprise features have been activated!"
+            )
         else:
-            self.accept()
+            self.entitlement_service.downgrade_to_free()
+            QMessageBox.information(self, "Plan Downgraded", "Your plan has been changed to Free Starter.")
+
+        self.accept()
