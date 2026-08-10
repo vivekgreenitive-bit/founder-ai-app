@@ -193,15 +193,20 @@ class TodayScreen(QWidget):
     def _make_dashboard_card(self, title, value, subtitle, bg, border, text_color, indicator_color, nav_key=None):
         """Clean modern dashboard card with left accent border — zero red lines or overlaps."""
         card = QFrame()
+        card.setObjectName("DashboardCard")
         card.setStyleSheet(f"""
-            QFrame {{
+            QFrame#DashboardCard {{
                 background-color: {bg};
                 border: 1px solid {border};
                 border-left: 4px solid {indicator_color};
                 border-radius: 10px;
             }}
-            QFrame:hover {{
+            QFrame#DashboardCard:hover {{
                 border-color: {indicator_color};
+            }}
+            QLabel {{
+                border: none;
+                background: transparent;
             }}
         """)
         card.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -233,12 +238,17 @@ class TodayScreen(QWidget):
     def _make_followup_card(self, pending_actions: list) -> QFrame:
         """Executive Proactive AI Follow-up Card with clean text & distinct buttons."""
         card = QFrame()
+        card.setObjectName("FollowupCard")
         card.setStyleSheet("""
-            QFrame {
+            QFrame#FollowupCard {
                 background-color: #ffffff;
                 border: 1px solid #fde68a;
                 border-left: 5px solid #d97706;
                 border-radius: 12px;
+            }
+            QLabel {
+                border: none;
+                background: transparent;
             }
         """)
         layout = QVBoxLayout(card)
@@ -409,15 +419,20 @@ class TodayScreen(QWidget):
     def _make_constraint_card(self, session: dict) -> QFrame:
         """Clean recent diagnosis card with proper padding and text hygiene."""
         card = QFrame()
+        card.setObjectName("ConstraintCard")
         card.setStyleSheet("""
-            QFrame {
+            QFrame#ConstraintCard {
                 background-color: #ffffff;
                 border: 1px solid #ccebd7;
                 border-left: 4px solid #1a7a3c;
                 border-radius: 10px;
             }
-            QFrame:hover {
+            QFrame#ConstraintCard:hover {
                 border-color: #1a7a3c;
+            }
+            QLabel {
+                border: none;
+                background: transparent;
             }
         """)
         card_layout = QVBoxLayout(card)
