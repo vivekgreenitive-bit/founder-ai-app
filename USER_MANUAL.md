@@ -151,6 +151,13 @@ You can export any diagnosis at any time by clicking `📄 Export PDF` on the Di
 
 ---
 
+## 📦 Download Desktop Installers (Google Cloud Storage)
+
+- 🍎 **[Download Founder AI for macOS (.zip)](https://storage.googleapis.com/founder-ai-releases/FounderAI-macOS.zip)**
+- 🪟 **[Download Founder AI for Windows (.zip)](https://storage.googleapis.com/founder-ai-releases/FounderAI-Windows.zip)**
+
+---
+
 ## 🛠️ 5. Quick Support & System Requirements
 
 - **Operating Systems**: macOS (12.0+), Windows (10/11), Linux.

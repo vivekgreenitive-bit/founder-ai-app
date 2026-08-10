@@ -134,8 +134,12 @@ python scripts/run_competition_audit.py
   docker-compose run --rm audit-runner
   ```
 
-### 📦 Looking for Compiled Installers?
-If you just want to run the pre-compiled desktop application without setting up Python, navigate to the **[Releases Page on the Release Repository](https://github.com/vivekgreenitive-bit/founder-app-release/releases)** to download the latest macOS and Windows installers.
+### 📦 Download Pre-Compiled Desktop Installers (GCS Direct Downloads)
+
+You can download the official compiled desktop application binaries directly from Google Cloud Storage:
+
+- 🍎 **[Download Founder AI for macOS (.zip)](https://storage.googleapis.com/founder-ai-releases/FounderAI-macOS.zip)**
+- 🪟 **[Download Founder AI for Windows (.zip)](https://storage.googleapis.com/founder-ai-releases/FounderAI-Windows.zip)**
 
 ---
 
