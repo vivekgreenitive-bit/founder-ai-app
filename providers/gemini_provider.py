@@ -1,41 +1,88 @@
-from typing import Any
+import os
+import json
+import urllib.request
+from typing import Any, Optional
 from langchain_google_genai import ChatGoogleGenerativeAI
 from providers.base_provider import BaseLLMProvider
 
+
 class GeminiProvider(BaseLLMProvider):
+    """
+    Google Gemini LLM Provider.
+    Supports direct API key mode OR secure Google Cloud Run proxy mode
+    where private keys remain in Cloud Secret Manager.
+    """
     llm: Any
     api_key: str
     model: str
     temperature: float
     max_tokens: int
 
-    def __init__(self, api_key: str, model: str = "gemini-1.5-flash", temperature: float = 0.1, max_tokens: int = 1000) -> None:
-        self.api_key = api_key
+    def __init__(self, api_key: Optional[str] = None, model: str = "gemini-1.5-flash", temperature: float = 0.1, max_tokens: int = 1000) -> None:
+        self.api_key = api_key or os.getenv("GEMINI_API_KEY", "")
         self.model = model
         self.temperature = temperature
         self.max_tokens = max_tokens
-        self.llm = ChatGoogleGenerativeAI(
-            google_api_key=api_key,
-            model=model,
-            temperature=temperature,
-            max_output_tokens=max_tokens
-        )
+        self.cloud_run_proxy_url = os.getenv("CLOUD_RUN_GEMINI_PROXY_URL", "")
+
+        if self.api_key:
+            self.llm = ChatGoogleGenerativeAI(
+                google_api_key=self.api_key,
+                model=model,
+                temperature=temperature,
+                max_output_tokens=max_tokens
+            )
+        else:
+            self.llm = None
 
     def generate(self, prompt: str) -> str:
-        return str(self.llm.invoke(prompt).content)
+        """Generates text via Google Cloud Run proxy if configured; else uses direct API key."""
+        if self.cloud_run_proxy_url:
+            try:
+                endpoint = f"{self.cloud_run_proxy_url.rstrip('/')}/v1/gemini/generate"
+                payload = json.dumps({
+                    "prompt": prompt,
+                    "model": self.model,
+                    "temperature": self.temperature
+                }).encode("utf-8")
+
+                req = urllib.request.Request(
+                    endpoint,
+                    data=payload,
+                    headers={"Content-Type": "application/json", "User-Agent": "FounderAI-Client/2026"},
+                    method="POST"
+                )
+                with urllib.request.urlopen(req, timeout=15) as resp:
+                    if resp.status == 200:
+                        res = json.loads(resp.read().decode("utf-8"))
+                        return res.get("text", "")
+            except Exception as e:
+                print(f"[GeminiProvider] Cloud Run proxy call failed: {e}. Falling back to direct API.")
+
+        if self.llm:
+            return str(self.llm.invoke(prompt).content)
+        
+        return "Gemini API Key or Cloud Run proxy is required to generate AI analysis."
 
     def stream(self, prompt: str) -> Any:
-        for chunk in self.llm.stream(prompt):
-            yield chunk.content
+        if self.llm:
+            for chunk in self.llm.stream(prompt):
+                yield chunk.content
+        else:
+            yield self.generate(prompt)
 
     def health_check(self) -> bool:
+        if self.cloud_run_proxy_url:
+            return True
         if not self.api_key:
             return False
         try:
-            self.llm.invoke("Hi")
-            return True
+            if self.llm:
+                self.llm.invoke("Hi")
+                return True
         except Exception:
-            return False
+            pass
+        return False
 
     def provider_name(self) -> str:
         return "gemini"
@@ -94,4 +141,3 @@ Respond ONLY in valid JSON:
             pass
 
         return result
-
