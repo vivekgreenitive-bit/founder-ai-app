@@ -1,4 +1,4 @@
-# 📑 Product Requirement Document (PRD v2.0)
+# 📑 Product Requirement Document (PRD v3.0)
 ## Founder AI — Closed-Loop Executive Operating System
 
 ---
@@ -8,7 +8,7 @@
 ### 1.1 Product Vision
 **Founder AI** is a production-grade, closed-loop executive operating platform designed specifically for startup founders, CEOs, and executive leaders. 
 
-Unlike generic AI chatbots (like ChatGPT or Claude) that deliver one-off text answers, Founder AI acts as an **AI Co-Founder & Fractional Chief Operating Officer (COO)**. It pairs 13 proprietary structured business frameworks with an evidence-backed multi-agent engine, quantitative diagnostic tools, an automated action tracker, a continuous learning outcome loop, and a 1:1 Google Cloud-secured advisory chat workspace.
+Unlike generic AI chatbots (like ChatGPT or Claude) that deliver one-off text answers, Founder AI acts as an **AI Co-Founder & Fractional Chief Operating Officer (COO)**. It pairs 13 proprietary structured business frameworks with an evidence-backed multi-agent engine, quantitative diagnostic tools, an automated action tracker, a continuous learning outcome loop, Customer Intelligence, and a 1:1 Google Cloud-secured advisory chat workspace.
 
 ### 1.2 The Core Problem
 Most founders fail not due to a lack of effort, but due to **misaligned execution**:
@@ -69,9 +69,9 @@ $$\text{Connect Business Data} \longrightarrow \text{Diagnose Bottleneck} \longr
 - **UI Framework**: Python 3.14 + PyQt6 (Native Cross-Platform Desktop OS).
 - **Design Tokens**: Custom CSS/QSS tokens (`ui/theme.py`) matching `#1a7a3c` Forest Green brand palette.
 - **Local AI Inference**: LangChain + Llama 3.2-3B via Ollama / HuggingFace Embeddings + ChromaDB.
-- **Cloud AI Inference**: Google Cloud Vertex AI / Gemini 1.5 Pro via `google-genai` SDK.
+- **Cloud AI Inference**: Google Cloud Vertex AI / Gemini 1.5 Pro via `google-genai` SDK and Cloud Run Proxy.
 - **Persistence**: Local SQLite (`~/.founder_ai/conversation_history.db`) for zero-cloud data leaks.
-- **Payment & Cloud Gateway**: Razorpay REST API + Google Cloud Run serverless microservice.
+- **Payment & Cloud Gateway**: Razorpay REST API + Google Cloud Run zero-trust payment microservice.
 - **Document Processing**: PyPDF2, pandas, docx, CSV/TXT text extractors.
 - **PDF Generation**: `fpdf2` PDF report engine.
 
@@ -122,7 +122,7 @@ SUPPORT & ADVISORY
 - **Features**:
   - Focus Area Selector pills (*All, Revenue & Sales, Customer & Churn, Product & Operations, Execution*).
   - Document Context Uploader (CSV, PDF, P&L statements).
-  - Multi-Agent Pipeline Execution Log (Real-time agent progress).
+  - **Customer Intelligence Button**: Runs Gemini structured persona & competitive gap analysis.
   - Executive 5-Section Markdown Output with **`📋 Copy`** and **`📄 Export PDF`** buttons.
 
 #### 3. Actions (Execution Workspace)
@@ -211,24 +211,23 @@ Founder AI includes a policy-governed execution layer for agentic transactions:
 
 ---
 
-## 7. Monetization & Subscription Tiers
+## 7. Monetization & 3-Tier SaaS Subscription Matrix
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                           SUBSCRIPTION TIERS                                │
-├──────────────────────────────────────┬──────────────────────────────────────┤
-│ FREE STARTER PLAN ($0 / month)       │ FOUNDER PRO PLAN ($49 / month)       │
-├──────────────────────────────────────┼──────────────────────────────────────┤
-│ • 2 Core Frameworks (ECG, SLR)       │ • All 13 Proprietary Frameworks      │
-│ • Local Llama 3.2 Offline AI         │ • Google Gemini 1.5 Pro Cloud AI     │
-│ • Basic Actions Tracker              │ • Customer Intelligence Analysis     │
-│ • Bottleneck Tax Calculator          │ • 1:1 GCP Advisory Chat (Unlimited)  │
-│                                      │ • Governed Agentic Payments          │
-│                                      │ • PDF Diagnosis Report Exports       │
-└──────────────────────────────────────┴──────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────────────┐
+│                              3-TIER SUBSCRIPTION MATRIX                                 │
+├──────────────────────────┬──────────────────────────────┬───────────────────────────────┤
+│ FREE STARTER ($0/mo)     │ FOUNDER PRO ($49/mo)         │ ENTERPRISE GROWTH ($199/mo)   │
+├──────────────────────────┼──────────────────────────────┼───────────────────────────────┤
+│ • 2 Core Frameworks      │ • All 13 Frameworks          │ • Everything in Pro Plan      │
+│ • Local Llama 3.2 AI     │ • Google Gemini 1.5 Pro AI   │ • Multi-user Team Workspace   │
+│ • Basic Actions Tracker  │ • Customer Intelligence      │ • Custom SOP Generator        │
+│ • Bottleneck Tax Calc    │ • 1:1 GCP Advisory Chat      │ • Governed Agentic Payments   │
+│                          │ • PDF Report Exports         │ • Dedicated Human Advisor     │
+└──────────────────────────┴──────────────────────────────┴───────────────────────────────┘
 ```
 
-- **Checkout Gateway**: Razorpay REST API + Google Cloud Run zero-trust payment microservice.
+- **Checkout Gateway**: Razorpay REST API + Google Cloud Run zero-trust payment microservice (`CLOUD_RUN_PAYMENT_URL`).
 
 ---
 
@@ -243,6 +242,7 @@ Founder AI includes a policy-governed execution layer for agentic transactions:
 - **Zero-Cloud Local Mode**: All CSVs, P&L Statements, and SQLite data stored locally in `~/.founder_ai`.
 - **GCP Enterprise Terms**: Cloud chat data sent to Vertex AI is encrypted in-transit (TLS 1.3) and at-rest (AES-256) and **never used to train public LLM models**.
 - **HMAC Founder Hashing**: Raw founder emails are hashed via SHA-256 HMAC before generating cloud session tokens.
+- **Zero-Trust Cloud Run Proxies**: Private API key secrets (Razorpay Secret Key, Master Gemini API Key) remain isolated in GCP Secret Manager.
 
 ---
 
