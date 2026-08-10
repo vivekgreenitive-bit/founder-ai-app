@@ -26,6 +26,7 @@ from ui.screens.business_data_screen import BusinessDataScreen
 from ui.screens.bottleneck_tax_screen import BottleneckTaxScreen
 from ui.screens.velocity_grader_screen import VelocityGraderScreen
 from ui.screens.bottleneck_diagnostic_screen import BottleneckDiagnosticScreen
+from ui.screens.consulting_screen import ConsultingScreen
 from services.company_profile_service import CompanyProfileService
 from services.entitlement_service import EntitlementService
 from services.diagnosis_session_service import DiagnosisSessionService
@@ -744,7 +745,18 @@ class FounderApp(QMainWindow):
             ("business_data", "  Business Data"),
         ]
 
-        nav_items = nav_items_core + nav_items_diag + nav_items_knowledge
+        # ── Section: Support & Advisory ───────────────────────────────────────
+        support_section = QLabel("SUPPORT & ADVISORY")
+        support_section.setStyleSheet(
+            "color: #94a3b8; font-size: 7.5pt; font-weight: bold; "
+            "letter-spacing: 1px; padding: 12px 14px 2px 14px;"
+        )
+
+        nav_items_support = [
+            ("advisory_chat",  "  Advisory Chat"),
+        ]
+
+        nav_items = nav_items_core + nav_items_diag + nav_items_knowledge + nav_items_support
 
         nav_btn_qss = """
             QPushButton {
@@ -797,6 +809,16 @@ class FounderApp(QMainWindow):
             left_layout.addWidget(btn)
             self.nav_buttons[key] = btn
 
+        left_layout.addWidget(support_section)
+        for key, label in nav_items_support:
+            btn = QPushButton(label)
+            btn.setFixedHeight(40)
+            btn.setCheckable(True)
+            btn.setStyleSheet(nav_btn_qss)
+            btn.clicked.connect(lambda checked, k=key: self.switch_nav(k))
+            left_layout.addWidget(btn)
+            self.nav_buttons[key] = btn
+
         left_layout.addStretch()
 
         # Settings nav button at bottom
@@ -838,6 +860,7 @@ class FounderApp(QMainWindow):
         self.bottleneck_tax_screen = BottleneckTaxScreen(self)
         self.velocity_grader_screen = VelocityGraderScreen(self)
         self.bottleneck_diagnostic_screen = BottleneckDiagnosticScreen(self)
+        self.consulting_screen = ConsultingScreen(self)
         
         # Diagnose Screen (Existing Right Panel Canvas)
         self.diagnose_screen = QWidget()
@@ -1022,6 +1045,7 @@ class FounderApp(QMainWindow):
         self.stacked_widget.addWidget(self.bottleneck_tax_screen)          # Index 6: Bottleneck Tax
         self.stacked_widget.addWidget(self.velocity_grader_screen)         # Index 7: Velocity Grader
         self.stacked_widget.addWidget(self.bottleneck_diagnostic_screen)   # Index 8: 60s Diagnostic
+        self.stacked_widget.addWidget(self.consulting_screen)              # Index 9: Advisory Chat
 
         body_layout.addWidget(self.stacked_widget, stretch=1)
         root.addWidget(body, stretch=1)
@@ -1041,14 +1065,17 @@ class FounderApp(QMainWindow):
             "bottleneck_tax":        6,
             "velocity_grader":       7,
             "bottleneck_diagnostic": 8,
+            "advisory_chat":         9,
         }
         idx = mapping.get(key, 0)
         self.stacked_widget.setCurrentIndex(idx)
         for k, btn in self.nav_buttons.items():
             btn.setChecked(k == key)
-        # Refresh velocity screen on navigation
+        # Refresh velocity or consulting screen on navigation
         if key == "velocity_grader" and hasattr(self.velocity_grader_screen, "refresh_data"):
             self.velocity_grader_screen.refresh_data()
+        elif key == "advisory_chat" and hasattr(self.consulting_screen, "refresh_data"):
+            self.consulting_screen.refresh_data()
 
     def switch_to_diagnose(self):
         """Shortcut helper to switch directly to Diagnose tab."""
