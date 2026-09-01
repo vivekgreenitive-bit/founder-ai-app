@@ -1,5 +1,6 @@
 from typing import Tuple, Dict, Any
 from db.payment_db import PaymentDBManager
+from services.telemetry_service import POLICY_VALIDATIONS
 
 class PolicyEngine:
     def __init__(self, db_manager: PaymentDBManager):
@@ -12,6 +13,7 @@ class PolicyEngine:
         """
         policy = self.db.get_active_policy()
         if not policy:
+            POLICY_VALIDATIONS.labels(status="approved", policy_rule="no_policy").inc()
             return True, "No active policy restrictions found."
 
         # Verify Cryptographic Signature
@@ -22,6 +24,7 @@ class PolicyEngine:
             policy["emergency_stop"]
         )
         if policy.get("signature") != expected_sig:
+            POLICY_VALIDATIONS.labels(status="tampered", policy_rule="signature_tampering").inc()
             self.db.add_audit_log("POLICY_TAMPERED", "ALERT: Policy signature verification failed! Tampering detected.")
             # Automatically trigger Emergency Stop to protect the wallet
             self.db.update_policy(
@@ -34,12 +37,14 @@ class PolicyEngine:
 
         # 1. Emergency Stop check
         if policy.get("emergency_stop", 0) == 1:
+            POLICY_VALIDATIONS.labels(status="blocked", policy_rule="emergency_stop").inc()
             self.db.add_audit_log("POLICY_BLOCKED", f"Blocked payment of ${amount} to {merchant}: Emergency stop is active.")
             return False, "Emergency stop switch is active. All financial transactions are frozen."
 
         # 2. Max Transaction Limit check
         max_limit = policy.get("max_transaction_limit", 1000.0)
         if amount > max_limit:
+            POLICY_VALIDATIONS.labels(status="blocked", policy_rule="max_limit_exceeded").inc()
             self.db.add_audit_log("POLICY_BLOCKED", f"Blocked payment of ${amount} to {merchant}: Exceeds max limit of ${max_limit}.")
             return False, f"Transaction amount of ${amount} exceeds the single transaction limit of ${max_limit}."
 
@@ -47,6 +52,7 @@ class PolicyEngine:
         daily_limit = policy.get("daily_spending_limit", 5000.0)
         today_spent = self.db.get_today_spent()
         if today_spent + amount > daily_limit:
+            POLICY_VALIDATIONS.labels(status="blocked", policy_rule="daily_limit_exceeded").inc()
             self.db.add_audit_log("POLICY_BLOCKED", f"Blocked payment of ${amount} to {merchant}: Exceeds daily limit (Spent: ${today_spent}, Limit: ${daily_limit}).")
             return False, f"Daily limit exceeded. You have spent ${today_spent} today, and this transaction of ${amount} exceeds the daily limit of ${daily_limit}."
 

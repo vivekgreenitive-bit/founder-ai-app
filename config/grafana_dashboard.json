@@ -1,0 +1,78 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": true,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "id": 1,
+      "title": "Multi-Agent Pipeline Latency Breakdown",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum(rate(founder_ai_agent_step_duration_seconds_sum[5m])) by (agent_name) / sum(rate(founder_ai_agent_step_duration_seconds_count[5m])) by (agent_name)",
+          "legendFormat": "{{agent_name}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "id": 2,
+      "title": "Policy Engine Governance Checks",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "sum(founder_ai_policy_validations_total) by (status)",
+          "legendFormat": "{{status}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "id": 3,
+      "title": "Total USDC Spending Executed",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "sum(founder_ai_usdc_spending_total)",
+          "legendFormat": "Total USDC",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "id": 4,
+      "title": "Top Founder Frameworks Selection Frequency",
+      "type": "barchart",
+      "targets": [
+        {
+          "expr": "sum(founder_ai_framework_selection_total) by (framework_name)",
+          "legendFormat": "{{framework_name}}",
+          "refId": "A"
+        }
+      ]
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["founder-ai", "grafana-hackathon", "agentic-cinema"],
+  "time": { "from": "now-1h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Founder AI: Multi-Agent Studio Control Room",
+  "uid": "founder-ai-observability"
+}

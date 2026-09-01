@@ -6,6 +6,7 @@ from providers.circle_provider import CirclePaymentProvider
 from providers.razorpay_provider import RazorpayPaymentProvider
 from providers.stripe_provider import StripePaymentProvider
 from providers.coinbase_provider import CoinbasePaymentProvider
+from services.telemetry_service import USDC_SPENDING_TOTAL
 
 class PaymentAgent:
     def __init__(self, db_manager: PaymentDBManager, provider_type: str = "circle"):
@@ -69,6 +70,7 @@ class PaymentAgent:
             
             self.db.add_transaction(tx_id, "primary_usdc_wallet", amount, merchant, category, circle_tx_id, "completed")
             self.db.add_audit_log("PAYMENT_SUCCESS", f"Successfully sent {amount} USDC to {merchant} via Circle Tx {circle_tx_id}.")
+            USDC_SPENDING_TOTAL.labels(currency="USDC", merchant_category=category).inc(amount)
             
             return {
                 "success": True,

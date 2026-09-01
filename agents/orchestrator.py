@@ -24,6 +24,13 @@ KNOWN_FRAMEWORKS = {
 
 from db.payment_db import PaymentDBManager
 from agents.payment_agent import PaymentAgent
+from services.telemetry_service import (
+    start_telemetry_server,
+    AGENT_STEP_DURATION,
+    PIPELINE_TOTAL_DURATION,
+    FRAMEWORK_SELECTION_COUNT,
+    ACTIVE_PIPELINE_GAUGE
+)
 
 class OrchestratorAgent:
     llm: Any
@@ -54,8 +61,13 @@ class OrchestratorAgent:
         self.payment_db = PaymentDBManager()
         self.payment_agent = PaymentAgent(self.payment_db)
         self.governance = GovernanceService()
-
         self.log_file = "orchestrator.log"
+        
+        # Start Prometheus Telemetry Exporter (Port 9090)
+        try:
+            start_telemetry_server(9090)
+        except Exception:
+            pass
 
     def _log_run(self, log_entry):
         try:
@@ -309,29 +321,35 @@ Category: {pay_res['category']}"""
                 "duration": duration,
                 "output_summary": output_summary[:100]
             })
+            # Record step duration metric in Prometheus
+            AGENT_STEP_DURATION.labels(agent_name=step_record["agent"]).observe(duration)
 
-        # Fetch past execution outcomes and attach to profile_data for AssessmentAgent
-        from services.actions_service import ActionsService
-        from services.company_profile_service import CompanyProfileService
-        actions_svc = ActionsService()
-        profile_svc = CompanyProfileService()
-        outcome_ctx = actions_svc.build_outcome_context()
-        if outcome_ctx:
-            profile_data["outcome_context"] = outcome_ctx
-        quarterly_goal = profile_svc.get_quarterly_goal()
-        if quarterly_goal:
-            profile_data["quarterly_goal"] = quarterly_goal
+        ACTIVE_PIPELINE_GAUGE.inc()
+        try:
+            # Fetch past execution outcomes and attach to profile_data for AssessmentAgent
+            from services.actions_service import ActionsService
+            from services.company_profile_service import CompanyProfileService
+            actions_svc = ActionsService()
+            profile_svc = CompanyProfileService()
+            outcome_ctx = actions_svc.build_outcome_context()
+            if outcome_ctx:
+                profile_data["outcome_context"] = outcome_ctx
+            quarterly_goal = profile_svc.get_quarterly_goal()
+            if quarterly_goal:
+                profile_data["quarterly_goal"] = quarterly_goal
 
-        # 1. Assessment
-        s = log_step("AssessmentAgent", "Understanding your business challenge")
-        assessment = self.assessment_agent.run(query, document_text, profile_data)
-        end_step(s, str(assessment))
-        
-        # 2. Framework Selection
-        s = log_step("FrameworkSelectionAgent", "Selecting the relevant Founder Framework")
-        framework = self.framework_agent.run(assessment, user_framework)
-        log_entry["selected_framework"] = framework.get("framework_name")
-        end_step(s, str(framework))
+            # 1. Assessment
+            s = log_step("AssessmentAgent", "Understanding your business challenge")
+            assessment = self.assessment_agent.run(query, document_text, profile_data)
+            end_step(s, str(assessment))
+            
+            # 2. Framework Selection
+            s = log_step("FrameworkSelectionAgent", "Selecting the relevant Founder Framework")
+            framework = self.framework_agent.run(assessment, user_framework)
+            fw_name = framework.get("framework_name", "Unknown")
+            log_entry["selected_framework"] = fw_name
+            FRAMEWORK_SELECTION_COUNT.labels(framework_name=fw_name).inc()
+            end_step(s, str(framework))
         
         # 3. Knowledge Retrieval
         s = log_step("KnowledgeRetrievalAgent", "Retrieving framework knowledge")
@@ -403,6 +421,8 @@ Category: {pay_res['category']}"""
         
         total_duration = time.time() - start_time
         log_entry["total_duration"] = total_duration
+        PIPELINE_TOTAL_DURATION.observe(total_duration)
+        ACTIVE_PIPELINE_GAUGE.dec()
         self._log_run(log_entry)
         
         if status_callback:
