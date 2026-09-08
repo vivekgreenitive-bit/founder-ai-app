@@ -351,81 +351,82 @@ Category: {pay_res['category']}"""
             FRAMEWORK_SELECTION_COUNT.labels(framework_name=fw_name).inc()
             end_step(s, str(framework))
         
-        # 3. Knowledge Retrieval
-        s = log_step("KnowledgeRetrievalAgent", "Retrieving framework knowledge")
-        retrieved_context = self.retrieval_agent.run(query, framework["framework_name"])
-        # Approximate chunk count (lines or separator count)
-        chunks = len(retrieved_context.split("\n\n")) if retrieved_context else 0
-        log_entry["retrieved_chunk_count"] = chunks
-        end_step(s, f"Retrieved {len(retrieved_context)} chars")
-        
-        # 4. Memory Integration
-        s = log_step("MemoryAgent", "Retrieving memory context")
-        memory_context = self.memory_agent.get_context()
-        end_step(s, memory_context)
-        
-        # 5. Strategy Generation
-        s = log_step("StrategyAgent", "Developing the strategy")
-        strategy = self.strategy_agent.run(query, assessment, framework, retrieved_context, memory_context)
-        end_step(s, str(strategy))
-        
-        # 6. Execution Plan
-        s = log_step("ExecutionCoachAgent", "Building the execution plan")
-        execution = self.execution_agent.run(query, framework["framework_name"], strategy)
-        end_step(s, str(execution))
-        
-        # 7. Response Composition
-        s = log_step("ResponseComposer", "Finalizing the recommendation")
-        final_response = self.response_composer.run(framework["framework_name"], strategy, execution)
-        end_step(s, final_response)
-        
-        # Validate the response
-        is_valid, validation_reason = self.validate_response(final_response)
-        log_entry["validation_status"] = "Success" if is_valid else f"Failed: {validation_reason}"
-        
-        # Controlled Local Retry if failed
-        if not is_valid:
-            log_entry["errors"].append(f"Validation failed: {validation_reason}. Attempting one retry.")
-            if status_callback:
-                status_callback("Validation failed. Retrying recommendation generation...")
+            # 3. Knowledge Retrieval
+            s = log_step("KnowledgeRetrievalAgent", "Retrieving framework knowledge")
+            retrieved_context = self.retrieval_agent.run(query, framework["framework_name"])
+            # Approximate chunk count (lines or separator count)
+            chunks = len(retrieved_context.split("\n\n")) if retrieved_context else 0
+            log_entry["retrieved_chunk_count"] = chunks
+            end_step(s, f"Retrieved {len(retrieved_context)} chars")
             
-            # Retry Strategy and Execution with explicit instruction to avoid templates/leaks
-            retry_assessment = assessment.copy()
-            retry_assessment["primary_challenge"] = (
-                f"{query} (Note: Output must be clean, professional prose, with NO internal delimiters or prompt labels)"
-            )
+            # 4. Memory Integration
+            s = log_step("MemoryAgent", "Retrieving memory context")
+            memory_context = self.memory_agent.get_context()
+            end_step(s, memory_context)
             
-            # Re-run Strategy
-            s_retry = log_step("StrategyAgent (Retry)", "Developing the strategy (Retry)")
-            strategy = self.strategy_agent.run(query, retry_assessment, framework, retrieved_context, memory_context)
-            end_step(s_retry, str(strategy))
+            # 5. Strategy Generation
+            s = log_step("StrategyAgent", "Developing the strategy")
+            strategy = self.strategy_agent.run(query, assessment, framework, retrieved_context, memory_context)
+            end_step(s, str(strategy))
             
-            # Re-run Execution
-            exec_retry = log_step("ExecutionCoachAgent (Retry)", "Building the execution plan (Retry)")
+            # 6. Execution Plan
+            s = log_step("ExecutionCoachAgent", "Building the execution plan")
             execution = self.execution_agent.run(query, framework["framework_name"], strategy)
-            end_step(exec_retry, str(execution))
+            end_step(s, str(execution))
             
-            # Re-run Compose
-            comp_retry = log_step("ResponseComposer (Retry)", "Finalizing the recommendation (Retry)")
+            # 7. Response Composition
+            s = log_step("ResponseComposer", "Finalizing the recommendation")
             final_response = self.response_composer.run(framework["framework_name"], strategy, execution)
-            end_step(comp_retry, final_response)
+            end_step(s, final_response)
             
-            # Re-validate
-            is_valid_retry, validation_reason_retry = self.validate_response(final_response)
-            log_entry["validation_status"] = "Success (after retry)" if is_valid_retry else f"Failed retry: {validation_reason_retry}"
-            if not is_valid_retry:
-                log_entry["errors"].append(f"Retry validation failed: {validation_reason_retry}")
+            # Validate the response
+            is_valid, validation_reason = self.validate_response(final_response)
+            log_entry["validation_status"] = "Success" if is_valid else f"Failed: {validation_reason}"
+            
+            # Controlled Local Retry if failed
+            if not is_valid:
+                log_entry["errors"].append(f"Validation failed: {validation_reason}. Attempting one retry.")
+                if status_callback:
+                    status_callback("Validation failed. Retrying recommendation generation...")
+                
+                # Retry Strategy and Execution with explicit instruction to avoid templates/leaks
+                retry_assessment = assessment.copy()
+                retry_assessment["primary_challenge"] = (
+                    f"{query} (Note: Output must be clean, professional prose, with NO internal delimiters or prompt labels)"
+                )
+                
+                # Re-run Strategy
+                s_retry = log_step("StrategyAgent (Retry)", "Developing the strategy (Retry)")
+                strategy = self.strategy_agent.run(query, retry_assessment, framework, retrieved_context, memory_context)
+                end_step(s_retry, str(strategy))
+                
+                # Re-run Execution
+                exec_retry = log_step("ExecutionCoachAgent (Retry)", "Building the execution plan (Retry)")
+                execution = self.execution_agent.run(query, framework["framework_name"], strategy)
+                end_step(exec_retry, str(execution))
+                
+                # Re-run Compose
+                comp_retry = log_step("ResponseComposer (Retry)", "Finalizing the recommendation (Retry)")
+                final_response = self.response_composer.run(framework["framework_name"], strategy, execution)
+                end_step(comp_retry, final_response)
+                
+                # Re-validate
+                is_valid_retry, validation_reason_retry = self.validate_response(final_response)
+                log_entry["validation_status"] = "Success (after retry)" if is_valid_retry else f"Failed retry: {validation_reason_retry}"
+                if not is_valid_retry:
+                    log_entry["errors"].append(f"Retry validation failed: {validation_reason_retry}")
 
-        # Update Memory with the final produced response
-        self.memory_agent.add_record(query, framework["framework_name"], final_response)
-        
-        total_duration = time.time() - start_time
-        log_entry["total_duration"] = total_duration
-        PIPELINE_TOTAL_DURATION.observe(total_duration)
-        ACTIVE_PIPELINE_GAUGE.dec()
-        self._log_run(log_entry)
-        
-        if status_callback:
-            status_callback("Completed.")
+            # Update Memory with the final produced response
+            self.memory_agent.add_record(query, framework["framework_name"], final_response)
             
-        return final_response
+            total_duration = time.time() - start_time
+            log_entry["total_duration"] = total_duration
+            PIPELINE_TOTAL_DURATION.observe(total_duration)
+            self._log_run(log_entry)
+            
+            if status_callback:
+                status_callback("Completed.")
+                
+            return final_response
+        finally:
+            ACTIVE_PIPELINE_GAUGE.dec()
